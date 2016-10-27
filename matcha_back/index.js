@@ -1,5 +1,13 @@
 var express = require('express');
-var a = 1;
-while(a < 10) {
-  console.log(a++);
-}
+var User = require('./src/user');
+var bodyParser = require('body-parser');
+var cors = require('cors');
+var app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/createaccount', User.createAccount);
+
+app.listen(8080);
