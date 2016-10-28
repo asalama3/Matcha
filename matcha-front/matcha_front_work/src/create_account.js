@@ -31,7 +31,7 @@ export default class CreateUser extends Component{
         email: e.target.email.value,
       }
     })
-    // console.log(response.status);
+    console.log(response.status);
   }
 
   render() {
