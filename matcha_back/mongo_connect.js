@@ -29,4 +29,4 @@ var MongoConnect = (response, success) => {
 }
 
 
-module.exports = MongoConnect;
+export default MongoConnect;

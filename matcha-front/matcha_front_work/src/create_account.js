@@ -41,6 +41,7 @@ export default class CreateUser extends Component{
         <form onSubmit={this.create}>
           <label className="create_acount"> Username </label>
           <input
+          required
           name="username"
           type="text"
           value={this.state.username}
@@ -48,21 +49,25 @@ export default class CreateUser extends Component{
           />
           <label className="create_account"> Firstname </label>
           <input
+          required
           name="firstname"
           type="text"
           />
           <label className="create_account"> Lastname </label>
           <input
+          required
           name="lastname"
           type="text"
           />
           <label className="create_account">Email</label>
           <input
+          required
           name="email"
-          type="text"
+          type="email"
           />
           <label className="create_account">Password</label>
           <input
+          required
           name="password"
           type="password"
           />
