@@ -7,10 +7,15 @@ const createAccount = (req, response) => {
   console.log("hello");
   var user = { username: req.body.username, password: req.body.password, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email };
 
-  Account.Username(user);
-  db.collection('users').insert(user);
+
+    db.collection('users').insert(user);
+    // response.send({status: true, details: 'registered'});
+
+
+  // Account.Username(user);
+
   console.log(req.body);
-  // response.send({ status: false, details: 'user doesnt exist' });
+  response.send({ status: false, details: 'user doesnt exist' });
 })
 };
 
