@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.post('/createaccount', User.login);
-app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname, Account.Password, User.createAccount);
+app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname, Account.Email, Account.Password, User.createAccount);
 // app.post('/createaccount', User.createAccount);
 
 app.listen(8080);

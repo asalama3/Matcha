@@ -13,8 +13,8 @@ render((
   <Router history={browserHistory}>
     <Route path="/" component={Matcha} >
       <IndexRoute component={Welcome} />
-    <Route path="login" component={Login} />
-    <Route path="create_account" component={CreateAccount} />
+      <Route path="login" component={Login} />
+      <Route path="create_account" component={CreateAccount} />
     </Route>
   </Router>
 

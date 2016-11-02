@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import '../css/create_account.css';
 import axios from 'axios';
+import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
+
+
 export default class CreateUser extends Component{
 
   componentWillMount() {
@@ -11,12 +14,17 @@ export default class CreateUser extends Component{
       console.log(data);
     })
   }
-  constructor(props) {
-    super(props);
-    this.state = {
-      username : "andrea"
-    }
+
+  state = {
+    test: 'andrea',
+    error: '',
   }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     username : "andrea"
+  //   }
+  // }
 
   create = async (e) => {
     e.preventDefault(); // no reload
@@ -31,9 +39,26 @@ export default class CreateUser extends Component{
         email: e.target.email.value,
       }
     })
-    console.log(response.status);
+    this.setState({ error: response.data.details });
+    console.log(response.data.details);
+    if (response.status !== false)
+    {browserHistory.push('/login');}
+    // redirect to login;
   }
-
+  // test = (e) => {
+  //   e.preventDefault();
+  //   this.setState({ test: 'alban' });
+  // }
+  //
+  // test1 = (e) => {
+  //   e.preventDefault();
+  //   this.setState({ test: 'youhoo' });
+  // }
+  //
+  // test2 = (e) => {
+  //   e.preventDefault();
+  //   this.setState({ test: '' });
+  // }
   render() {
     return (
       <div>
@@ -41,33 +66,34 @@ export default class CreateUser extends Component{
         <form onSubmit={this.create}>
           <label className="create_acount"> Username </label>
           <input
-          required
+          // required
           name="username"
           type="text"
           value={this.state.username}
           onChange={(event) => this.setState({username: event.target.value})}
           />
+          <div>{this.state.userError}
           <label className="create_account"> Firstname </label>
           <input
-          required
+          // required
           name="firstname"
           type="text"
           />
           <label className="create_account"> Lastname </label>
           <input
-          required
+          // required
           name="lastname"
           type="text"
           />
           <label className="create_account">Email</label>
           <input
-          required
+          // required
           name="email"
           type="email"
           />
           <label className="create_account">Password</label>
           <input
-          required
+          // required
           name="password"
           type="password"
           />
@@ -75,8 +101,11 @@ export default class CreateUser extends Component{
           name="submit"
           type="submit"
           />
+          </div>
         </form>
-      </div>
+        {/* <div onClick={this.test1} onDoubleClick={this.test2}> {this.state.test} </div> */}
+        <div> {this.state.error} </div>
+        </div>
     );
   }
 }
