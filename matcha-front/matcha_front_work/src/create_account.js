@@ -41,8 +41,10 @@ export default class CreateUser extends Component{
     })
     this.setState({ error: response.data.details });
     console.log(response.data.details);
-    if (response.status !== false)
-    {browserHistory.push('/login');}
+    if (response.status === true)
+    {
+      browserHistory.push('/login');
+    }
     // redirect to login;
   }
   // test = (e) => {

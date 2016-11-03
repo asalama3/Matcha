@@ -22,7 +22,7 @@ var MongoConnect = (response, success) => {
       console.log('erreur');
     }
     else {
-      console.log('bravo');
+      // console.log('bravo');
     }
     (err ? response.send('fail') : success(db));
   });
