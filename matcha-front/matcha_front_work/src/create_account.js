@@ -6,14 +6,14 @@ import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
 export default class CreateUser extends Component{
 
-  componentWillMount() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/createaccount',
-    }).then(({data}) => {
-      console.log(data);
-    })
-  }
+  // componentWillMount() {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://localhost:8080/createaccount',
+  //   }).then(({data}) => {
+  //     console.log(data);
+  //   })
+  // }
 
   state = {
     test: 'andrea',
@@ -26,23 +26,24 @@ export default class CreateUser extends Component{
   //   }
   // }
 
-  create = async (e) => {
+  createAccount = async (e) => {
     e.preventDefault(); // no reload
     const response =  await axios({
       method: 'post',
       url: 'http://localhost:8080/createaccount',
       data: {
         username: e.target.username.value,
-        password: e.target.password.value,
         firstname: e.target.firstname.value,
         lastname: e.target.lastname.value,
         email: e.target.email.value,
+        password: e.target.password.value,
       }
     })
     this.setState({ error: response.data.details });
     console.log(response.data.details);
-    if (response.status === true)
+    if (response.data.status === true)
     {
+      console.log("ok login");
       browserHistory.push('/login');
     }
     // redirect to login;
@@ -65,7 +66,7 @@ export default class CreateUser extends Component{
     return (
       <div>
       <h1>CREATE ACCOUNT</h1>
-        <form onSubmit={this.create}>
+        <form onSubmit={this.createAccount}>
           <label className="create_acount"> Username </label>
           <input
           // required
