@@ -1,12 +1,13 @@
-// var MongoClient = require('../mongo_connect');
 import MongoConnect from '../mongo_connect';
-// var passwordHash = require('password-hash');
 import crypto from 'crypto';
-
+var session = require('express-session');
 
 const LoginUser = (req, res) => {
   MongoConnect(res, function(db){
-    // var hashedPassword = passwordHash.generate(req.body.password);
+    console.log('sessionid:', req.session.id);
+    console.log('session:', req.session);
+    console.log('sessionID:', req.sessionID);
+
     var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
 
     console.log('user input pass:', hashPass);
@@ -31,7 +32,6 @@ const LoginUser = (req, res) => {
       }
     })
   })
-// res.send({status: true, details: 'test'})
 }
 
 export  {LoginUser};

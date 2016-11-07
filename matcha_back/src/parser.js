@@ -1,5 +1,7 @@
 const Username = (req, res, next) => {
   var username = req.body.username;
+  console.log('sessionID-beforelogin:', req.sessionID);
+
   // console.log('dwadawd', username);
 
   if (username && username.length > 4 && username.match(/^[a-zA-Z0-9]\w+$/))

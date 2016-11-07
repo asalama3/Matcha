@@ -6,6 +6,7 @@ import crypto from 'crypto';
 
 const createAccount = (req, res) => {
   MongoConnect(res, function(db){
+
   // var hashedPassword = passwordHash.generate(req.body.password);
   var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
   console.log(hashPass);
@@ -32,7 +33,6 @@ const createAccount = (req, res) => {
     }
   })
   console.log(req.body);
-
 
 
   // db.collection('user').findOne(req.body.email);

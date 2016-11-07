@@ -19,6 +19,7 @@
     "crypto": "0.0.3",
     "crypto-js": "^3.1.8",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "mongodb": "^2.2.11",
     "nodemon": "^1.11.0",
     "password-hash": "^1.2.2"

@@ -24,7 +24,7 @@ login = async (e) => {
   if (response.data.status === true)
   {
     console.log("ok logged in")
-    // browserHistory.push('/profile');
+    browserHistory.push('./profile');
   }
 }
 
