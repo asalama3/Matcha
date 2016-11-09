@@ -8,6 +8,7 @@ var app = express();
 var MongoClient = require('./mongo_connect');
 import * as Login from './src/login';
 var session = require('express-session');
+import * as Logged from './src/profile';
 
 
 app.use(cors());
@@ -26,5 +27,7 @@ app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname
 
 app.post('/login', Account.Username, Account.Password, Login.LoginUser);
 // app.post('/createaccount', User.createAccount);
+
+app.post('/profile', Logged.requireLogin);
 
 app.listen(8080);

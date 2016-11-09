@@ -1,6 +1,5 @@
 const Username = (req, res, next) => {
   var username = req.body.username;
-  console.log('sessionID-beforelogin:', req.sessionID);
 
   // console.log('dwadawd', username);
 

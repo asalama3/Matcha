@@ -6,6 +6,7 @@ import '../css/index.css';
 import Login from './login';
 import Welcome from './welcome';
 import CreateAccount from './create_account';
+import Profile from './profile';
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
 render((
@@ -13,8 +14,10 @@ render((
   <Router history={browserHistory}>
     <Route path="/" component={Matcha} >
       <IndexRoute component={Welcome} />
-      <Route path="login" component={Login} />
       <Route path="create_account" component={CreateAccount} />
+      <Route path="login" component={Login} />
+      <Route path="profile" component={Profile} />
+
     </Route>
   </Router>
 

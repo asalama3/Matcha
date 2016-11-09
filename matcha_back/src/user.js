@@ -27,13 +27,13 @@ const createAccount = (req, res) => {
         else
         {
           db.collection('users').insert(user);
-          var ObjectId = user._id;
-          console.log(ObjectId);
+          // var ObjectId = user._id;
+          // console.log(ObjectId);
           // var user = {};
-          req.session.user = {};
-          req.session.user = {user_id: ObjectId};
+          // req.session.user = {};
+          // req.session.user = {user_id: ObjectId};
           // req.session.user = user;
-          console.log(req.session);
+          // console.log(req.session);
           return res.send({status: true, details: 'registered'});
         }
       })

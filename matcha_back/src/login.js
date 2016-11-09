@@ -5,37 +5,35 @@ var session = require('express-session');
 
 
 
-const LoginUser = (req, res) => {
-  MongoConnect(res, function(db){
-    // console.log('sessionid:', req.session.id);
-    // console.log('sessionID:', req.sessionID);
-
+const LoginUser =  (req, res) => {
+  MongoConnect(res,  function (db){
 
     var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
-    // var sess = req.session;
 
-    // var user = {};
-    // req.session.user = {user_id: req._id.ObjectId};
+    // console.log(req.session);
     // req.session.user = user;
 
     // console.log('session:', req.session);
     // console.log('id:', req._id.ObjectId);
 
-    console.log('user input pass:', hashPass);
-    db.collection('users').findOne({username: req.body.username}, function (err, req){
-      if (req)
+    // console.log('user input pass:', hashPass);
+    db.collection('users').findOne({username: req.body.username},  function (err, user){
+      if (user)
       {
-        console.log("usrnm ok");
-        if (req.password === hashPass)
+        // console.log("usrnm ok");
+        if (user.password === hashPass)
         {
-          console.log("pass ok");
-          // get_sess_id();
-          // console.log(req.session);
+          var Id = user._id;
+
+          req.session.user = {};
+          req.session.user = user;
+          console.log('hello', req.session);
+          console.log('logged in');
           res.send({status: true, details: 'password ok in database'})
         }
         else{
-          console.log('database pass', req.password);
-          console.log("password not ok");
+          // console.log('database pass', requ.password);
+          // console.log("password not ok");
           res.send({status: false, details: 'password not ok in database'})
         }
       }
