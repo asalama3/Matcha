@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "babel-node": "babel-node --presets=es2015",
-    "start": "nodemon --exec npm run babel-node -- index.js"
+    "start": "nodemon --exec ~/.brew/bin/npm run babel-node -- index.js"
   },
   "author": "",
   "license": "ISC",

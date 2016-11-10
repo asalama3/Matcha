@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../css/create_account.css';
 import axios from 'axios';
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
-
+import {FormControl, FormGroup, Form, Col, Button, Checkbox, ControlLabel} from 'react-bootstrap/lib/';
 
 export default class CreateUser extends Component{
 
@@ -65,8 +65,45 @@ export default class CreateUser extends Component{
   render() {
     return (
       <div>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css" />
+
       <h1>CREATE ACCOUNT</h1>
+        <Form horizontal>
+          <FormGroup controlId="formHorizontalEmail">
+            <Col componentClass={ControlLabel} sm={2}>
+              Email
+            </Col>
+            <Col sm={10}>
+              <FormControl type="email" placeholder="Email" />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="formHorizontalPassword">
+            <Col componentClass={ControlLabel} sm={2}>
+              Password
+            </Col>
+            <Col sm={10}>
+              <FormControl type="password" placeholder="Password" />
+            </Col>
+          </FormGroup>
+
+          <FormGroup>
+            <Col smOffset={2} sm={10}>
+              <Checkbox>Remember me</Checkbox>
+            </Col>
+          </FormGroup>
+
+          <FormGroup>
+            <Col smOffset={2} sm={10}>
+              <Button type="submit">
+                Sign in
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
         <form onSubmit={this.createAccount}>
+
           <label className="create_acount"> Username </label>
           <input
           // required

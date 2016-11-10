@@ -9,36 +9,23 @@ const LoginUser =  (req, res) => {
   MongoConnect(res,  function (db){
 
     var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
-
-    // console.log(req.session);
-    // req.session.user = user;
-
-    // console.log('session:', req.session);
-    // console.log('id:', req._id.ObjectId);
-
-    // console.log('user input pass:', hashPass);
     db.collection('users').findOne({username: req.body.username},  function (err, user){
       if (user)
       {
-        // console.log("usrnm ok");
+
         if (user.password === hashPass)
         {
-          var Id = user._id;
+          // create token, save into database , send to front to localstorage.
 
-          req.session.user = {};
-          req.session.user = user;
-          console.log('hello', req.session);
-          console.log('logged in');
+          console.log('at login:', req.session);
+
           res.send({status: true, details: 'password ok in database'})
         }
         else{
-          // console.log('database pass', requ.password);
-          // console.log("password not ok");
           res.send({status: false, details: 'password not ok in database'})
         }
       }
       else{
-        console.log("username not ok");
         res.send({status: false, details: 'username not found in database'});
       }
     })
