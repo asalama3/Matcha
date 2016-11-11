@@ -71,3 +71,7 @@ const Password = (req, res, next) => {
 
 
 module.exports = {Username, Firstname, Lastname, Email, Password};
+
+
+
+

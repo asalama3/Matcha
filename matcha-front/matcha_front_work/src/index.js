@@ -19,10 +19,9 @@ render((
           <Route path="create_account" component={CreateAccount} />
           <Route path="login" component={Login} />
     </Route>
-    <Route path="/" component={AppHeader} >
-          <Route path="/profile" component={Profile} />
-          <Route path="/editProfile" component={editProfile} />
-
+    <Route path="/matcha" component={AppHeader} >
+          <Route path="profile" component={Profile} />
+          <Route path="editProfile" component={editProfile} />
     </Route>
   </Router>
 

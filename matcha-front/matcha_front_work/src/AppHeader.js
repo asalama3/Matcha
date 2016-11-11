@@ -8,14 +8,9 @@ import Header from './header';
 class AppHeader extends Component {
   render() {
 
-    console.log(this.props.children);
     return (
       <div>
-        {/* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" /> */}
-        {/* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css" /> */}
         <Header />
-          {/* <Button bsStyle="primary" bsSize="large">Large button</Button> */}
-          {/* <Button bsSize="large">Large button</Button> */}
           <div>
           {this.props.children}
           </div>

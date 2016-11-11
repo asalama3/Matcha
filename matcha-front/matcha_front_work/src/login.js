@@ -11,6 +11,8 @@ state = {
 
 login = async (e) => {
   e.preventDefault();
+  if (e.target.username.value.length > 30)
+    e.target.username.value = '';
   const response = await axios({
     method: 'post',
     url: 'http://localhost:8080/login',
@@ -19,11 +21,10 @@ login = async (e) => {
       password: e.target.password.value,
     }
   })
+  console.log(response.data.alreadyExist);
   this.setState({error: response.data.details});
-  console.log(response.data.details);
   if (response.data.status === true)
   {
-    console.log("ok logged in")
     browserHistory.push('/matcha/profile');
   }
 }
