@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import { Button, ButtonGroup, Input} from 'react-bootstrap/lib/';
-import GoogleMap from 'google-map-react';
+import {maps, google, GoogleMap} from 'google-map-react';
+import Geosuggest from 'react-geosuggest';
+import Autocomplete from 'react-google-autocomplete';
+import '../css/editProfile.css';
 
 
 class editProfile extends Component{
@@ -28,19 +31,14 @@ class editProfile extends Component{
 //   e.preventDefault();
 // }
 
-static defaultProps = {
-    center: {lat: 59.938043, lng: 30.337157},
-    zoom: 9,
-    greatPlaceCoords: {lat: 59.724465, lng: 30.080121}
-};
-
-  constructor(props) {
-    super(props);
-  }
-
 render(){
   return(
+    
     <div className="EditProfile">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+ <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDADbx0qAGlxGF0VHatbFCgvQTKjOOZSGc&libraries=places"></script>
+
       <h1> Edit Your Profile </h1>
         <form onSubmit={this.editProfile}>
           <label className="fname"> Firstname </label>
@@ -74,17 +72,24 @@ render(){
               <input type="text" name="bio"/>
           </div>
             <label className="locate"> Location </label>
-                <GoogleMap
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom}>
-        <MyGreatPlace lat={59.955413} lng={30.337844} text={'A'} /* Kreyser Avrora */ />
-        <MyGreatPlace {...this.props.greatPlaceCoords} text={'B'} /* road circle */ />
-      </GoogleMap>
-            
-        
-        
+              <Autocomplete
+                  style={{width: '90%'}}
+                  onPlaceSelected={(place) => {
+                  console.log(place);
+                   }}
+                  types={['(regions)']}
+                />
         </form>
+             
     </div>
+        // <GoogleMap
+        //             containerProps={{style: {height: "100%"}}}
+        //             ref="map"
+        //             defaultZoom={3}
+        //             defaultCenter={{lat: -25.363882, lng: 131.044922}}>
+
+        //         </GoogleMap>
+
   )
   }
 }
