@@ -19,8 +19,7 @@ componentWillMount(){
       // test = 'false';
       // console.log('test', test);
       console.log('user not logged in:', data.details);
-      // browserHistory.push('/login');
-
+      browserHistory.push('/login');
     }
   })
 }
