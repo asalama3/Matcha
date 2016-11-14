@@ -12,17 +12,14 @@ const LoginUser =  (req, res) => {
       {
         if (user.password === hashPass)
         {
-          // create token, save into database , send to front to localstorage.
           session.user = user;
           res.send({status: true, details: 'success'})
         }
-        else{
+        else
           res.send({status: false, details: 'username or password invalid'})
-        }
       }
-      else{
+      else
         res.send({status: false, details: 'username or password invalid'});
-      }
     })
   })
 }

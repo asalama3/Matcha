@@ -35,5 +35,6 @@ app.post('/login', Account.Username, Account.Password, Login.LoginUser);
 // app.post('/createaccount', User.createAccount);
 
 app.post('/profile', Logged.requireLogin, Profile.profile);
+app.post('/editProfile', Logged.requireLogin, Profile.editProfile);
 
 app.listen(8080);

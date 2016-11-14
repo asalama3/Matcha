@@ -16,24 +16,17 @@ const createAccount = (req, res) => {
   var password = req.body.password;
 
 
-  db.collection('users').findOne({username: req.body.username}, function (err, reque){
-    if (err || reque)
+  db.collection('users').findOne({username: req.body.username}, function (err, user){
+    if (err || user)
       return res.send({status: false, details: 'username already used'});
     else
     {
-        db.collection('users').findOne({email: email}, function (err, requ){
-        if (err || requ)
+        db.collection('users').findOne({email: email}, function (err, usermail){
+        if (err || usermail)
           return res.send({status: false, details: 'email already used'});
         else
         {
           db.collection('users').insert(user);
-          // var ObjectId = user._id;
-          // console.log(ObjectId);
-          // var user = {};
-          // req.session.user = {};
-          // req.session.user = {user_id: ObjectId};
-          // req.session.user = user;
-          // console.log(req.session);
           return res.send({status: true, details: 'registered'});
         }
       })
