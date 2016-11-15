@@ -21,7 +21,8 @@ login = async (e) => {
       password: e.target.password.value,
     }
   })
-  console.log(response.data.alreadyExist);
+  // console.log(response.data.data)
+  // console.log(response.data.alreadyExist);
   this.setState({error: response.data.details});
   if (response.data.status === true)
   {

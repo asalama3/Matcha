@@ -13,11 +13,12 @@ const LoginUser =  (req, res) => {
         if (user.password === hashPass)
         {
           session.user = user;
+          
           res.send({status: true, details: 'success'})
         }
-        else
+        else{
           res.send({status: false, details: 'username or password invalid'})
-      }
+      }}
       else
         res.send({status: false, details: 'username or password invalid'});
     })

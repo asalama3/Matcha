@@ -10,6 +10,7 @@ import * as Login from './src/login';
 var session = require('express-session');
 import * as Logged from './src/logged';
 import * as Profile from './src/profile';
+import * as Edit from './src/editProfile';
 
 // var store = express.session.MemoryStore;
 // var sessionStore = new MemoryStore();
@@ -32,9 +33,8 @@ app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname
                           Account.Email, Account.Password, User.createAccount);
 
 app.post('/login', Account.Username, Account.Password, Login.LoginUser);
-// app.post('/createaccount', User.createAccount);
 
 app.post('/profile', Logged.requireLogin, Profile.profile);
-app.post('/editProfile', Logged.requireLogin, Profile.editProfile);
-
+app.post('/editProfile', Logged.requireLogin, Edit.editProfile);
+app.post('/autoFill', User.autoFill);
 app.listen(8080);

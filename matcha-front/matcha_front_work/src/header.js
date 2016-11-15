@@ -30,7 +30,7 @@ class Header extends React.Component {
     </Nav>
     <Nav pullRight>
       <NavItem eventKey={1} href="#">Delete Account</NavItem>
-      <NavItem eventKey={2} href="#">Logout</NavItem>
+      <NavItem eventKey={2} href="./logout">Logout</NavItem>
     </Nav>
   </Navbar.Collapse>
 </Navbar>

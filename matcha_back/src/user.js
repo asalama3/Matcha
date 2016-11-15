@@ -2,7 +2,10 @@ import MongoConnect from '../mongo_connect';
 import * as Account from './parser.js';
 // var passwordHash = require('password-hash');
 import crypto from 'crypto';
+import mongodb from 'mongodb';
+var session = require('express-session');
 
+const ObjectId = mongodb.ObjectId;
 
 const createAccount = (req, res) => {
   MongoConnect(res, function(db){
@@ -64,4 +67,35 @@ const login = (request, response) => {
 };
 
 
-export {createAccount, login};
+const logout = (req, res) => {
+  session.destroy(user);
+  res.send({status: true, details: 'logout'});
+}
+
+
+const autoFill = (req, res) => {
+  console.log("autofill");
+  console.log(session.user._id);
+
+  MongoConnect(res, function (db) {    
+    db.collection('users').findOne({ _id: ObjectId(session.user._id) }, function (err, user) {
+      if (err) {
+        res.send({ status: false, details: "no connexion to db" });
+      }
+      else if (!user) {
+        res.send({ status: false, details: "no user found" });
+      }
+      else {
+        user.password = null;
+        user._id = null;
+        user.username = null;
+        res.send({ status: true, details: "all good", user: user });
+      }
+    })
+  })
+};
+
+
+
+
+export {createAccount, login, autoFill};
