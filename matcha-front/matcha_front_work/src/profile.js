@@ -7,7 +7,7 @@ class Profile extends Component {
 componentWillMount(){
   axios({
     method: 'post',
-    url: 'http://localhost:8080/profile',
+    url: 'http://localhost:8080/checklogin',
   }).then(({data}) => {
     console.log(data);
     // var test = 'true';
@@ -28,6 +28,7 @@ render(){
   return (
     <div>
       <h1>PROFILE</h1>
+      <h2>Suggestions of the day</h2>
     </div>
   );
 }

@@ -19,10 +19,10 @@ render((
     <Route path="/" component={App} >
           <IndexRoute component={Welcome} />
           <Route path="create_account" component={CreateAccount} />
-          <Route path="login" component={Login} />
+          <Route path="login" test="tesdwdwt" component={Login} />
     </Route>
     <Route path="/matcha" component={AppHeader} >
-          <Route path="profile" component={Profile} />
+          <Route path="profile"  component={Profile} />
           <Route path="editProfile" component={editProfile} />
           // <Route path="editLocation" component={editLocation} />
     </Route>

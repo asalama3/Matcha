@@ -1,25 +1,23 @@
 import MongoConnect from '../mongo_connect';
 import * as Account from './parser.js';
-// var passwordHash = require('password-hash');
 import crypto from 'crypto';
 import mongodb from 'mongodb';
 var session = require('express-session');
 
-const ObjectId = mongodb.ObjectId;
 
 const createAccount = (req, res) => {
   MongoConnect(res, function(db){
 
-  // var hashedPassword = passwordHash.generate(req.body.password);
   var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
   console.log(hashPass);
 
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass };
+  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, gender: req.body.gender, orientation: req.body.orientation };
   var email = req.body.email;
   var password = req.body.password;
 
 
   db.collection('users').findOne({username: req.body.username}, function (err, user){
+    console.log("collection db");
     if (err || user)
       return res.send({status: false, details: 'username already used'});
     else
@@ -29,42 +27,44 @@ const createAccount = (req, res) => {
           return res.send({status: false, details: 'email already used'});
         else
         {
-          db.collection('users').insert(user);
+          console.log("tout est ok login ok");
+          db.collection('users').insert(user, function (err){
+            if (err)
+              return res.send({status: false, details: 'db error'});
+          });
           return res.send({status: true, details: 'registered'});
         }
       })
     }
   })
-  console.log(req.body);
-
-
-  // db.collection('user').findOne(req.body.email);
-  // console.log(UsedUsername);
-//   if (UsedUsername)
-//   {
-//     console.log("username already used");
-//     res.send({status: false, details: 'username already used'});
-//   }
-//
-//   else if (UsedEmail)
-//   {
-//     console.log("email already used");
-//     res.send({status: false, details: 'email already used'});
-//   }
-//   else{
-//
-//   db.collection('users').insert(user);
-//   res.send({status: true, details: 'registered'});
-// }
-
-  // Account.Username(user);
-
+  console.log("form create");
 })
 };
 
-const login = (request, response) => {
-  console.log('saluttttttt');
-};
+const ObjectId = mongodb.ObjectId;
+
+const LoginUser =  (req, res) => {
+  console.log("login user")
+  MongoConnect(res,  function (db){
+
+    var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
+    db.collection('users').findOne({username: req.body.username},  function (err, user){
+      if (user)
+      {
+        if (user.password === hashPass)
+        {
+          session.user = user;
+          
+          res.send({status: true, details: 'success'})
+        }
+        else{
+          res.send({status: false, details: 'username or password invalid'})
+      }}
+      else
+        res.send({status: false, details: 'username or password invalid'});
+    })
+  })
+}
 
 
 const logout = (req, res) => {
@@ -98,4 +98,4 @@ const autoFill = (req, res) => {
 
 
 
-export {createAccount, login, autoFill};
+export {createAccount, LoginUser, autoFill};

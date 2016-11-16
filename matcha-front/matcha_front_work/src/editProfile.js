@@ -21,12 +21,31 @@ state = {
   lastname: '',
   email: '',
   day: '',
-  month: 'December',
+  month: '',
   year: '',
-  gender: 'FEMALE',
-
+  gender: '',
 }
 
+componentWillMount(){
+  axios({
+    method: 'post',
+    url: 'http://localhost:8080/checklogin',
+  }).then(({data}) => {
+    console.log(data);
+    // var test = 'true';
+    if (data.status === true)
+    {
+      console.log("ok");
+      this.autofill();
+    }
+    else{
+      // test = 'false';
+      // console.log('test', test);
+      console.log('user not logged in:', data.details);
+      browserHistory.push('/login');
+    }
+  })
+}
 
 setAddress = async (e) => {
   console.log(e.label);
@@ -48,45 +67,12 @@ handleChange = (tags) => {
     this.setState({tags})
 }
 
-//  const editProfile = () => {
-
-//   const response = await axios ({
-//    method: 'post',
-//    url: 'http://localhost:8080/editProfile',
-//    data: {
-//      firstname: e.target.firstname.value,
-
-//    }
-
-//  })
-//  }
-componentWillMount(){
-  axios({
-    method: 'post',
-    url: 'http://localhost:8080/profile',
-  }).then(({data}) => {
-    console.log(data);
-    // var test = 'true';
-    if (data.status === true)
-    {
-      console.log("ok");
-      this.autofill();
-    }
-    else{
-      // test = 'false';
-      // console.log('test', test);
-      console.log('user not logged in:', data.details);
-      browserHistory.push('/login');
-    }
-  })
-}
-
 onChange = (e) =>{
   const text = e.target.value;
   this.setState({[e.target.name]: text})
 }
 
-  autofill = async (e) => {    
+autofill = async (e) => {    
   const response = await axios({
     method: 'post',
     url: 'http://localhost:8080/autoFill',
@@ -100,6 +86,26 @@ onChange = (e) =>{
 };
 
 
+ editProfile = async (e) => {
+    const response = await axios ({
+   method: 'post',
+   url: 'http://localhost:8080/editProfile',
+   data: {
+     firstname: e.target.firstname.value,
+     lastname: e.target.lastname.value,
+     email: e.target.email.value,
+     gender: e.target.gender.value, 
+     orientation: e.target.orientation.value, 
+     bio: e.target.bio.value,
+     hobbies: e.target.hobbies.value,
+     location,
+   }
+    })
+   if (response.data){
+     console.log("heyyyyy");
+   }
+ }
+
 render(){
   return(
     
@@ -111,19 +117,19 @@ render(){
       <div>
       <h1> Edit Your Profile </h1>
         <form onSubmit={this.editProfile} >
-          <label className="fname" > Firstname </label>
+          <label className="inputForm" > Firstname </label>
           <input required onChange={this.onChange}
           name="firstname"
           type="text"
           value={this.state.firstname}
           />
-          <label className="name" > Lastname </label>
+          <label className="inputForm" > Lastname </label>
           <input required onChange={this.onChange}
           name="lastname"
           type="text"
           value={this.state.lastname}
           />
-        <label className="email" > Email </label>
+        <label className="inputForm" > Email </label>
           <input required onChange={this.onChange}
           name="email"
           type="email"
@@ -150,9 +156,9 @@ render(){
           <input type="number" min={1940} max={2016} name="year" placeholder="Year" required />
           
           </div>
-        <label className="gender" value={this.state.gender} onChange={this.onChange}> Gender </label>
-          <input type="radio" value="MALE" name="gender" required/> Male
-          <input type="radio" value="FEMALE" name="gender"/> Female
+        <label className="gender"  > Gender </label>
+          <input type="radio" value="MALE" name="gender" required /> Male
+          <input type="radio" value="FEMALE" name="gender" /> Female
           <input type="radio" value="OTHER" name="gender"/> Other
           <div>
             <label className="orientation"> Sexual Orientation </label>

@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var app = express();
 var MongoClient = require('./mongo_connect');
-import * as Login from './src/login';
+// import * as Login from './src/login';
 var session = require('express-session');
 import * as Logged from './src/logged';
 import * as Profile from './src/profile';
@@ -32,9 +32,9 @@ app.use(session({
 app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname,
                           Account.Email, Account.Password, User.createAccount);
 
-app.post('/login', Account.Username, Account.Password, Login.LoginUser);
+app.post('/login', Account.Username, Account.Password, User.LoginUser);
 
-app.post('/profile', Logged.requireLogin, Profile.profile);
+app.post('/checklogin', Logged.requireLogin);
 app.post('/editProfile', Logged.requireLogin, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
 app.listen(8080);

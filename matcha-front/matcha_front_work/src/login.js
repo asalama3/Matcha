@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-
+import * as Input from './test';
 
 class Login extends Component {
 
 state = {
   error: '',
+  test: '1',
 }
 
 login = async (e) => {
@@ -22,15 +23,18 @@ login = async (e) => {
     }
   })
   // console.log(response.data.data)
-  // console.log(response.data.alreadyExist);
   this.setState({error: response.data.details});
   if (response.data.status === true)
   {
     browserHistory.push('/matcha/profile');
   }
 }
-
+  click = (e) => {
+    this.setState({test: '2'})
+  };
   render() {
+      // console.log(this.props)
+
     return (
       <div>
         <h1>LOGIN</h1>
@@ -51,6 +55,13 @@ login = async (e) => {
               />
           </form>
           <div> {this.state.error} </div>
+          <Input.InputTest 
+            type="text"
+            name="test"
+            value="test"
+            andrea={this.state.test}
+          />
+          <button onClick={this.click} />
       </div>
     )
   }
