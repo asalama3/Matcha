@@ -5,7 +5,7 @@ const Username = (req, res, next) => {
 
   if (username && username.length > 4 && username.match(/^[a-zA-Z0-9]\w+$/))
   {
-    // console.log("username ok");
+    console.log("username ok");
     next();
   }
   else {
@@ -16,10 +16,10 @@ const Username = (req, res, next) => {
 
 const Firstname = (req, res, next) => {
   var fname = req.body.firstname;
-  // console.log('firstname:', fname);
+  console.log('firstname:', fname);
   if (fname && fname.length > 4 && fname.match(/^[a-zA-Z0-9]\w+$/))
   {
-    // console.log(" fname ok");
+    console.log(" fname ok");
     next();
   }
   else {
@@ -30,10 +30,10 @@ const Firstname = (req, res, next) => {
 
 const Lastname = (req, res, next) => {
   var lname = req.body.lastname;
-  // console.log('lastname:', lname);
+  console.log('lastname:', lname);
   if (lname && lname.length > 4 && lname.match(/^[a-zA-Z0-9]\w+$/))
   {
-    // console.log(" lname ok");
+    console.log(" lname ok");
     next();
   }
   else {
@@ -44,10 +44,10 @@ const Lastname = (req, res, next) => {
 
 const Email = (req, res, next) => {
   var email = req.body.email;
-  // console.log('email', email);
+  console.log('email', email);
   if (email && email.match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/))
   {
-    // console.log("email ok");
+    console.log("email ok");
     next();
   }
   else{
@@ -69,8 +69,26 @@ const Password = (req, res, next) => {
   }
 }
 
+const Gender = (req, res, next) => {
+  var gender = req.body.gender;
+  if (gender)
+    next();
+  else
+    res.send({status: false, details: 'gender empty'});
+}
 
-module.exports = {Username, Firstname, Lastname, Email, Password};
+const Orientation = (req, res, next) => {
+  var orientation = req.body.orientation;
+  if (orientation){
+    next();
+  }
+  else{
+    req.body.orientation = 'bisexual';
+    next();
+  }
+}
+
+module.exports = {Username, Firstname, Lastname, Email, Password, Gender, Orientation};
 
 
 

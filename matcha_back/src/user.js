@@ -15,10 +15,8 @@ const createAccount = (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
-
-  db.collection('users').findOne({username: req.body.username}, function (err, user){
-    console.log("collection db");
-    if (err || user)
+  db.collection('users').findOne({username: req.body.username}, (err, username) => {
+    if (err || username)
       return res.send({status: false, details: 'username already used'});
     else
     {
@@ -27,24 +25,23 @@ const createAccount = (req, res) => {
           return res.send({status: false, details: 'email already used'});
         else
         {
-          console.log("tout est ok login ok");
-          db.collection('users').insert(user, function (err){
+          db.collection('users').insert(user, (err) =>{
             if (err)
-              return res.send({status: false, details: 'db error'});
-          });
-          return res.send({status: true, details: 'registered'});
-        }
-      })
-    }
+              return res.send({status: false, details: "db error"})
+            else
+              return res.send({status: true, details: "registered"});
+            });
+          }
+        })
+      }
+    })
   })
-  console.log("form create");
-})
 };
 
 const ObjectId = mongodb.ObjectId;
 
 const LoginUser =  (req, res) => {
-  console.log("login user")
+  // console.log("login user")
   MongoConnect(res,  function (db){
 
     var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
@@ -74,8 +71,8 @@ const logout = (req, res) => {
 
 
 const autoFill = (req, res) => {
-  console.log("autofill");
-  console.log(session.user._id);
+  // console.log("autofill");
+  // console.log(session.user._id);
 
   MongoConnect(res, function (db) {    
     db.collection('users').findOne({ _id: ObjectId(session.user._id) }, function (err, user) {

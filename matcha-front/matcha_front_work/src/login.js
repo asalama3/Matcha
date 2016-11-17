@@ -29,9 +29,9 @@ login = async (e) => {
     browserHistory.push('/matcha/profile');
   }
 }
-  click = (e) => {
-    this.setState({test: '2'})
-  };
+  // click = (e) => {
+  //   this.setState({test: '2'})
+  // };
   render() {
       // console.log(this.props)
 
@@ -55,14 +55,15 @@ login = async (e) => {
               />
           </form>
           <div> {this.state.error} </div>
-          <Input.InputTest 
-            type="text"
-            name="test"
-            value="test"
-            andrea={this.state.test}
-          />
-          <button onClick={this.click} />
       </div>
+          
+          // <Input.InputTest 
+          //   type="text"
+          //   name="test"
+          //   value="test"
+          //   andrea={this.state.test}
+          // />
+          // <button onClick={this.click} />
     )
   }
 }

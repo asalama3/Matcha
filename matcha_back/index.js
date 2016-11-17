@@ -30,11 +30,11 @@ app.use(session({
 
 // app.post('/createaccount', User.login);
 app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname,
-                          Account.Email, Account.Password, User.createAccount);
+                          Account.Email, Account.Password, Account.Gender, Account.Orientation, User.createAccount);
 
 app.post('/login', Account.Username, Account.Password, User.LoginUser);
 
 app.post('/checklogin', Logged.requireLogin);
-app.post('/editProfile', Logged.requireLogin, Edit.editProfile);
+app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
 app.listen(8080);

@@ -33,12 +33,20 @@ export default class CreateUser extends Component{
   state = {
     test: 'andrea',
     error: '',
-    gender: '',
-    orientation: '',
+
   }
 
   createAccount = async (e) => {
     e.preventDefault(); // no reload
+    if (e.target.firstname.value.length > 30 || e.target.lastname.value.length > 30 || e.target.email.value.length > 30 || e.target.password.value.length > 30)
+    {
+      e.target.firstname.value = '';
+      e.target.lastname.value = '';
+      e.target.email.value= '';
+      e.target.password.value = '';
+    }
+
+
     const response =  await axios({
       method: 'post',
       url: 'http://localhost:8080/createaccount',
@@ -50,7 +58,6 @@ export default class CreateUser extends Component{
         password: e.target.password.value,
         gender: e.target.gender.value,
         orientation: e.target.orientation.value,
-
       }
     })
     this.setState({ error: response.data.details });
@@ -62,18 +69,6 @@ export default class CreateUser extends Component{
     }
   }
 
-getgender = (e) =>{
-  this.setState({gender: e.target.value});
-  console.log(e.target.value);
-  // console.log("gender state: " + this.state.gender);
-  
-}
-
-orientation = (e) => {
-  this.setState({orientation: e.target.value})
-  console.log(e.target.value);
-  // console.log("orientation state: " + this.state.orientation);
-}
 
   render() {
     return (
@@ -85,8 +80,8 @@ orientation = (e) => {
           // required
           name="username"
           type="text"
-          value={this.state.username}
-          onChange={(event) => this.setState({username: event.target.value})}
+          // value={this.state.username}
+          // onChange={(event) => this.setState({username: event.target.value})}
           />
           <div>{this.state.userError}
           <label className="create_account"> Firstname </label>
@@ -114,14 +109,14 @@ orientation = (e) => {
           type="password"
           />
           <label className="create_account"> Gender </label>
-            <input type="radio" value="male" name="gender" required checked={this.state.gender === "male"} onClick={this.getgender} /> Male
-            <input type="radio" value="female" name="gender" checked={this.state.gender === "female"} onClick={this.getgender} /> Female
-            <input type="radio" value="other" name="gender" checked={this.state.gender === "other"} onClick={this.getgender}/> Other
+            <input type="radio" value="male" name="gender" required   /> Male
+            <input type="radio" value="female" name="gender"  /> Female
+            <input type="radio" value="other" name="gender"  /> Other
           <label className="orientation"> Sexual Orientation </label>
-              <input type="radio" value="straight" name="orientation" required checked={this.state.orientation === "straight"} onClick={this.orientation}/> Straight
-              <input type="radio" value="bisexual" name="orientation" checked={this.state.orientation === "bisexual"} onClick={this.orientation}/> Bisexual
-              <input type="radio" value="gay" name="orientation" checked={this.state.orientation === "gay"} onClick={this.orientation}/> Gay
-              <input type="radio" value="other" name="orientation" checked={this.state.orientation === "other"} onClick={this.orientation}/> Other
+              <input type="radio" value="straight" name="orientation"  /> Straight
+              <input type="radio" value="bisexual" name="orientation" /> Bisexual
+              <input type="radio" value="gay" name="orientation" /> Gay
+              <input type="radio" value="other" name="orientation" /> Other
           <input
           name="submit"
           type="submit"
