@@ -19,10 +19,10 @@ const editProfile = (req, res) => {
                 res.send({status: false, details: "no user found" });
             else{
                 console.log("user found insert update his infos");
-                db.collection('users').update({_id: ObjectId(session.user._id)}, {$set:{ firstname: req.body.firstname } }, function (err, result){
+                db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: user_info}, function (err, result){
                     if (err)
                         res.send({status: false, details: "db error"});
-                }); // UPDATE et non ADD a new object // firstname marche au lieu de userinfo
+                }); 
                 return res.send({status: true, details: "test edit profile"});
             } 
         })

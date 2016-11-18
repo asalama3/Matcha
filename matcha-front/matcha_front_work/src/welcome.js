@@ -8,8 +8,8 @@ class Welcome extends React.Component {
     return (
       <div className="welcome">
         <div className="button">
-          <Link className="button1" to="login"> Login </Link>
-          <Link className="button2" to="create_account"> Create Account </Link>
+          <Link className="button_style" to="login"> Login </Link>
+          <Link className="button_style" to="create_account"> Create Account </Link>
         </div>
       </div>
     )

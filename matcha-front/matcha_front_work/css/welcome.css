@@ -4,31 +4,54 @@
  justify-content: center;
  align-items: center;
  width: 100%;
+ vertical-align: middle;
+}
+/*
+.navbar{
+  background-color: red;
+}
+.header_style{
+  background-color: red;
+}
+
+.test{
+  background-color: red;
+  
+}*/
+
+h1 a {
+  color: white;
+  font-size: 40px;
+  margin-left: 0;
+  font-style: italic;
+}
+
+h1 a:hover{
+  text-decoration: none;
 }
 
 .button{
-  width: 400px;
-  border-style: solid;
-  border-color: white;
   font-size: 30px;
-  color: black;
   text-decoration: none;
   position: relative;
   text-align: center;
+  margin-top: 40px;
 }
 
-.button a{
+.button a:hover, a:active, a:visited{
   text-decoration: none;
 }
 
-.button a:hover {
-  color: none;
+.button_style{
+  margin: 0px 20px;
 }
 
-.button a:visited {
-  color : none;
-}
-
-.button1 a:active {
-  color : none;
+#video{
+min-height: 100%;
+min-width: 100%;
+float: left;
+top: 80px;
+padding: none;
+position: fixed;
+opacity: 0.8;
 }
