@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import * as Input from './test';
+import '../css/welcome.css';
+
 
 class Login extends Component {
 
@@ -36,7 +38,7 @@ login = async (e) => {
       // console.log(this.props)
 
     return (
-      <div>
+      <div className="all">
         <h1>LOGIN</h1>
           <form onSubmit={this.login}>
             <label className="login"> Username </label>
@@ -55,9 +57,12 @@ login = async (e) => {
               />
           </form>
           <div> {this.state.error} </div>
+          <p> Not a member yet?
+          <Link className="button2" to="create_account"> Create Account </Link>
+          </p>
       </div>
-          
-          // <Input.InputTest 
+
+          // <Input.InputTest
           //   type="text"
           //   name="test"
           //   value="test"

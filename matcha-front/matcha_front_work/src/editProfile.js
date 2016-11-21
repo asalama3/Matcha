@@ -63,12 +63,12 @@ setAddress = async (e) => {
     console.log(this.state.position);
     }
   };
-    
+
   // this.setState({ address: e.label });
 
 handleChange = (tags) => {
     this.setState({tags})
-  console.log("hobbies" , this.state.tags);    
+  console.log("hobbies" , this.state.tags);
 }
 
 onChange = (e) =>{
@@ -76,7 +76,7 @@ onChange = (e) =>{
   this.setState({[e.target.name]: text})
 }
 
-autofill = async (e) => {    
+autofill = async (e) => {
   const response = await axios({
     method: 'post',
     url: 'http://localhost:8080/autoFill',
@@ -98,7 +98,7 @@ autofill = async (e) => {
   console.log("editProfil");
   // console.log("sans value: " , e.target.firstname);
   // console.log(e.target.firstname.value);
-   if (e.target.firstname.value.length > 30 || e.target.lastname.value.length > 30 || e.target.email.value.length > 30 
+   if (e.target.firstname.value.length > 30 || e.target.lastname.value.length > 30 || e.target.email.value.length > 30
    || e.target.bio.value.length > 300)
     {
       this.setState({error: "cannot exceed 30 characters"});
@@ -116,8 +116,8 @@ autofill = async (e) => {
      firstname: e.target.firstname.value,
      lastname: e.target.lastname.value,
      email: e.target.email.value,
-     gender: e.target.gender.value, 
-     orientation: e.target.orientation.value, 
+     gender: e.target.gender.value,
+     orientation: e.target.orientation.value,
      bio: e.target.bio.value,
      hobbies: this.state.tags,
      location: this.state.position,
@@ -142,7 +142,7 @@ getOrientation = (e) =>{
 
 render(){
   return(
-    <div className="EditProfile">
+    <div className="editProfile">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDADbx0qAGlxGF0VHatbFCgvQTKjOOZSGc&libraries=places"></script>
@@ -209,17 +209,17 @@ render(){
               <Geosuggest
                 onSuggestSelect={this.setAddress}
 						    placeholder="Enter Your Address!"
-              />              
+              />
           <input type="submit" value="Submit" name="submit"  />
       </form>
     <div> {this.state.error} </div>
-  </div> 
+  </div>
 </div>
-   
-//    <Map 
-//     google={window.google} 
+
+//    <Map
+//     google={window.google}
 //     style={{height: "50%", width: "80%"}}
-//     zoom={14} 
+//     zoom={14}
 // >
 // <Marker
 //     name={'Current Location'}
@@ -235,7 +235,7 @@ render(){
               //      }}
               //     types={['(regions)']}
               //   />
-             
+
         // <GoogleMap
         //             containerProps={{style: {height: "100%"}}}
         //             ref="map"
