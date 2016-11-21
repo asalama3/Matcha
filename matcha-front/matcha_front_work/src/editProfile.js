@@ -81,11 +81,15 @@ autofill = async (e) => {
     method: 'post',
     url: 'http://localhost:8080/autoFill',
   })
+  console.log(response.data.user);
   if (response.data.user){
     console.log("coucou");
     this.setState({firstname: response.data.user.firstname}) ;
     this.setState({lastname: response.data.user.lastname}) ;
     this.setState({email: response.data.user.email}) ;
+    this.setState({day: response.data.user.day}) ;
+    this.setState({month: response.data.user.month}) ;
+    this.setState({year: response.data.user.year}) ;
     this.setState({gender: response.data.user.gender}) ;
     this.setState({orientation: response.data.user.orientation}) ;
     console.log(this.state.gender);
@@ -116,6 +120,9 @@ autofill = async (e) => {
      firstname: e.target.firstname.value,
      lastname: e.target.lastname.value,
      email: e.target.email.value,
+     day: e.target.day.value,
+     month: e.target.month.value,
+     year: e.target.year.value,
      gender: e.target.gender.value,
      orientation: e.target.orientation.value,
      bio: e.target.bio.value,
@@ -141,6 +148,14 @@ getOrientation = (e) =>{
 }
 
 render(){
+  let options = [];
+    for (let i=1; i < 32; i++){
+      options.push(<option> {i} </option>)
+    }
+    let year = [];
+    for (let i=1920; i < 2000; i++){
+      year.push(<option> {i} </option>)
+    }
   return(
     <div className="editProfile">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
@@ -169,25 +184,26 @@ render(){
               value={this.state.email}
             />
             <div>
-              <label className="birthday"> Birthday </label>
-                <input type="number" min={0} max={31} name="day" placeholder="Day" />
-                  <select name="month" value={this.state.month} onChange={this.onChange} >
-                    <option value="January">January </option>
-                    <option value="February">February </option>
-                    <option value="March">March </option>
-                    <option value="April">April </option>
-                    <option value="May">May </option>
-                    <option value="June">June </option>
-                    <option value="July">July </option>
-                    <option value="August">August </option>
-                    <option value="September">September </option>
-                    <option value="October">October </option>
-                    <option value="November">November </option>
-                    <option value="December">December </option>
-                  </select>
-              <input type="number" min={1940} max={2016} name="year" placeholder="Year" />
+                <label className="birthday"> Birthday </label>
+                <select name="day" value={this.state.day} onChange={this.onChange}> options={options} </select>
+                <select name="month" value={this.state.month} onChange={this.onChange} >
+                  <option>Month</option>
+                  <option value="01">January </option>
+                  <option value="02">February </option>
+                  <option value="03">March </option>
+                  <option value="04">April </option>
+                  <option value="05">May </option>
+                  <option value="06">June </option>
+                  <option value="07">July </option>
+                  <option value="08">August </option>
+                  <option value="09">September </option>
+                  <option value="10">October </option>
+                  <option value="11">November </option>
+                  <option value="12">December </option>
+                </select>
+                <select name="year" value={this.state.year} onChange={this.onChange}> options={year} </select>                
           </div>
-          <label className="gender"   > Gender </label>
+          <label className="gender" > Gender </label>
             <input type="radio"  name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/> Male
             <input type="radio"  name="gender" value="female" checked={this.state.gender === "female"} onClick={this.getGender}/> Female
             <input type="radio"  name="gender" value="other" checked={this.state.gender === "other"} onClick={this.getGender}/> Other
@@ -198,14 +214,14 @@ render(){
             <input type="radio" value="gay" name="orientation" checked={this.state.orientation === "gay"} onClick={this.getOrientation}/> Gay
           </div>
           <div>
-            <label className="bio"> Biography </label>
+            <label className="bio"> Biography (optional) </label>
               <input type="text" name="bio"/>
           </div>
           <div>
-            <label className="tags"> Hobbies </label>
+            <label className="tags"> Hobbies (optional) </label>
             <TagsInput value={this.state.tags} name="tags" onChange={this.handleChange} />
           </div>
-            <label className="locate"> Location </label>
+            <label className="locate"> Location (optional) </label>
               <Geosuggest
                 onSuggestSelect={this.setAddress}
 						    placeholder="Enter Your Address!"

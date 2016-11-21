@@ -5,13 +5,23 @@ import mongodb from 'mongodb';
 var session = require('express-session');
 
 
+const age_calculated = (birthday) => { 
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
 const createAccount = (req, res) => {
   MongoConnect(res, function(db){
 
   var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
   console.log(hashPass);
 
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, gender: req.body.gender, orientation: req.body.orientation };
+  console.log(req.body);
+  var birthday = [req.body.year, req.body.month , req.body.day];
+  var age = age_calculated(new Date(birthday));
+
+  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation };
   var email = req.body.email;
   var password = req.body.password;
 

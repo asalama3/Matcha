@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../css/welcome.css';
 import axios from 'axios';
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
-
+import select from 'selection-range';
 
 export default class CreateUser extends Component{
 
@@ -33,8 +33,6 @@ export default class CreateUser extends Component{
   state = {
     test: 'andrea',
     error: '',
-    month: '',
-
   }
 
   createAccount = async (e) => {
@@ -57,6 +55,9 @@ export default class CreateUser extends Component{
         lastname: e.target.lastname.value,
         email: e.target.email.value,
         password: e.target.password.value,
+        day: e.target.day.value,
+        month: e.target.month.value,
+        year: e.target.year.value,
         gender: e.target.gender.value,
         orientation: e.target.orientation.value,
       }
@@ -72,6 +73,15 @@ export default class CreateUser extends Component{
 
 
   render() {
+    let options = [];
+    for (let i=1; i < 32; i++){
+      options.push(<option> {i} </option>)
+    }
+    let year = [];
+    for (let i=1920; i < 2000; i++){
+      year.push(<option> {i} </option>)
+    }
+    
     return (
       <div>
       <h1>CREATE ACCOUNT</h1>
@@ -111,24 +121,29 @@ export default class CreateUser extends Component{
           />
           <div>
             <label className="birthday"> Birthday </label>
-              <select type="number" min={0} max={31} name="day" >
-              <option value="01">01 </option>
+              <select name="day">
+                <option> Day </option>
+                  options={options} 
               </select>
                 <select name="month" value={this.state.month} onChange={this.onChange} >
-                  <option value="January">January </option>
-                  <option value="February">February </option>
-                  <option value="March">March </option>
-                  <option value="April">April </option>
-                  <option value="May">May </option>
-                  <option value="June">June </option>
-                  <option value="July">July </option>
-                  <option value="August">August </option>
-                  <option value="September">September </option>
-                  <option value="October">October </option>
-                  <option value="November">November </option>
-                  <option value="December">December </option>
+                  <option>Month</option>
+                  <option value="01">January </option>
+                  <option value="02">February </option>
+                  <option value="03">March </option>
+                  <option value="04">April </option>
+                  <option value="05">May </option>
+                  <option value="06">June </option>
+                  <option value="07">July </option>
+                  <option value="08">August </option>
+                  <option value="09">September </option>
+                  <option value="10">October </option>
+                  <option value="11">November </option>
+                  <option value="12">December </option>
                 </select>
-            <input type="number" min={1940} max={2016} name="year" placeholder="Year" />
+              <select name="year"> 
+                <option> Year </option>
+                  options={year} 
+              </select>                
         </div>
           <label className="create_account"> Gender </label>
             <input type="radio" value="male" name="gender" required   /> Male
