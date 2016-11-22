@@ -22,7 +22,7 @@ class Header extends React.Component {
       {/* <NavItem eventKey={2} href="#">Add Link</NavItem> */}
       <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
         <MenuItem eventKey={3.1} href="./editProfile">Edit Profile</MenuItem>
-        <MenuItem eventKey={3.2}>Edit Pictures</MenuItem>
+        <MenuItem eventKey={3.2} href="./editPictures">Edit Pictures</MenuItem>
         <MenuItem eventKey={3.3}>Search</MenuItem>
         <MenuItem eventKey={3.3}>Suggestions</MenuItem>
         <MenuItem eventKey={3.3}>Live Chat</MenuItem>

@@ -1,4 +1,19 @@
 /*********************    WELCOME    *********************/
+.test {
+  display: none;
+}
+
+.test1 {
+  display: visible;
+}
+
+.try{
+  display: none;
+}
+
+.try1{
+  display: visible;
+}
 
 .welcome{
   position: absolute;

@@ -10,6 +10,7 @@ import CreateAccount from './create_account';
 import Profile from './profile';
 import editProfile from './editProfile';
 import editLocation from './editLocation';
+import editPictures from './editPictures'; 
 
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
@@ -24,6 +25,7 @@ render((
     <Route path="/matcha" component={AppHeader} >
           <Route path="profile"  component={Profile} />
           <Route path="editProfile" component={editProfile} />
+          <Route path="editPictures" component={editPictures} />
           // <Route path="editLocation" component={editLocation} />
     </Route>
   </Router>
