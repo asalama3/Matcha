@@ -21,6 +21,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "mongodb": "^2.2.11",
+    "multer": "^1.2.0",
     "nodemon": "^1.11.0",
     "password-hash": "^1.2.2",
     "react-geosuggest": "^2.0.0"

@@ -1,5 +1,4 @@
 import express from 'express';
-// var express = require('express');
 import * as User from './src/user';
 import * as Account from './src/parser';
 var bodyParser = require('body-parser');
@@ -11,9 +10,8 @@ var session = require('express-session');
 import * as Logged from './src/logged';
 import * as Profile from './src/profile';
 import * as Edit from './src/editProfile';
+import * as Pic from './src/editPictures';
 
-// var store = express.session.MemoryStore;
-// var sessionStore = new MemoryStore();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,7 +20,6 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  // store: sessionStore,
   cookie: {secureProxy: true,
 }
 }))
@@ -37,4 +34,6 @@ app.post('/login', Account.Username, Account.Password, User.LoginUser);
 app.post('/checklogin', Logged.requireLogin);
 app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
+app.post('/editPic', Pic.addPic);
+
 app.listen(8080);
