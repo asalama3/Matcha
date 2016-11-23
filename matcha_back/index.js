@@ -14,8 +14,8 @@ import * as Pic from './src/editPictures';
 
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '2mb'}));
+app.use(bodyParser.urlencoded({limit: '2mb',  extended: true }));
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
