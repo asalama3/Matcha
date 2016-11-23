@@ -3,10 +3,28 @@ import request from 'superagent';
 import React from 'react';
 import '../css/editPictures.css';
 import axios from 'axios';
+import {browerHistory} from 'react-router';
 
 
 class editPictures extends React.Component{
     
+  componentWillMount() {
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/checklogin',
+    }).then(({data}) => {
+      console.log(data);
+      if (data.status === true)
+      {
+        console.log("ok logged-in");
+      }
+      else{
+        console.log('user not logged in:', data.details);
+        browerHistory.push('/login');
+      }
+    })
+  }
+
     constructor(props) {
         super(props);
         this.state = {file: '',imagePreviewUrl: ''};
@@ -17,21 +35,13 @@ class editPictures extends React.Component{
     console.log(e);
     console.log(this.state.file);
 
-    // const response =  await axios({
-    //   method: 'post',
-    //   url: 'http://localhost:8080/editPic',
-    //   data: {
-    //     photo: this.state.file,
-    //   }
-    // })
-    const response = await axios.post(
-      'http://localhost:8080/editPic',
-      {
-        data: {
-          photo: this.state.imagePreviewUrl,
-        }
+    const response =  await axios({
+      method: 'post',
+      url: 'http://localhost:8080/editPic',
+      data: {
+        photo: this.state.imagePreviewUrl,
       }
-    );
+    })
     if (response.data.status === true)
       console.log('handle uploading-', this.state.file);
   }
