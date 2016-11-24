@@ -26,6 +26,7 @@ state = {
   year: '',
   gender: '',
   orientation: '',
+  bio: ''
 }
 
 componentWillMount(){
@@ -92,6 +93,9 @@ autofill = async (e) => {
     this.setState({year: response.data.user.year}) ;
     this.setState({gender: response.data.user.gender}) ;
     this.setState({orientation: response.data.user.orientation}) ;
+    this.setState({bio: response.data.user.bio}) ;
+    this.setState({tags: response.data.user.hobbies}) ;
+    this.setState({address: response.data.user.location.address}) ;
     console.log(this.state.gender);
   }
 };
@@ -215,7 +219,7 @@ render(){
           </div>
           <div>
             <label className="bio"> Biography (optional) </label>
-              <input type="text" name="bio"/>
+              <input type="text" name="bio" value={this.state.bio} onChange={this.onChange}/>
           </div>
           <div>
             <label className="tags"> Hobbies (optional) </label>
@@ -225,6 +229,7 @@ render(){
               <Geosuggest
                 onSuggestSelect={this.setAddress}
 						    placeholder="Enter Your Address!"
+                value= {this.state.address}
               />
           <input type="submit" value="Submit" name="submit"  />
       </form>

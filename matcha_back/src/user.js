@@ -2,6 +2,8 @@ import MongoConnect from '../mongo_connect';
 import * as Account from './parser.js';
 import crypto from 'crypto';
 import mongodb from 'mongodb';
+// import mkdirp from 'mkdirp';
+import fs from 'fs';
 var session = require('express-session');
 
 
@@ -25,6 +27,7 @@ const createAccount = (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
+
   db.collection('users').findOne({username: req.body.username}, (err, username) => {
     if (err || username)
       return res.send({status: false, details: 'username already used'});
@@ -35,6 +38,14 @@ const createAccount = (req, res) => {
           return res.send({status: false, details: 'email already used'});
         else
         {
+          var dir = './uploads/'+req.body.username;
+          fs.mkdirSync(dir, function(err){
+            if (err)
+              {
+                console.log("error mkdirp");
+                res.send({status: false, details: "error mkdirp"});
+              }
+            })
           db.collection('users').insert(user, (err) =>{
             if (err)
               return res.send({status: false, details: "db error"})

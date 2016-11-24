@@ -1,12 +1,14 @@
 import MongoConnect from '../mongo_connect';
 var session = require('express-session');
 import mongodb from 'mongodb';
-import multer from 'multer';
+import fs from 'fs';
+// import mkdirp from 'mkdirp';
 
 const ObjectId = mongodb.ObjectId;
 
 
 const addPic = (req, res) => {
+    
       //  console.log(req.body);  // base64 img
       //  console.log(req.body.size);  // base64 img
       //  console.log(req.body.type);  // base64 img
@@ -18,21 +20,56 @@ const addPic = (req, res) => {
         if (req.body.size < 1000000)
         {
           console.log("ok size");
-          // res.send({status: false, details: "too large file"});
         }
         if (req.body.type === 'image/jpeg' || req.body.type === 'image/jpg' || req.body.type === 'image/png' || req.body.type === 'image/gif')
         {
-          const photo = {photo: req.body.photo}
+          // const photo = {photo: req.body.name}
+
           db.collection('users').findOne({_id: ObjectId(session.user._id)}, function (err, user){
             if (err)
-              res.send({status: false, details: "db error"});
+              return res.send({status: false, details: "db error"});
             else if (!user)
-              res.send({status: false, details: "no user found" });
+              return res.send({status: false, details: "no user found" });
             else{
+                var matches = req.body.photo.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                // console.log(matches);
+
+                if (matches.length !== 3) {
+                  res.send({status: false, details: "invalid input string"}); 
+                }
+
+                // response.type = matches[1];
+                var imageBuffer = new Buffer(matches[2], 'base64');
+
+                console.log(imageBuffer);
+
+                fs.writeFile('./uploads/'+ session.user.username+'/'+req.body.name, imageBuffer, function(err) { 
+                  if (err){ 
+                    console.log("fais chier");
+                    res.send({status: false, details: "invalid input string"});
+                  }
+                 });
+
+
+                 if (user.photo){
+                   console.log("photo exists");
+                   var photo = user.photo;
+                 }
+                 else{
+                   console.log("doesnt' exist");                   
+                   var photo = [];
+                 } 
+                photo.push({name:req.body.name, profil:false});
+
+                console.log("log photo", photo);
+
+
               console.log("user found insert update his infos");
-              db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: photo}, function (err, result){
-                if (err)
+              db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: {photo:photo}}, function (err, result){
+                if (err){
+                  console.log(err);
                   res.send({status: false, details: "db error"});
+                }
                 else
                   res.send({status: true, details: "inserted photo ok"})
               }); 
@@ -43,8 +80,7 @@ const addPic = (req, res) => {
           res.send({status: false, details: "wrong format"})
         }
       }
-    })
- 
+  })
 }
 
 export {addPic};

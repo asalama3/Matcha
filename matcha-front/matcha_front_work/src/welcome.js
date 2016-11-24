@@ -30,7 +30,7 @@ class Welcome extends React.Component {
       <link href="https://fonts.googleapis.com/css?family=Cookie|Cormorant+Upright|Playball|Shadows+Into+Light+Two|Tangerine" rel="stylesheet"/>
 
         <div className="button">
-        <p>WELCOME TO MATCHA </p>
+        <p> MATCHA </p>
         <button onClick={this.click1}> TEST </button> 
         <button onClick={this.clickb}> TRY </button> 
         

@@ -27,7 +27,7 @@ class editPictures extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {photo: []};
         }
 
   handleSubmit = async (e) => {
@@ -37,19 +37,21 @@ class editPictures extends React.Component{
     console.log(this.state.file.type);
     console.log(this.state.file);
 
-    if (this.state.file.type !== "image/jpeg" || this.state.file.type !== "image/jpg" || this.state.file.type !== "image/png")
+    if (this.state.file.type !== "image/jpeg" && this.state.file.type !== "image/jpg" && this.state.file.type !== "image/png")
     {
       console.log("not ok wrong format.....");
-      this.setState({imagePreviewUrl: '', error: "wrong file format"}) ;
+      this.setState({imagePreviewUrl: '', file: '', error: "wrong file format"}) ;
     }else{
       console.log("does it go here");
+      
     const response =  await axios({
       method: 'post',
       url: 'http://localhost:8080/editPic',
       data: {
         size: this.state.file.size,
         type: this.state.file.type,
-        photo: this.state.imagePreviewUrl
+        photo: this.state.imagePreviewUrl,
+        name: this.state.file.name
       }
     })
     if (response.data.status === true)
@@ -77,7 +79,6 @@ class editPictures extends React.Component{
     if (file)
       reader.readAsDataURL(file)
 
-//  console.log(e.target.files[0].size);
   }
 
     render(){
@@ -92,7 +93,7 @@ class editPictures extends React.Component{
             <div className="pictures">
     
       <div className="previewComponent">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />
           <button className="submitButton" type="submit" onClick={this.handleSubmit}>Upload Image</button>
         </form>

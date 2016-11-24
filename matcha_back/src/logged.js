@@ -4,7 +4,7 @@ var session = require('express-session');
 
 const requireLogin = (req, res, next) =>
 {
-  console.log('session : ', session.user);
+  // console.log('session : ', session.user);
     if (session.user)
     {
       res.send({status: true, details: 'ok lgged in'});
