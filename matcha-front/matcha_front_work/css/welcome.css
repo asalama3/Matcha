@@ -64,6 +64,10 @@
   font-weight: bold;
 }
 
+.video{
+  opacity: 0.5;
+}
+
 /* TYPING ANIMATION */
 /*.button p{
   color: #1E2D5B;

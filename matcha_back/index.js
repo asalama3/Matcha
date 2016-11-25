@@ -23,6 +23,8 @@ app.use(session({
   cookie: {secureProxy: true,
 }
 }))
+app.use("/", express.static(__dirname + "/uploads/"));
+
 
 
 // app.post('/createaccount', User.login);
@@ -35,5 +37,6 @@ app.post('/checklogin', Logged.requireLogin);
 app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
 app.post('/editPic', Pic.addPic);
+app.post('/logout', User.logout);
 
 app.listen(8080);

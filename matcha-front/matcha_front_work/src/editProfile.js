@@ -7,6 +7,7 @@ import Geosuggest from 'react-geosuggest';
 // import Autocomplete from 'react-google-autocomplete';
 import '../css/editProfile.css';
 import TagsInput from 'react-tagsinput';
+import 'react-tagsinput/react-tagsinput.css' // If using WebPack and style-loader. 
 
 
 
@@ -28,6 +29,11 @@ state = {
   orientation: '',
   bio: ''
 }
+
+  constructor() {
+    super()
+    this.state = {tags: []}
+  }
 
 componentWillMount(){
   axios({
@@ -210,7 +216,6 @@ render(){
           <label className="gender" > Gender </label>
             <input type="radio"  name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/> Male
             <input type="radio"  name="gender" value="female" checked={this.state.gender === "female"} onClick={this.getGender}/> Female
-            <input type="radio"  name="gender" value="other" checked={this.state.gender === "other"} onClick={this.getGender}/> Other
           <div>
           <label className="orientation"> Sexual Orientation </label>
             <input type="radio" value="straight" name="orientation" required checked={this.state.orientation === "straight"} onClick={this.getOrientation}/> Straight
@@ -223,7 +228,7 @@ render(){
           </div>
           <div>
             <label className="tags"> Hobbies (optional) </label>
-            <TagsInput value={this.state.tags} name="tags" onChange={this.handleChange} />
+            <TagsInput className="hobbies" value={this.state.tags} name="tags" onChange={this.handleChange} />
           </div>
             <label className="locate"> Location (optional) </label>
               <Geosuggest

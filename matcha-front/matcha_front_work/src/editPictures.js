@@ -20,7 +20,7 @@ class editPictures extends React.Component{
       }
       else{
         console.log('user not logged in:', data.details);
-        browerHistory.push('/login');
+        // browerHistory.push('/login');
       }
     })
   }
@@ -81,7 +81,17 @@ class editPictures extends React.Component{
 
   }
 
+renderImage = () => {
+  console.log("image rendered");
+    return (
+      <div>
+        <img src={'./uploads/andrea2289/bronde.jpg'} />
+      </div>
+    );
+  }
+
     render(){
+
     let {imagePreviewUrl} = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
@@ -89,9 +99,16 @@ class editPictures extends React.Component{
     } else {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
+
+let urls = [
+    imagePreviewUrl,
+];
+var imageUrls={urls};
+
         return(
             <div className="pictures">
-    
+            <img src={this.state.imagePreviewUrl} />
+       <button className="all" onClick={this.renderImage} > </button>
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />

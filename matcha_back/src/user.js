@@ -86,6 +86,7 @@ const LoginUser =  (req, res) => {
 
 
 const logout = (req, res) => {
+  console.log("entered logout function");
   session.destroy(user);
   res.send({status: true, details: 'logout'});
 }
@@ -116,4 +117,4 @@ const autoFill = (req, res) => {
 
 
 
-export {createAccount, LoginUser, autoFill};
+export {createAccount, LoginUser, autoFill, logout};
