@@ -142,8 +142,9 @@ autofill = async (e) => {
     })
       if (response.data.status === true)
     {
+
       console.log("ok edit pro");
-      // browserHistory.push('/matcha/profile');
+      browserHistory.push('/matcha/profile');
     }
  }
 

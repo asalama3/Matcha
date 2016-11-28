@@ -4,10 +4,13 @@ import React from 'react';
 import '../css/editPictures.css';
 import axios from 'axios';
 import {browerHistory} from 'react-router';
-
+import {Grid, Row, Col, Image} from 'react-bootstrap/lib';
 
 class editPictures extends React.Component{
-    
+    state = {
+      test: null,
+      username: null,
+    }
   componentWillMount() {
     axios({
       method: 'post',
@@ -16,6 +19,7 @@ class editPictures extends React.Component{
       console.log(data);
       if (data.status === true)
       {
+        this.setState({data: data.data, username: data.username})
         console.log("ok logged-in");
       }
       else{
@@ -55,7 +59,12 @@ class editPictures extends React.Component{
       }
     })
     if (response.data.status === true)
+    {
       console.log('handle uploading-', response.data.details);
+      console.log('data:', response.data.data);
+      this.setState({photo: response.data.data});
+      console.log('photo state' ,this.state.photo);
+    }
       else{
       console.log('not ok:', response.data.details);
         
@@ -78,17 +87,19 @@ class editPictures extends React.Component{
    
     if (file)
       reader.readAsDataURL(file)
-
   }
 
-renderImage = () => {
-  console.log("image rendered");
-    return (
-      <div>
-        <img src={'./uploads/andrea2289/bronde.jpg'} />
-      </div>
-    );
-  }
+// renderImage = () => {
+//   console.log("image rendered");
+//     return (
+//       <div>
+//         <img src={'./uploads/andrea2289/bronde.jpg'} />
+//       </div>
+//     );
+//   }
+    //  <button className="all" onClick={this.renderImage} > </button>
+
+
 
     render(){
 
@@ -105,10 +116,33 @@ let urls = [
 ];
 var imageUrls={urls};
 
+var style = {
+  width: 100,
+  height: 100,
+}
+
+// const files = this.state.photo.map((el, key) => {
+//   console.log('el:', el);
+//   console.log('key', key);
+//   console.log('el.name' , el.name);
+//   <div className="" >{el.name} </div>
+// }, this);
+
+    const imgList = this.state.photo.map((el, key) => 
+    
+    <Grid>
+    <Row>
+      <Col xs={6} md={4}>
+          <Image src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+      </Col>
+    </Row>
+  </Grid> 
+    );
+    console.log(imgList);
+    
         return(
             <div className="pictures">
-            <img src={this.state.imagePreviewUrl} />
-       <button className="all" onClick={this.renderImage} > </button>
+            <div >{imgList} </div>
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />

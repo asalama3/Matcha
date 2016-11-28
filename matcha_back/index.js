@@ -23,7 +23,7 @@ app.use(session({
   cookie: {secureProxy: true,
 }
 }))
-app.use("/", express.static(__dirname + "/uploads/"));
+app.use("/public", express.static(__dirname + "/uploads/"));
 
 
 

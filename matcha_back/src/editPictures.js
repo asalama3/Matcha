@@ -70,9 +70,12 @@ const addPic = (req, res) => {
                   console.log(err);
                   res.send({status: false, details: "db error"});
                 }
-                else
-                  res.send({status: true, details: "inserted photo ok"})
-              }); 
+                else{
+                  // console.log('result' , result);
+                  console.log('photo' , photo);
+                  res.send({status: true, details: "inserted photo ok", data: photo})
+                }  
+            }); 
             } 
         })
           // res.send({status: true, details: "extension valid"})

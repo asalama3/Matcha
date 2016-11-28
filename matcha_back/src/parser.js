@@ -3,7 +3,7 @@ const Username = (req, res, next) => {
 
   // console.log('dwadawd', username);
 
-  if (username && username.length > 4 && username.match(/^[a-zA-Z0-9]\w+$/))
+  if (username && username.length > 3 && username.match(/^[a-zA-Z0-9]\w+$/))
   {
     console.log("username ok");
     next();
@@ -17,7 +17,7 @@ const Username = (req, res, next) => {
 const Firstname = (req, res, next) => {
   var fname = req.body.firstname;
   console.log('firstname:', fname);
-  if (fname && fname.length > 4 && fname.match(/^[a-zA-Z0-9]\w+$/))
+  if (fname && fname.length > 3 && fname.match(/^[a-zA-Z0-9]\w+$/))
   {
     console.log(" fname ok");
     next();
@@ -31,7 +31,7 @@ const Firstname = (req, res, next) => {
 const Lastname = (req, res, next) => {
   var lname = req.body.lastname;
   console.log('lastname:', lname);
-  if (lname && lname.length > 4 && lname.match(/^[a-zA-Z0-9]\w+$/))
+  if (lname && lname.length > 3 && lname.match(/^[a-zA-Z0-9]\w+$/))
   {
     console.log(" lname ok");
     next();
