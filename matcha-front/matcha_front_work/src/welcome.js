@@ -7,38 +7,51 @@ import CreateUser from './create_account';
 
 class Welcome extends React.Component {
   state = {
-    test: 'test',
-    try: 'try',
+    login: 'hidden_login_form',
+    create: 'hidden_create_form',
   }
-  click1 = (e) => {
-    if (this.state.test = 'test')
-    this.setState({ test: 'test1' });
-    else if (this.state.test = 'test1')
-    this.setState({ test: 'test'});
+  clicka = (e) => {
+    if (this.state.create === 'create_form_active')
+    {
+      this.setState({create: 'hidden_create_form' });
+    }
+    if (this.state.login === 'hidden_login_form')
+    {
+      console.log(this.state.login);
+      this.setState({ login: 'login_form_active' });
+    }
+    else{
+    this.setState({ login: 'hidden_login_form'});
+    console.log(this.state.login);
+    }
   }
 
   clickb = (e) => {
-    if (this.state.try = 'try')
-    this.setState({ try: 'try1' });
-    else if (this.state.try = 'try1')
-    this.setState({ try: 'try'});
+    if (this.state.login === 'login_form_active')
+    {
+      this.setState({login: 'hidden_login_form'});
+    }
+    if (this.state.create === 'hidden_create_form')
+    this.setState({ create: 'create_form_active' });
+    else{
+    this.setState({ create: 'hidden_create_form'});
   }
-
+}
   render() {
+
     return (
       <div className="welcome">
       <link href="https://fonts.googleapis.com/css?family=Cookie|Cormorant+Upright|Playball|Shadows+Into+Light+Two|Tangerine" rel="stylesheet"/>
 
-        <div className="button">
-        <p> MATCHA </p>
-        <button onClick={this.click1}> TEST </button> 
-        <button onClick={this.clickb}> TRY </button> 
-        
-          <Link className="button_style" to="login"> Login </Link>
-          <Link className="button_style" to="create_account"> Create Account </Link>
-          <div className={this.state.test} > <Login /> </div>
-          <div className={this.state.try} > <CreateUser /> </div>
-        
+        <div>
+        <p className="title"> MATCHA </p>
+        <div className="intro"> From Scratch to Love </div>
+        <button onClick={this.clicka} className="button_style"> Login </button>
+        <button onClick={this.clickb}className="button_style"> Create Account </button>
+
+        <div className={this.state.login} > <Login /> </div>
+        <div className={this.state.create} > <CreateUser /> </div>
+
         </div>
       </div>
     )

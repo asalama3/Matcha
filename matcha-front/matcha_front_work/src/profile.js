@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import '../css/profile.css';
 
 class Profile extends Component {
 
@@ -36,25 +37,30 @@ var style = {
   width: 200,
   height: 300,
 }
-  const profile = this.state.photo.map((el, key) =>
-         <img key={0} src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} /> 
-        
-  );
-  console.log(profile);
+// if (this.state.photo !== null)
+// {
+//   const profile = this.state.photo.map((el, key) =>
+//     <img key={0} src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
+//   );
+// }
+// else{
+//   const profile = ((e) =>  <img id="img-profile" className="img-thumbnail img-center img-rounded"
+//   src="http://placehold.it/200x232&text=Foto+Profilo" />
+// )}
+//   console.log(profile);
   return (
     <div>
       <h1>PROFILE</h1>
  <div className="container">
         <div className="col-sm-12">
           <div className="col-sm-3 margin-img">
-              {profile}
           </div>
-          <div className="col-sm-7 well margin-well">
+          <div className="col-sm-7 well margin-well my_profile">
             <p>
               <i className="glyphicon glyphicon-user" /> {this.state.user.firstname}
               <br />
               <i className="glyphicon glyphicon-user" /> {this.state.user.lastname}
-              <br />              
+              <br />
               <i className="glyphicon glyphicon-user" /> {this.state.user.username}
               <br />
               <i className="glyphicon glyphicon-envelope" /> {this.state.user.email}
@@ -70,7 +76,7 @@ var style = {
               <i className="fa fa-trophy" aria-hidden="true"></i>  {this.state.user.hobbies}
               <br />
             <i className="fa fa-map-marker" aria-hidden="true"></i> {this.state.address}
-              <br />         
+              <br />
             </p>
           </div>
         </div>

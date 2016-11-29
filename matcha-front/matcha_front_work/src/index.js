@@ -10,8 +10,8 @@ import CreateAccount from './create_account';
 import Profile from './profile';
 import editProfile from './editProfile';
 import editLocation from './editLocation';
-import editPictures from './editPictures'; 
-import logout from './logout'; 
+import editPictures from './editPictures';
+import logout from './logout';
 
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
@@ -19,7 +19,7 @@ render((
   // <matcha />,
   <Router history={browserHistory}>
     <Route path="/" component={App} >
-          <IndexRoute component={Welcome} />
+    <IndexRoute component={Welcome} />
           <Route path="create_account" component={CreateAccount} />
           <Route path="login" test="tesdwdwt" component={Login} />
     </Route>

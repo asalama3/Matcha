@@ -52,7 +52,7 @@ const Email = (req, res, next) => {
   }
   else{
     console.log("email not ok");
-    res.send({status: false, details: 'email not valid'});
+    return res.send({status: false, details: 'email not valid'});
   }
 }
 
@@ -65,7 +65,7 @@ const Password = (req, res, next) => {
   }
   else{
     console.log("not ok");
-    res.send({status: false, details:'password not valid'});
+    return res.send({status: false, details:'password not valid'});
   }
 }
 
@@ -89,7 +89,3 @@ const Orientation = (req, res, next) => {
 }
 
 module.exports = {Username, Firstname, Lastname, Email, Password, Gender, Orientation};
-
-
-
-

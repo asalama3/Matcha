@@ -38,8 +38,7 @@ login = async (e) => {
       // console.log(this.props)
 
     return (
-      <div className="all">
-        <h1>LOGIN</h1>
+      <div>
           <form onSubmit={this.login}>
             <label className="login"> Username </label>
               <input
@@ -51,15 +50,14 @@ login = async (e) => {
               name="password"
               type="password"
               />
-              <input
-              name="subimit"
+              <input className="login_button"
+              name="submit"
               type="submit"
+              value="LOGIN"
               />
           </form>
           <div> {this.state.error} </div>
-          <p> Not a member yet?
-          <Link className="button2" to="create_account"> Create Account </Link>
-          </p>
+
       </div>
 
           // <Input.InputTest

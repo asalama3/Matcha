@@ -14,7 +14,7 @@ class App extends React.Component {
 
 <div>
          <video id="video" loop autoPlay="true" muted>
-                <source className="video" src={require("../video/Couples_cut_and_blur20.mp4")} type="video/mp4" />
+                <source className="video" src={require("../video/Couples-cut2.mp4")} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
 </div>

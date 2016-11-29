@@ -33,6 +33,8 @@ export default class CreateUser extends Component{
   state = {
     test: 'andrea',
     error: '',
+    login: 'hidden_login_form',
+    create: 'hidden_create_form',
   }
 
   createAccount = async (e) => {
@@ -62,12 +64,19 @@ export default class CreateUser extends Component{
         orientation: e.target.orientation.value,
       }
     })
+    console.log(response.data.details);
     this.setState({ error: response.data.details });
     console.log(response.data.details);
     if (response.data.status === true)
     {
       console.log("ok login");
-      browserHistory.push('/login');
+      browserHistory.push('/');
+      this.setState({ error: 'you can now login' });
+
+      // this.setState({ create: 'hidden_create_form'});
+      // this.setState({ login: 'login_form_active' });
+
+      // activer login active form et desacter create form active
     }
   }
 
@@ -81,12 +90,11 @@ export default class CreateUser extends Component{
     for (let i=1920; i < 2000; i++){
       year.push(<option> {i} </option>)
     }
-    
+
     return (
       <div>
-      <h1>CREATE ACCOUNT</h1>
         <form onSubmit={this.createAccount}>
-          <label className="create_acount"> Username </label>
+          <label className="create"> Username </label>
           <input
           // required
           name="username"
@@ -95,37 +103,38 @@ export default class CreateUser extends Component{
           // onChange={(event) => this.setState({username: event.target.value})}
           />
           <div>{this.state.userError}
-          <label className="create_account"> Firstname </label>
+          <label className="create"> Firstname </label>
           <input
           // required
           name="firstname"
           type="text"
           />
-          <label className="create_account"> Lastname </label>
+          <label className="create"> Lastname </label>
           <input
           // required
           name="lastname"
           type="text"
           />
-          <label className="create_account">Email</label>
+          <label className="create">Email</label>
           <input
           // required
           name="email"
           type="email"
           />
-          <label className="create_account">Password</label>
+          <label className="create">Password</label>
           <input
           // required
           name="password"
           type="password"
           />
           <div>
-            <label className="birthday"> Birthday </label>
-              <select name="day">
+            <label className="create"> Birthday </label>
+              <div className="birthdate">
+              <select name="day" className="birth">
                 <option> Day </option>
-                  options={options} 
+                  options={options}
               </select>
-                <select name="month" value={this.state.month} onChange={this.onChange} >
+                <select className="birth" name="month" value={this.state.month} onChange={this.onChange} >
                   <option>Month</option>
                   <option value="01">January </option>
                   <option value="02">February </option>
@@ -140,34 +149,41 @@ export default class CreateUser extends Component{
                   <option value="11">November </option>
                   <option value="12">December </option>
                 </select>
-              <select name="year"> 
+              <select className="birth" name="year">
                 <option> Year </option>
-                  options={year} 
-              </select>                
+                  options={year}
+              </select>
+              </div>
         </div>
-          <label className="create_account"> Gender </label>
-            <input type="radio" value="male" name="gender" required   /> Male
-            <input type="radio" value="female" name="gender"  /> Female
-            <input type="radio" value="other" name="gender"  /> Other
-          <div>
-          <label className="orientation"> Sexual Orientation </label>
-              <input type="radio" value="straight" name="orientation"  /> Straight
-              <input type="radio" value="bisexual" name="orientation" /> Bisexual
-              <input type="radio" value="gay" name="orientation" /> Gay
-              <input type="radio" value="other" name="orientation" /> Other
+          <label className="create"> Gender </label>
+          <div className="radio_centered">
+            <input className="radio" id="r1" type="radio" value="male" name="gender" required   />
+              <label className="gender" htmlFor="r1">Male</label>
+            <input  className="radio" id="r2" type="radio" value="female" name="gender"  />
+              <label className="gender" htmlFor="r2">Female</label>
+
           </div>
-          <input
+          <div>
+          <label className="create"> Sexual Orientation </label>
+          <div className="radio_centered">
+              <input className="radio" id="r3" type="radio" value="straight" name="orientation"  />
+              <label className="orientation" htmlFor="r3">Straight</label>
+              <input  className="radio" id="r4" type="radio" value="bisexual" name="orientation" />
+              <label className="orientation" htmlFor="r4">Bisexual</label>
+              <input className="radio" id="r5" type="radio" value="gay" name="orientation" />
+              <label className="orientation" htmlFor="r5">Gay</label>
+          </div>
+          </div>
+          <input className="register_button"
           name="submit"
           type="submit"
+          value="register"
           />
           </div>
         </form>
         {/* <div onClick={this.test1} onDoubleClick={this.test2}> {this.state.test} </div> */}
         <div> {this.state.error} </div>
-        <p> Already a member?
-          <Link className="button2" to="login"> Login </Link>
-        </p>
-        </div>
+    </div>
     );
   }
 }
