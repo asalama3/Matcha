@@ -4,6 +4,10 @@
 
 }
 
+form {
+  /*display: none !important;*/
+}
+
 .login_form_active {
   display: visible;
   margin: 0px 20px;
@@ -27,13 +31,13 @@
 }
 
 .welcome{
-  position: absolute;
+  position: fixed;
   display: flex;
  justify-content: center;
  align-items: center;
  width: 100%;
  vertical-align: middle;
- top: 180px;
+ top: 50px;
  opacity: 1;
  z-index: 100;
 }
@@ -222,4 +226,10 @@ input.radio{
 
 .radio_centered{
   text-align: center;
+}
+
+
+
+.navbar-header{
+  color: red;
 }

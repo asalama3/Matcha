@@ -10,6 +10,7 @@ class Welcome extends React.Component {
     login: 'hidden_login_form',
     create: 'hidden_create_form',
   }
+  
   clicka = (e) => {
     if (this.state.create === 'create_form_active')
     {

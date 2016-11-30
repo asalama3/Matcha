@@ -16,13 +16,19 @@ import * as Pic from './src/editPictures';
 app.use(cors());
 app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb',  extended: true }));
+// app.use(session({
+//   secret: 'keyboard cat',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {secureProxy: true,
+// }
+// }))
+
 app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {secureProxy: true,
-}
-}))
+		secret: 'ssshhhhh',
+		resave: false,
+		saveUninitialized: false,
+	}));
 app.use("/public", express.static(__dirname + "/uploads/"));
 
 

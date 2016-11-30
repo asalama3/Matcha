@@ -11,7 +11,7 @@ import Profile from './profile';
 import editProfile from './editProfile';
 import editLocation from './editLocation';
 import editPictures from './editPictures';
-import logout from './logout';
+import * as logout from './logout';
 
 import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
 
@@ -27,7 +27,7 @@ render((
           <Route path="profile"  component={Profile} />
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
-          <Route path="logout" component={logout} />
+          <Route path="logout" component={logout.logout} />
           // <Route path="editLocation" component={editLocation} />
     </Route>
   </Router>

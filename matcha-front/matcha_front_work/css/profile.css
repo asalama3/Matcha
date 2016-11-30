@@ -1,3 +1,17 @@
 .my_profile{
-  background: red;
+}
+
+@media(min-width: 900px){ /*Desktop*/
+	.container #img-profile{
+		margin-bottom: 16px;
+	}
+    .margin-well{
+        margin-top: 16px;
+    }
+}
+
+@media(max-width: 767px){ /*Mobile and Tablet*/
+    .margin-well{
+        margin-top: 10px;
+    }
 }

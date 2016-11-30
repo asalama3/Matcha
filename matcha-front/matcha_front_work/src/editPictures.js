@@ -19,7 +19,7 @@ class editPictures extends React.Component{
       console.log(data);
       if (data.status === true)
       {
-        this.setState({data: data.data, username: data.username})
+        this.setState({data: data.data, username: data.username, photo: data.data.photo})
         console.log("ok logged-in");
       }
       else{
@@ -128,23 +128,26 @@ var style = {
 //   <div className="" >{el.name} </div>
 // }, this);
 
-    const imgList = this.state.photo.map((el, key) => 
+let imgList = [];
+if (this.state.photo){
+    imgList = this.state.photo.map((el, key) => 
     
     <Grid>
     <Row>
       <Col xs={6} md={4}>
-          <Image src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+          <Image key={key} src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
       </Col>
     </Row>
   </Grid> 
     );
+}
     console.log(imgList);
     
         return(
             <div className="pictures">
-            <div >{imgList} </div>
+            <div> {imgList} </div>
       <div className="previewComponent">
-        <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
+        <form onSubmit={this.handleSubmit} encType="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />
           <button className="submitButton" type="submit" onClick={this.handleSubmit}>Upload Image</button>
         </form>

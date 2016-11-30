@@ -23,7 +23,7 @@ const createAccount = (req, res) => {
   var birthday = [req.body.year, req.body.month , req.body.day];
   var age = age_calculated(new Date(birthday));
 
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation };
+  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '' };
   var email = req.body.email;
   var password = req.body.password;
 
@@ -87,7 +87,12 @@ const LoginUser =  (req, res) => {
 
 const logout = (req, res) => {
   console.log("entered logout function");
-  session.destroy(user);
+  console.log('before' , session.user);
+
+  // session.destroy();
+  delete session.user;
+  // session.user = {};
+  console.log("session", session.user);
   res.send({status: true, details: 'logout'});
 }
 

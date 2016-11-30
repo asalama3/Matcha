@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-// import { Button, ButtonGroup, Input} from 'react-bootstrap/lib/';
 // import {Map, google, GoogleMap, Marker, InfoWindow} from 'google-maps-react';
 import Geosuggest from 'react-geosuggest';
 // import Autocomplete from 'react-google-autocomplete';
@@ -17,7 +16,6 @@ state = {
   error: '',
   address: null,
   position: {},
-  tags: [],
   google: null,
   firstname: '',
   lastname: '',
@@ -27,7 +25,7 @@ state = {
   year: '',
   gender: '',
   orientation: '',
-  bio: ''
+  bio: '',
 }
 
   constructor() {
@@ -101,9 +99,14 @@ autofill = async (e) => {
     this.setState({orientation: response.data.user.orientation}) ;
     this.setState({bio: response.data.user.bio}) ;
     this.setState({tags: response.data.user.hobbies}) ;
-    this.setState({address: response.data.user.location.address}) ;
     console.log(this.state.gender);
-  }
+  if (response.data.user.location)
+  {
+    console.log("address non null");
+    this.setState({address: response.data.user.location.address}) ;
+    
+  }  
+}
 };
 
 
@@ -167,6 +170,7 @@ render(){
     for (let i=1920; i < 2000; i++){
       year.push(<option> {i} </option>)
     }
+    const tags = [];
   return(
     <div className="editProfile">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
@@ -229,7 +233,7 @@ render(){
           </div>
           <div>
             <label className="tags"> Hobbies (optional) </label>
-            <TagsInput className="hobbies" value={this.state.tags} name="tags" onChange={this.handleChange} />
+            {this.state.tags ? (<TagsInput className="hobbies" value={this.state.tags} name="tags" onChange={this.handleChange} />) : (<TagsInput className="hobbies" value={tags} name="tags" onChange={this.handleChange} />)}
           </div>
             <label className="locate"> Location (optional) </label>
               <Geosuggest
@@ -242,35 +246,6 @@ render(){
     <div> {this.state.error} </div>
   </div>
 </div>
-
-//    <Map
-//     google={window.google}
-//     style={{height: "50%", width: "80%"}}
-//     zoom={14}
-// >
-// <Marker
-//     name={'Current Location'}
-//     zoom={14}
-//     position={{lat: this.state.position.lat, lng:this.state.position.lng}} />
-//   </Map>
-
-
-// <Autocomplete
-              //     style={{width: '90%'}}
-              //     onPlaceSelected={(place) => {
-              //     console.log(place);
-              //      }}
-              //     types={['(regions)']}
-              //   />
-
-        // <GoogleMap
-        //             containerProps={{style: {height: "100%"}}}
-        //             ref="map"
-        //             defaultZoom={3}
-        //             defaultCenter={{lat: -25.363882, lng: 131.044922}}>
-
-        //         </GoogleMap>
-
   )
   }
 }

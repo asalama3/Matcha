@@ -7,7 +7,7 @@ class Profile extends Component {
 
 state = {
   user: '',
-  address: '',
+  address: null,
   photo: [],
 }
 
@@ -17,13 +17,20 @@ componentWillMount(){
     url: 'http://localhost:8080/checklogin',
   }).then(({data}) => {
     console.log(data);
+
     if (data.status === true)
     {
-      this.setState({user: data.data, address: data.data.location.address, photo: data.data.photo});
+      this.setState({user: data.data, photo: data.data.photo});
+      if (data.data.location !== null)
+      {
+        console.log("address null");
+      this.setState({address: data.data.location.address});      
+      }
+
       // console.log(this.state.user);
       // console.log(this.state.address);
       // console.log(this.state.user.photo);
-      console.log(this.state.photo);
+      // console.log(this.state.photo);
     }
     else{
       console.log('user not logged in:', data.details);
@@ -37,23 +44,20 @@ var style = {
   width: 200,
   height: 300,
 }
-// if (this.state.photo !== null)
-// {
-//   const profile = this.state.photo.map((el, key) =>
-//     <img key={0} src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
-//   );
-// }
-// else{
-//   const profile = ((e) =>  <img id="img-profile" className="img-thumbnail img-center img-rounded"
-//   src="http://placehold.it/200x232&text=Foto+Profilo" />
-// )}
-//   console.log(profile);
+  let profile =[];
+  if (this.state.photo) {
+    profile = this.state.photo.map((el, key) =>
+        <img key={key} id="img-profile" className="img-thumbnail img-center img-rounded" src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
+      );
+  }
+  
   return (
     <div>
       <h1>PROFILE</h1>
  <div className="container">
         <div className="col-sm-12">
           <div className="col-sm-3 margin-img">
+          {profile}
           </div>
           <div className="col-sm-7 well margin-well my_profile">
             <p>

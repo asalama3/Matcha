@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 
-class Logout extends Component {
+class logout extends Component {
     componentWillMount(){
         axios({
             method: 'post',
@@ -12,16 +12,17 @@ class Logout extends Component {
         }).then(({data}) => {            
             if (data.status === true)
             {
-                browserHistory.push('/login');
+                console.log("logout");
+                browserHistory.push('/');
             }
         })
         }
 
     render(){
         return(
-            <div></div>
+            <div><h1>salut</h1></div>
         )
     }
 }
 
-export {Logout};
+export {logout};
