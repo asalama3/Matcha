@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import AppHeader from './AppHeader';
 import App from './App';
 import {render} from 'react-dom';
@@ -13,18 +13,19 @@ import editLocation from './editLocation';
 import editPictures from './editPictures';
 import * as logout from './logout';
 
-import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
+console.log('couocu')
+
+import { Router, Route, browserHistory, IndexRoute} from 'react-router';
 
 render((
   // <matcha />,
   <Router history={browserHistory}>
     <Route path="/" component={App} >
     <IndexRoute component={Welcome} />
-          <Route path="create_account" component={CreateAccount} />
-          <Route path="login" test="tesdwdwt" component={Login} />
     </Route>
     <Route path="/matcha" component={AppHeader} >
           <Route path="profile"  component={Profile} />
+          <Route path="profile/:user"  component={Profile} />
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
           <Route path="logout" component={logout.logout} />
@@ -33,3 +34,7 @@ render((
   </Router>
 
 ), document.getElementById('root'))
+
+
+//          <Route path="login" test="tesdwdwt" component={Login} />
+//        <Route path="login" test="tesdwdwt" component={Login} />

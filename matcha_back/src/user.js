@@ -23,7 +23,7 @@ const createAccount = (req, res) => {
   var birthday = [req.body.year, req.body.month , req.body.day];
   var age = age_calculated(new Date(birthday));
 
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '' };
+  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '', photo: [] };
   var email = req.body.email;
   var password = req.body.password;
 
@@ -119,7 +119,24 @@ const autoFill = (req, res) => {
   })
 };
 
+const searchLogin = (req, res) => {
+  // console.log('req body' , req.body.username);
+  MongoConnect(res, function(db) {
+    console.log("entered searchLogin function");
+    db.collection('users').findOne({username: req.body.username}, function(err, user){
+      // console.log('databse' , user);
+      if (user)
+      {
+        console.log("found user");
+        res.send({status: true, details: 'username found', data: user});
+      }
+      else{
+        console.log(" did not find user");
+        res.send({status:false, details: 'user not found'});
+      }
+    })
+  })
+}
 
 
-
-export {createAccount, LoginUser, autoFill, logout};
+export {createAccount, LoginUser, autoFill, logout, searchLogin};

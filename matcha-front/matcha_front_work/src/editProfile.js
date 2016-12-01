@@ -26,6 +26,7 @@ state = {
   gender: '',
   orientation: '',
   bio: '',
+  pending: true,
 }
 
   constructor() {
@@ -89,16 +90,19 @@ autofill = async (e) => {
   console.log(response.data.user);
   if (response.data.user){
     console.log("coucou");
-    this.setState({firstname: response.data.user.firstname}) ;
-    this.setState({lastname: response.data.user.lastname}) ;
-    this.setState({email: response.data.user.email}) ;
-    this.setState({day: response.data.user.day}) ;
-    this.setState({month: response.data.user.month}) ;
-    this.setState({year: response.data.user.year}) ;
-    this.setState({gender: response.data.user.gender}) ;
-    this.setState({orientation: response.data.user.orientation}) ;
-    this.setState({bio: response.data.user.bio}) ;
-    this.setState({tags: response.data.user.hobbies}) ;
+    this.setState({
+      firstname: response.data.user.firstname,
+      lastname: response.data.user.lastname,
+      email: response.data.user.email,
+      day: response.data.user.day,
+      month: response.data.user.month,
+      year: response.data.user.year,
+      gender: response.data.user.gender,
+      orientation: response.data.user.orientation,
+      bio: response.data.user.bio,
+      tags: response.data.user.hobbies,
+      pending: false,
+    })
     console.log(this.state.gender);
   if (response.data.user.location)
   {
@@ -164,13 +168,14 @@ getOrientation = (e) =>{
 render(){
   let options = [];
     for (let i=1; i < 32; i++){
-      options.push(<option> {i} </option>)
+      options.push(<option key={i}> {i} </option>)
     }
     let year = [];
     for (let i=1920; i < 2000; i++){
-      year.push(<option> {i} </option>)
+      year.push(<option key={i}> {i} </option>)
     }
     const tags = [];
+    const { pending } = this.state
   return(
     <div className="editProfile">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
@@ -236,11 +241,12 @@ render(){
             {this.state.tags ? (<TagsInput className="hobbies" value={this.state.tags} name="tags" onChange={this.handleChange} />) : (<TagsInput className="hobbies" value={tags} name="tags" onChange={this.handleChange} />)}
           </div>
             <label className="locate"> Location (optional) </label>
-              <Geosuggest
+              {!pending && <Geosuggest
                 onSuggestSelect={this.setAddress}
 						    placeholder="Enter Your Address!"
-                value= {this.state.address}
-              />
+                initialValue={this.state.address}
+                // value={this.state.address}
+              />}
           <input type="submit" value="Submit" name="submit"  />
       </form>
     <div> {this.state.error} </div>

@@ -16,38 +16,92 @@ componentWillMount(){
     method: 'post',
     url: 'http://localhost:8080/checklogin',
   }).then(({data}) => {
-    console.log(data);
+    const loggedUser = data.data;
+    console.log('loggedUSERRRRRRR' , loggedUser);
+    // if (data.status === true)
+    // {
+    //   this.setState({user: data.data, photo: data.data.photo});
+    //   if (data.data.location !== null)
+    //   {
+    //     console.log("address non null");
+    //   this.setState({address: data.data.location.address});      
+    //   }
+      
 
-    if (data.status === true)
-    {
-      this.setState({user: data.data, photo: data.data.photo});
-      if (data.data.location !== null)
-      {
-        console.log("address null");
-      this.setState({address: data.data.location.address});      
-      }
-
-      // console.log(this.state.user);
-      // console.log(this.state.address);
-      // console.log(this.state.user.photo);
-      // console.log(this.state.photo);
-    }
-    else{
+    //   // console.log(this.state.user);
+    //   // console.log(this.state.address);
+    //   // console.log(this.state.user.photo);
+    //   // console.log(this.state.photo);
+    // }
+    if (data.status === false) {
       console.log('user not logged in:', data.details);
       browserHistory.push('/login');
     }
-  })
+    console.log('props user' , this.props.params.user);
+    if (this.props.params.user) {
+      axios({
+      method: 'post',
+     url: 'http://localhost:8080/searchLogin',
+     data:{
+       username: this.props.params.user,
+      }
+    }).then(({data}) => {
+      console.log('OK', data)
+      this.setState({ user: data.data, photo: data.data.photo })
+    })
+    } else {
+      this.setState({ user: loggedUser, photo: loggedUser.photo })
+      if (loggedUser.location !== null)
+      {
+        this.setState({address: loggedUser.location.address});
+      }
+      console.log('USER LOGGED' , this.state.user);      
+    }
+  }) 
+}
+
+
+componentWillReceiveProps = async(newProps) => {
+  this.setState({photo: []});
+  // console.log('yo' , newProps.params);
+  const response = await axios({
+  method: 'post',
+  url: 'http://localhost:8080/searchLogin',
+  data:{
+    username: newProps.params.user,
+  }
+});
+this.setState({ user: response.data.data })
+if (response.data.data.location !== null)
+{
+  this.setState({ address: response.data.data.location.address });
+}else{
+  this.setState({ address: '' });
+}
+if (response.data.data.photo.length > 0 )
+{
+  this.setState({ photo: response.data.data.photo });
+}else{
+  this.setState({ photo: [] });  
+}
+
 }
 
 render(){
+ 
+    // console.log('props' , this.props);
+    const user = this.props.params.user;
+    // console.log("You searched : " + user);
+
 var style = {
   width: 200,
   height: 300,
 }
   let profile =[];
-  if (this.state.photo) {
+  if (this.state.photo.length > 0) {
+    console.log(this.state.photo.length);
     profile = this.state.photo.map((el, key) =>
-        <img key={key} id="img-profile" className="img-thumbnail img-center img-rounded" src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
+        <img key={key} role="presentation" id="img-profile" className="img-thumbnail img-center img-rounded" src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
       );
   }
   
@@ -57,7 +111,7 @@ var style = {
  <div className="container">
         <div className="col-sm-12">
           <div className="col-sm-3 margin-img">
-          {profile}
+          {this.state.photo.length > 0 && profile}
           </div>
           <div className="col-sm-7 well margin-well my_profile">
             <p>

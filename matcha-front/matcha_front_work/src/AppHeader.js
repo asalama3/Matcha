@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Header from './header';
 // import Button from 'react-bootstrap/lib/Button';
 

@@ -1,9 +1,9 @@
-import Dropzone from 'react-dropzone';
-import request from 'superagent';
+// import Dropzone from 'react-dropzone';
+// import request from 'superagent';
 import React from 'react';
 import '../css/editPictures.css';
 import axios from 'axios';
-import {browerHistory} from 'react-router';
+// import {browerHistory} from 'react-router';
 import {Grid, Row, Col, Image} from 'react-bootstrap/lib';
 
 class editPictures extends React.Component{
@@ -11,6 +11,7 @@ class editPictures extends React.Component{
       test: null,
       username: null,
     }
+    
   componentWillMount() {
     axios({
       method: 'post',
@@ -106,15 +107,15 @@ class editPictures extends React.Component{
     let {imagePreviewUrl} = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
+      $imagePreview = (<img role="presentation" src={imagePreviewUrl} />);
     } else {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
 
-let urls = [
-    imagePreviewUrl,
-];
-var imageUrls={urls};
+// let urls = [
+    // imagePreviewUrl,
+// ];
+// var imageUrls={urls};
 
 var style = {
   width: 100,
@@ -135,7 +136,7 @@ if (this.state.photo){
     <Grid>
     <Row>
       <Col xs={6} md={4}>
-          <Image key={key} src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+          <Image key={key} role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
       </Col>
     </Row>
   </Grid> 

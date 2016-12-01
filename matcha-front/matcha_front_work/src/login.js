@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { browserHistory, Link } from 'react-router';
-import * as Input from './test';
+import { browserHistory } from 'react-router';
+// import * as Input from './test';
 import '../css/welcome.css';
 
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../css/welcome.css';
 import axios from 'axios';
-import { Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
+import { browserHistory} from 'react-router';
 import select from 'selection-range';
 
 export default class CreateUser extends Component{
@@ -84,11 +84,11 @@ export default class CreateUser extends Component{
   render() {
     let options = [];
     for (let i=1; i < 32; i++){
-      options.push(<option> {i} </option>)
+      options.push(<option key={i}> {i} </option>)
     }
     let year = [];
     for (let i=1920; i < 2000; i++){
-      year.push(<option> {i} </option>)
+      year.push(<option key={i}> {i} </option>)
     }
 
     return (

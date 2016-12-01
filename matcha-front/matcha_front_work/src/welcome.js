@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import '../css/welcome.css';
 import Login from './login';
 import CreateUser from './create_account';

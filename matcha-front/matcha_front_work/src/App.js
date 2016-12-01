@@ -1,6 +1,6 @@
 import React from 'react';
 // import * as NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
-import { Navbar, Nav, } from 'react-bootstrap/lib/';
+// import { Navbar, Nav, } from 'react-bootstrap/lib/';
 import '../css/welcome.css';
 // 'use strict';
 

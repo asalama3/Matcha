@@ -12,7 +12,6 @@ import * as Profile from './src/profile';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
 
-
 app.use(cors());
 app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb',  extended: true }));
@@ -44,5 +43,7 @@ app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edi
 app.post('/autoFill', User.autoFill);
 app.post('/editPic', Pic.addPic);
 app.post('/logout', User.logout);
+app.post('/searchLogin', User.searchLogin);
+
 
 app.listen(8080);
