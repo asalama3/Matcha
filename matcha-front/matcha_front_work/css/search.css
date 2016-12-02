@@ -1,0 +1,15 @@
+.form {
+  height: 200px;
+  margin: 0 auto;
+  /*padding-top: 100px;*/
+  width: 60%;
+}
+
+.formField {
+  margin-bottom: 5rem;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+}
