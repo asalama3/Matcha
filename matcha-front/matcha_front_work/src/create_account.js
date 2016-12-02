@@ -182,7 +182,7 @@ export default class CreateUser extends Component{
           </div>
         </form>
         {/* <div onClick={this.test1} onDoubleClick={this.test2}> {this.state.test} </div> */}
-        <div> {this.state.error} </div>
+        <div className="error" > {this.state.error} </div>
     </div>
     );
   }

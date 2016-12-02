@@ -4,12 +4,8 @@
 
 }
 
-form {
-  /*display: none !important;*/
-}
-
 .login_form_active {
-  display: visible;
+  display: block;
   margin: 0px 20px;
   font-family: 'Cormorant Upright', serif;
   font-size: 40px;
@@ -22,24 +18,25 @@ form {
 }
 
 .create_form_active{
-  display: visible;
+  display: block;
   margin: 0px 20px;
   font-family: 'Cormorant Upright', serif;
   font-size: 40px;
   font-weight: bold;
+  min-height: 100%;
 
 }
 
 .welcome{
-  position: fixed;
+  position: absolute;
   display: flex;
- justify-content: center;
- align-items: center;
- width: 100%;
- vertical-align: middle;
- top: 50px;
- opacity: 1;
- z-index: 100;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  vertical-align: middle;
+  top: 50px;
+  opacity: 1;
+  z-index: 100;
 }
 
 
@@ -149,6 +146,10 @@ border-radius: 2px ;
 
 }
 
+.error{
+
+}
+
 /*********************    APP    *********************/
 
 
@@ -192,9 +193,6 @@ input{
   padding: 4px 90px;
   border: none;
   border-radius: 2px ;
-  
-
-
 }
 
 .birth{
@@ -228,8 +226,12 @@ input.radio{
   text-align: center;
 }
 
-
-
-.navbar-header{
-  color: red;
+.error{
+position: absolute;
+bottom: 20px;
 }
+
+
+/*.navbar-header{
+  color: red;
+}*/

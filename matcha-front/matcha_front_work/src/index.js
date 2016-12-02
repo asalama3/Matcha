@@ -11,9 +11,10 @@ import Profile from './profile';
 import editProfile from './editProfile';
 import editLocation from './editLocation';
 import editPictures from './editPictures';
+import Search from './search';
 import * as logout from './logout';
 
-console.log('couocu')
+// console.log('couocu')
 
 import { Router, Route, browserHistory, IndexRoute} from 'react-router';
 
@@ -28,6 +29,7 @@ render((
           <Route path="profile/:user"  component={Profile} />
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
+          <Route path="search" component={Search} />
           <Route path="logout" component={logout.logout} />
           // <Route path="editLocation" component={editLocation} />
     </Route>

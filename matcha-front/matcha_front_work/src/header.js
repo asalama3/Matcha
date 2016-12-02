@@ -68,7 +68,7 @@ onChange = (e) =>{
               <MenuItem eventKey={3.1} href="/matcha/editProfile">Edit Profile</MenuItem>
               <MenuItem eventKey={3.2} href="/matcha/editPictures">Edit Pictures</MenuItem>
               <MenuItem eventKey={3.2} href="/matcha/profile">Profile</MenuItem>
-              <MenuItem eventKey={3.3}>Search</MenuItem>
+              <MenuItem eventKey={3.3} href="/matcha/search">Search</MenuItem>
               <MenuItem eventKey={3.3}>Suggestions</MenuItem>
               <MenuItem eventKey={3.3}>Live Chat</MenuItem>
             </NavDropdown>

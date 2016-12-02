@@ -56,7 +56,7 @@ login = async (e) => {
               value="LOGIN"
               />
           </form>
-          <div> {this.state.error} </div>
+          <div className="error"> {this.state.error} </div>
 
       </div>
 
