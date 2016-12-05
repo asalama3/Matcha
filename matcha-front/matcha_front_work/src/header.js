@@ -18,10 +18,10 @@ state={
 handleSubmit = async (e) =>{
   e.preventDefault();
   console.log("entered function submit");
-  
+
   this.setState({username: e.target.value});
   console.log('state', this.state.username);
-  
+
   // const username = ReactDOM.findDOMNode(this.refs.username);
   // console.log('finddomnode' ,username);
   const response = await axios({
@@ -85,8 +85,8 @@ onChange = (e) =>{
         <Nav pullRight>
           <LinkContainer to="/matcha/logout">
             <NavItem eventKey={4}>Logout</NavItem>
-          </LinkContainer>     
-          <LinkContainer to="#">
+          </LinkContainer>
+          <LinkContainer to="/matcha/delete_account">
             <NavItem eventKey={4}>Delete Account</NavItem>
           </LinkContainer>
       </Nav>
@@ -99,4 +99,4 @@ onChange = (e) =>{
 export default Header;
 
 // <Link to="/matcha/logout">Logout </Link>
-          // <Link to="/test">TESTTEST</Link>     
+          // <Link to="/test">TESTTEST</Link>

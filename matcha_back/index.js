@@ -44,6 +44,7 @@ app.post('/autoFill', User.autoFill);
 app.post('/editPic', Pic.addPic);
 app.post('/logout', User.logout);
 app.post('/searchLogin', User.searchLogin);
+app.post('/deleteAccount', User.deleteAccount);
 
 
 app.listen(8080);

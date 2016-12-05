@@ -147,6 +147,7 @@ border-radius: 2px ;
 }
 
 .error{
+  text-align: center;
 
 }
 
@@ -227,11 +228,5 @@ input.radio{
 }
 
 .error{
-position: absolute;
-bottom: 20px;
+  text-align: center;
 }
-
-
-/*.navbar-header{
-  color: red;
-}*/

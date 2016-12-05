@@ -13,6 +13,7 @@ import editLocation from './editLocation';
 import editPictures from './editPictures';
 import Search from './search';
 import * as logout from './logout';
+import deleteAccount from './delete_account';
 
 // console.log('couocu')
 
@@ -31,6 +32,7 @@ render((
           <Route path="editPictures" component={editPictures} />
           <Route path="search" component={Search} />
           <Route path="logout" component={logout.logout} />
+          <Route path="delete_account" component={deleteAccount} />
           // <Route path="editLocation" component={editLocation} />
     </Route>
   </Router>

@@ -6,7 +6,7 @@ import Geosuggest from 'react-geosuggest';
 // import Autocomplete from 'react-google-autocomplete';
 import '../css/editProfile.css';
 import TagsInput from 'react-tagsinput';
-import 'react-tagsinput/react-tagsinput.css' // If using WebPack and style-loader. 
+import 'react-tagsinput/react-tagsinput.css' // If using WebPack and style-loader.
 
 
 
@@ -50,7 +50,7 @@ componentWillMount(){
       // test = 'false';
       // console.log('test', test);
       console.log('user not logged in:', data.details);
-      browserHistory.push('/login');
+      browserHistory.push('/');
     }
   })
 }
@@ -108,8 +108,8 @@ autofill = async (e) => {
   {
     console.log("address non null");
     this.setState({address: response.data.user.location.address}) ;
-    
-  }  
+
+  }
 }
 };
 
@@ -221,7 +221,7 @@ render(){
                   <option value="11">November </option>
                   <option value="12">December </option>
                 </select>
-                <select name="year" value={this.state.year} onChange={this.onChange}> options={year} </select>                
+                <select name="year" value={this.state.year} onChange={this.onChange}> options={year} </select>
           </div>
           <label className="gender" > Gender </label>
             <input type="radio"  name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/> Male

@@ -3,7 +3,7 @@
 import React from 'react';
 import '../css/editPictures.css';
 import axios from 'axios';
-// import {browerHistory} from 'react-router';
+import {browerHistory} from 'react-router';
 import {Grid, Row, Col, Image} from 'react-bootstrap/lib';
 
 class editPictures extends React.Component{
@@ -11,7 +11,7 @@ class editPictures extends React.Component{
       test: null,
       username: null,
     }
-    
+
   componentWillMount() {
     axios({
       method: 'post',
@@ -25,7 +25,7 @@ class editPictures extends React.Component{
       }
       else{
         console.log('user not logged in:', data.details);
-        // browerHistory.push('/login');
+        browerHistory.push('/');
       }
     })
   }
@@ -48,7 +48,7 @@ class editPictures extends React.Component{
       this.setState({imagePreviewUrl: '', file: '', error: "wrong file format"}) ;
     }else{
       console.log("does it go here");
-      
+
     const response =  await axios({
       method: 'post',
       url: 'http://localhost:8080/editPic',
@@ -68,7 +68,7 @@ class editPictures extends React.Component{
     }
       else{
       console.log('not ok:', response.data.details);
-        
+
       }
   }
 }
@@ -85,7 +85,7 @@ class editPictures extends React.Component{
         imagePreviewUrl: reader.result
       });
     }
-   
+
     if (file)
       reader.readAsDataURL(file)
   }
@@ -131,19 +131,19 @@ var style = {
 
 let imgList = [];
 if (this.state.photo){
-    imgList = this.state.photo.map((el, key) => 
-    
+    imgList = this.state.photo.map((el, key) =>
+
     <Grid>
     <Row>
       <Col xs={6} md={4}>
           <Image key={key} role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
       </Col>
     </Row>
-  </Grid> 
+  </Grid>
     );
 }
     console.log(imgList);
-    
+
         return(
             <div className="pictures">
             <div> {imgList} </div>
@@ -158,8 +158,8 @@ if (this.state.photo){
           <div> {this.state.error} </div>
 
       </div>
-    
-  
+
+
             </div>
         )
     }

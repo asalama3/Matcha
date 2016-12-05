@@ -24,9 +24,9 @@ componentWillMount(){
     //   if (data.data.location !== null)
     //   {
     //     console.log("address non null");
-    //   this.setState({address: data.data.location.address});      
+    //   this.setState({address: data.data.location.address});
     //   }
-      
+
 
     //   // console.log(this.state.user);
     //   // console.log(this.state.address);
@@ -35,7 +35,7 @@ componentWillMount(){
     // }
     if (data.status === false) {
       console.log('user not logged in:', data.details);
-      browserHistory.push('/login');
+      browserHistory.push('/');
     }
     console.log('props user' , this.props.params.user);
     if (this.props.params.user) {
@@ -55,9 +55,9 @@ componentWillMount(){
       {
         this.setState({address: loggedUser.location.address});
       }
-      console.log('USER LOGGED' , this.state.user);      
+      console.log('USER LOGGED' , this.state.user);
     }
-  }) 
+  })
 }
 
 
@@ -82,13 +82,13 @@ if (response.data.data.photo.length > 0 )
 {
   this.setState({ photo: response.data.data.photo });
 }else{
-  this.setState({ photo: [] });  
+  this.setState({ photo: [] });
 }
 
 }
 
 render(){
- 
+
     // console.log('props' , this.props);
     const user = this.props.params.user;
     // console.log("You searched : " + user);
@@ -98,13 +98,13 @@ var style = {
   height: 300,
 }
   let profile =[];
-  if (this.state.photo.length > 0) {
+  if (this.state.photo !== null && this.state.photo.length > 0) {
     console.log(this.state.photo.length);
     profile = this.state.photo.map((el, key) =>
         <img key={key} role="presentation" id="img-profile" className="img-thumbnail img-center img-rounded" src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={style} />
       );
   }
-  
+
   return (
     <div>
       <h1>PROFILE</h1>

@@ -7,7 +7,7 @@ import fs from 'fs';
 var session = require('express-session');
 
 
-const age_calculated = (birthday) => { 
+const age_calculated = (birthday) => {
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -72,7 +72,7 @@ const LoginUser =  (req, res) => {
         if (user.password === hashPass)
         {
           session.user = user;
-          
+
           res.send({status: true, details: 'success'})
         }
         else{
@@ -101,7 +101,7 @@ const autoFill = (req, res) => {
   // console.log("autofill");
   // console.log(session.user._id);
 
-  MongoConnect(res, function (db) {    
+  MongoConnect(res, function (db) {
     db.collection('users').findOne({ _id: ObjectId(session.user._id) }, function (err, user) {
       if (err) {
         res.send({ status: false, details: "no connexion to db" });
@@ -138,5 +138,27 @@ const searchLogin = (req, res) => {
   })
 }
 
+const deleteAccount = (req, res) => {
+  MongoConnect(res, function(db) {
+    console.log("entered delete account function");
+      db.collection('users').findOne({_id: ObjectId(session.user._id)}, function(err, user){
+        if (err)
+        {
+          res.send({status: false, details: "no connexion to db"});
+        }
+        else if (!user)
+        {
+          res.send({status: false, details: "no user found"});
+        }
+        else {
+          console.log('before' , session.user);
+          db.collection('users').remove({_id: ObjectId(session.user._id)});
+          console.log('after' ,session.user);
+          res.send ({status: true, details: 'user deleted from db'});
+        }
+      })
 
-export {createAccount, LoginUser, autoFill, logout, searchLogin};
+  })
+}
+
+export {createAccount, LoginUser, autoFill, logout, searchLogin, deleteAccount};
