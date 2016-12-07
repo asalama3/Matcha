@@ -11,6 +11,7 @@ import * as Logged from './src/logged';
 import * as Profile from './src/profile';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
+import * as profile from './src/search';
 
 app.use(cors());
 app.use(bodyParser.json({limit: '2mb'}));
@@ -45,6 +46,6 @@ app.post('/editPic', Pic.addPic);
 app.post('/logout', User.logout);
 app.post('/searchLogin', User.searchLogin);
 app.post('/deleteAccount', User.deleteAccount);
-
+app.post('/search', profile.search);
 
 app.listen(8080);

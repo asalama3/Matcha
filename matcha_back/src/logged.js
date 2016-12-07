@@ -18,7 +18,7 @@ const requireLogin = (req, res, next) =>
             res.send({status: false, details: "no user found" });
           else{
             session.user = user;
-            console.log('session right after changed' , session.user);
+            // console.log('session right after changed' , session.user);
             res.send({status: true, details: 'ok logged in', data: session.user, username: session.user.username});
             return next(); 
           }

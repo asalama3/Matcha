@@ -17,6 +17,15 @@ class Search extends Component {
                 browserHistory.push('/');
             } 
         })
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/search',
+        }).then(({data}) => {
+            if (data.status === true)
+            {
+                console.log("ok search back", data.data);
+            }
+        })
     }
 
     state = {
@@ -58,6 +67,7 @@ class Search extends Component {
     this.setState({ valuesPop: values });
     console.log(this.state.valuesPop);      
     }
+
 
 
     render(){
