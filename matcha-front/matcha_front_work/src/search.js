@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
+import searchDisplay from '../src/components/searchDisplay.js';
 
 class Search extends Component {
     componentWillMount(){
@@ -15,7 +16,7 @@ class Search extends Component {
             {
                 console.log("not logged in");
                 browserHistory.push('/');
-            } 
+            }
         })
         axios({
             method: 'post',
@@ -23,7 +24,8 @@ class Search extends Component {
         }).then(({data}) => {
             if (data.status === true)
             {
-                console.log("ok search back", data.data);
+                console.log("ok search back", data.details);
+                this.setState({users: data.details});
             }
         })
     }
@@ -45,6 +47,8 @@ class Search extends Component {
         min: 0,
         max: 100,
         },
+        users: '', // all users profiles
+        newUsers: ''
     };
 
 
@@ -57,20 +61,44 @@ class Search extends Component {
     this.setState({ valuesLocation: values });
     console.log(this.state.valuesLocation);
     }
-    
-  handleValuesTagsChange = (component, values) => {    
+
+  handleValuesTagsChange = (component, values) => {
     this.setState({ valuesTags: values });
-    console.log(this.state.valuesTags);      
+    console.log(this.state.valuesTags);
     }
-    
+
   handleValuesPopChange = (component, values) => {
     this.setState({ valuesPop: values });
-    console.log(this.state.valuesPop);      
+    console.log(this.state.valuesPop);
     }
 
 
 
     render(){
+      let ListUsers = [];
+      if (this.state.users)
+      {
+        console.log("ok");
+        console.log(this.state.users[0].username);
+        console.log(this.state.users[0].photo);
+      ListUsers = this.state.users.map((src, key) => {
+      <div key={key} className="">
+
+       {
+         (src.photo && (src.photo.length > 0) &&
+          <img role="presentation" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
+            ||
+        (src.photo === null &&
+          <img role="presentation" src={'https://unsplash.it/200/300?image=0'} />)
+        }
+          <p>firstname: {src.firstname} </p>
+          <p>lastname: {src.lastname}</p>
+          <p>Age: {src.age}</p>
+          <p>location: {src.location.address} </p>
+          <p>tags: {src.hobbies}</p>
+        </div>
+      });
+      }
         return(
             <div className="container">
                 <h1>Search</h1>
@@ -106,8 +134,9 @@ class Search extends Component {
                         />
                 </div>
             </form>
-
-        </div>
+              <div> {ListUsers}
+              </div>
+</div>
         )
     }
 }
