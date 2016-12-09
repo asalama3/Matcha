@@ -5,6 +5,7 @@ import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
 import searchDisplay from '../src/components/searchDisplay.js';
+import image from '../pictures/drom.jpeg';
 
 class Search extends Component {
     componentWillMount(){
@@ -79,27 +80,22 @@ class Search extends Component {
       if (this.state.users)
       {
         console.log("ok");
-        console.log(this.state.users[0].username);
-        console.log(this.state.users[0].photo);
-      ListUsers = this.state.users.map((src, key) => {
-      <div key={key} className="">
-
-       {
-         (src.photo && (src.photo.length > 0) &&
-          <img role="presentation" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
-            ||
-        (src.photo === null &&
-          <img role="presentation" src={'https://unsplash.it/200/300?image=0'} />)
-        }
-          <p>firstname: {src.firstname} </p>
-          <p>lastname: {src.lastname}</p>
-          <p>Age: {src.age}</p>
-          <p>location: {src.location.address} </p>
-          <p>tags: {src.hobbies}</p>
+    //    console.log(this.state.users[0].username);
+     //   console.log(this.state.users[0].photo);
+        ListUsers = this.state.users.map((src, key) =>
+        <div key={key} className="display_users">
+       {(src.photo && src.photo.length > 0 && 
+           <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
+       || ((src.photo.length === 0) && <img role="presentation" src={'http://placehold.it/200x200'} />)}
+          <div>firstname: {src.firstname} </div>
+          <div>lastname: {src.lastname}</div>
+          <div>Age: {src.age}</div>
+          <div>location: {src.location.address} </div>
+          <div>tags: {src.hobbies}</div>
         </div>
-      });
+      );
       }
-        return(
+        return (
             <div className="container">
                 <h1>Search</h1>
             <form className="form">
@@ -134,8 +130,9 @@ class Search extends Component {
                         />
                 </div>
             </form>
-              <div> {ListUsers}
-              </div>
+            <div>
+                {ListUsers}
+            </div>
 </div>
         )
     }

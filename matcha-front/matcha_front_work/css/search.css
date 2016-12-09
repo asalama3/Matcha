@@ -15,8 +15,18 @@
 }
 
 
+.display_users{
+  /*height: 100%;*/
+  display: inline-block;
+  margin-left: 10px;
+}
 
-@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+.image_profile{
+  width: 200px;
+  height: 200px;
+}
+
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
 
 
 .social-btn-holder{
@@ -29,7 +39,8 @@
   font-weight:bold;
 }
 
-
 .centered-text{
   text-align: center;
 }
+
+
