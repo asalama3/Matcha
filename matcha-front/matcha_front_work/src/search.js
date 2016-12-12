@@ -54,69 +54,46 @@ class Search extends Component {
 
 
 
-//   age_function = (element) => {
-    // return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)  
-//   } 
-
   handleValuesAgeChange = (component, values) => {
     this.setState({ valuesAge: values });
     let newArray= [];
-    if (this.state.users.length !== this.state.newUsers.length)
-    {
         newArray = this.state.users.filter((element) => {
-            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max 
-            && element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)
+            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max && 
+            element.username.length >= this.state.valuesLocation.min && element.username.length <= this.state.valuesLocation.max)
         })
-    }
-    else if (this.state.users.length === this.state.newUsers.length)
-    {
-        newArray = this.state.newUsers.filter((element) => {
-            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)
-        })
-    }
     this.setState({ newUsers: newArray });
-    console.log(this.state.valuesAge);
-    console.log(newArray);
+    // console.log(this.state.valuesAge);
+    // console.log(newArray);
     }
-
-
 
 
   handleValuesLocationChange = (component, values) => {  
     this.setState({ valuesLocation: values });
         let newArray= [];
-    if (this.state.users.length !== this.state.newUsers.length)
-    {
         newArray = this.state.users.filter((element) => {
-            return (element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)
+            return (element.username.length >= this.state.valuesLocation.min && element.username.length <= this.state.valuesLocation.max &&
+            element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)
         })
-    }
-    else if (this.state.users.length === this.state.newUsers.length)
-    {
-        newArray = this.state.newUsers.filter((element) => {
-            return (element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)        })
-    }
     this.setState({ newUsers: newArray });
-    console.log(this.state.valuesLocation);
+    // console.log(this.state.valuesLocation);
     }
 
   handleValuesTagsChange = (component, values) => {
     this.setState({ valuesTags: values });
-    console.log(this.state.valuesTags);
+    // console.log(this.state.valuesTags);
     }
 
   handleValuesPopChange = (component, values) => {
     this.setState({ valuesPop: values });
-    console.log(this.state.valuesPop);
+    // console.log(this.state.valuesPop);
     }
-
 
 
     render(){
       let ListUsers = [];
       if (this.state.users)
       {
-        console.log("ok");
+        // console.log("ok");
     //    console.log(this.state.users[0].username);
      //   console.log(this.state.users[0].photo);
         ListUsers = this.state.newUsers.map((src, key) =>
@@ -124,8 +101,7 @@ class Search extends Component {
        {(src.photo && src.photo.length > 0 && 
            <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
        || ((src.photo.length === 0) && <img role="presentation" src={'http://placehold.it/200x200'} />)}
-          <div>firstname: {src.firstname} </div>
-          <div>lastname: {src.lastname}</div>
+          <div>username: {src.username}</div>
           <div>Age: {src.age}</div>
           <div>location: {src.location.address} </div>
           <div>tags: {src.hobbies}</div>
