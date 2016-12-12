@@ -26,7 +26,7 @@ class Search extends Component {
             if (data.status === true)
             {
                 console.log("ok search back", data.details);
-                this.setState({users: data.details});
+                this.setState({users: data.details, newUsers: data.details});
             }
         })
     }
@@ -34,11 +34,11 @@ class Search extends Component {
     state = {
         valuesAge: {
         min: 18,
-        max: 90,
+        max: 95,
         },
         valuesLocation: {
         min: 0,
-        max: 1000,
+        max: 10,
         },
         valuesTags: {
         min: 0,
@@ -49,17 +49,54 @@ class Search extends Component {
         max: 100,
         },
         users: '', // all users profiles
-        newUsers: ''
+        newUsers: '' // all users at first and then filtered 
     };
 
 
+
+//   age_function = (element) => {
+    // return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)  
+//   } 
+
   handleValuesAgeChange = (component, values) => {
     this.setState({ valuesAge: values });
+    let newArray= [];
+    if (this.state.users.length !== this.state.newUsers.length)
+    {
+        newArray = this.state.users.filter((element) => {
+            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max 
+            && element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)
+        })
+    }
+    else if (this.state.users.length === this.state.newUsers.length)
+    {
+        newArray = this.state.newUsers.filter((element) => {
+            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)
+        })
+    }
+    this.setState({ newUsers: newArray });
     console.log(this.state.valuesAge);
+    console.log(newArray);
     }
 
-  handleValuesLocationChange = (component, values) => {
+
+
+
+  handleValuesLocationChange = (component, values) => {  
     this.setState({ valuesLocation: values });
+        let newArray= [];
+    if (this.state.users.length !== this.state.newUsers.length)
+    {
+        newArray = this.state.users.filter((element) => {
+            return (element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)
+        })
+    }
+    else if (this.state.users.length === this.state.newUsers.length)
+    {
+        newArray = this.state.newUsers.filter((element) => {
+            return (element.firstname.length >= this.state.valuesLocation.min && element.firstname.length <= this.state.valuesLocation.max)        })
+    }
+    this.setState({ newUsers: newArray });
     console.log(this.state.valuesLocation);
     }
 
@@ -82,7 +119,7 @@ class Search extends Component {
         console.log("ok");
     //    console.log(this.state.users[0].username);
      //   console.log(this.state.users[0].photo);
-        ListUsers = this.state.users.map((src, key) =>
+        ListUsers = this.state.newUsers.map((src, key) =>
         <div key={key} className="display_users">
        {(src.photo && src.photo.length > 0 && 
            <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
@@ -102,19 +139,19 @@ class Search extends Component {
                 <div className="formField">
                     <h4>Search By Age</h4>
                         <InputRange
-                            maxValue={90}
+                            maxValue={95}
                             minValue={18}
                             value={this.state.valuesAge}
                             onChange={this.handleValuesAgeChange.bind(this)}
                         />
                     <h4>Search By Location</h4>
                         <InputRange
-                            maxValue={1000}
+                            maxValue={10}
                             minValue={0}
                             value={this.state.valuesLocation}
                             onChange={this.handleValuesLocationChange.bind(this)}
                         />
-                    <h4>Search By Tags</h4>
+                    <h4>Search By Hobbies</h4>
                         <InputRange
                             maxValue={10}
                             minValue={0}
