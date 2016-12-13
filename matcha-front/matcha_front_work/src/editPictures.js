@@ -133,20 +133,22 @@ let imgList = [];
 if (this.state.photo){
     imgList = this.state.photo.map((el, key) =>
 
-    <Grid>
+    <Grid key={key}>
     <Row>
       <Col xs={6} md={4}>
-          <Image key={key} role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+          <Image  role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
       </Col>
     </Row>
   </Grid>
     );
 }
+
     console.log(imgList);
 
         return(
             <div className="pictures">
-            <div> {imgList} </div>
+            <div>{imgList}</div>
+            {(this.state.photo.length < 5 &&  
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit} encType="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />
@@ -158,7 +160,7 @@ if (this.state.photo){
           <div> {this.state.error} </div>
 
       </div>
-
+|| this.state.photo.length > 4 && <div>Pas plus de 5 images!</div> )}
 
             </div>
         )

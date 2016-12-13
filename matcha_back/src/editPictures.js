@@ -26,10 +26,13 @@ const addPic = (req, res) => {
           // const photo = {photo: req.body.name}
 
           db.collection('users').findOne({_id: ObjectId(session.user._id)}, function (err, user){
+            console.log('photo number', user.photo.length);
             if (err)
               return res.send({status: false, details: "db error"});
             else if (!user)
               return res.send({status: false, details: "no user found" });
+            else if (user.photo.length === 5)
+              return res.send({status: false, details: "too many images" });
             else{
                 var matches = req.body.photo.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
                 // console.log(matches);

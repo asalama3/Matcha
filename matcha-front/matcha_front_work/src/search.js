@@ -38,7 +38,7 @@ class Search extends Component {
         },
         valuesLocation: {
         min: 0,
-        max: 10,
+        max: 10000,
         },
         valuesTags: {
         min: 0,
@@ -59,7 +59,7 @@ class Search extends Component {
     let newArray= [];
         newArray = this.state.users.filter((element) => {
             return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max && 
-            element.username.length >= this.state.valuesLocation.min && element.username.length <= this.state.valuesLocation.max)
+            element.distance >= this.state.valuesLocation.min && element.distance <= this.state.valuesLocation.max)
         })
     this.setState({ newUsers: newArray });
     // console.log(this.state.valuesAge);
@@ -67,11 +67,13 @@ class Search extends Component {
     }
 
 
-  handleValuesLocationChange = (component, values) => {  
+  handleValuesLocationChange = (component, values) => { 
     this.setState({ valuesLocation: values });
+    console.log(this.state.users[1].distance)
+    
         let newArray= [];
         newArray = this.state.users.filter((element) => {
-            return (element.username.length >= this.state.valuesLocation.min && element.username.length <= this.state.valuesLocation.max &&
+            return (element.distance >= this.state.valuesLocation.min && element.distance <= this.state.valuesLocation.max &&
             element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)
         })
     this.setState({ newUsers: newArray });
@@ -122,7 +124,7 @@ class Search extends Component {
                         />
                     <h4>Search By Location</h4>
                         <InputRange
-                            maxValue={10}
+                            maxValue={10000}
                             minValue={0}
                             value={this.state.valuesLocation}
                             onChange={this.handleValuesLocationChange.bind(this)}

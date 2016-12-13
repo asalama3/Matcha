@@ -155,23 +155,35 @@ export default class CreateUser extends Component{
               </select>
               </div>
         </div>
-          <label className="create"> Gender </label>
-          <div className="radio_centered">
+          <div><label className="create"> Gender </label></div>
+
+
+
+          <div className="style_radio">
+           <div className="style_radio">
             <input className="radio" id="r1" type="radio" value="male" name="gender" required   />
               <label className="gender" htmlFor="r1">Male</label>
+            </div>
+            <div className="style_radio">
             <input  className="radio" id="r2" type="radio" value="female" name="gender"  />
               <label className="gender" htmlFor="r2">Female</label>
-
+          </div>
           </div>
           <div>
-          <label className="create"> Sexual Orientation </label>
-          <div className="radio_centered">
+          <div><label className="create"> Sexual Orientation </label></div>
+          <div className="style_radio">
+           <div className="style_radio">              
               <input className="radio" id="r3" type="radio" value="straight" name="orientation"  />
               <label className="orientation" htmlFor="r3">Straight</label>
+             </div>
+           <div className="style_radio">                           
               <input  className="radio" id="r4" type="radio" value="bisexual" name="orientation" />
               <label className="orientation" htmlFor="r4">Bisexual</label>
+              </div>
+           <div className="style_radio">                                         
               <input className="radio" id="r5" type="radio" value="gay" name="orientation" />
               <label className="orientation" htmlFor="r5">Gay</label>
+              </div>
           </div>
           </div>
           <input className="register_button"

@@ -1,7 +1,7 @@
 import MongoConnect from '../mongo_connect';
 var session = require('express-session');
 import mongodb from 'mongodb';
-
+import geolib from 'geolib';
 
 const search = async (req, res) => {
   MongoConnect(res, async function(db){
@@ -20,7 +20,16 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a female straight:", match);
+
+        match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+        user.distance = (user.distance / 1000).toFixed(2) ;  
+            
+        });
+        console.log(match);
+        // console.log("user is a female straight:", match);
         res.send({status: true, details: match});
 
 /*        one.on('data', function(res, doc) {
@@ -37,7 +46,16 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a female gay:", match);
+
+        match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+        user.distance = (user.distance / 1000).toFixed(2) ;  
+            
+        });
+
+        // console.log("user is a female gay:", match);
         res.send({status: true, details: match});
       }
       if (session.user.orientation === 'bisexual')
@@ -50,7 +68,14 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a female bi:", match);
+ 
+          match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+            user.distance = (user.distance / 1000).toFixed(2) ;  
+        });
+        // console.log("user is a female bi:", match);
         res.send({status: true, details: match});
       }
     }
@@ -66,7 +91,15 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a male straight:", match);
+
+        match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+            user.distance = (user.distance / 1000).toFixed(2) ;  
+        });
+
+        // console.log("user is a male straight:", match);
         res.send({status: true, details: match});
       }
       if (session.user.orientation === 'gay')
@@ -79,7 +112,15 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a male gay:", match);
+
+         match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+            user.distance = (user.distance / 1000).toFixed(2) ;  
+        });
+
+        // console.log("user is a male gay:", match);
         res.send({status: true, details: match});
       }
       if (session.user.orientation === 'bisexual')
@@ -92,7 +133,15 @@ const search = async (req, res) => {
             }
           }
         ]).toArray();
-        console.log("user is a male bi:", match);
+
+        match.forEach((user) => {
+            user.distance = geolib.getDistance(
+              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: session.user.location.lat, longitude: session.user.location.lng})
+            user.distance = (user.distance / 1000).toFixed(2) ;  
+        });
+
+        // console.log("user is a male bi:", match);
         res.send({status: true, details: match});
       }
     }
