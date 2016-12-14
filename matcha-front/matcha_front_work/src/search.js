@@ -6,6 +6,7 @@ import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
 import searchDisplay from '../src/components/searchDisplay.js';
 import image from '../pictures/drom.jpeg';
+import Sort from '../src/components/sort.js';
 
 class Search extends Component {
     componentWillMount(){
@@ -90,7 +91,10 @@ class Search extends Component {
     // console.log(this.state.valuesPop);
     }
 
+    updateSort = (sortedAge) => {
+        this.setState({ users: sortedAge });
 
+    }
     render(){
       let ListUsers = [];
       if (this.state.users)
@@ -145,6 +149,8 @@ class Search extends Component {
                         />
                 </div>
             </form>
+            
+            <div> <Sort onUpdate={this.updateSort} newUsers={this.state.newUsers} /> </div>
             <div>
                 {ListUsers}
             </div>
