@@ -178,13 +178,13 @@ render(){
     const { pending } = this.state
   return(
     <div className="editProfile">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDADbx0qAGlxGF0VHatbFCgvQTKjOOZSGc&libraries=places"></script>
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDADbx0qAGlxGF0VHatbFCgvQTKjOOZSGc&libraries=places"></script>
 
-      <div>
-        <h1> Edit Your Profile </h1>
-          <form onSubmit={this.editProfile} >
+          <form className="form" onSubmit={this.editProfile} >
+          <h2> Edit Your Profile </h2>
+
             <label className="inputForm" > Firstname </label>
             <input required onChange={this.onChange}
               name="firstname"
@@ -204,9 +204,9 @@ render(){
               value={this.state.email}
             />
             <div>
-                <label className="birthday"> Birthday </label>
-                <select name="day" value={this.state.day} onChange={this.onChange}> options={options} </select>
-                <select name="month" value={this.state.month} onChange={this.onChange} >
+                <div><label className="inputForm"> Birthday </label></div>
+                <select className="birthdates" name="day" value={this.state.day} onChange={this.onChange}> options={options} </select>
+                <select className="birthdates" name="month" value={this.state.month} onChange={this.onChange} >
                   <option>Month</option>
                   <option value="01">January </option>
                   <option value="02">February </option>
@@ -221,39 +221,63 @@ render(){
                   <option value="11">November </option>
                   <option value="12">December </option>
                 </select>
-                <select name="year" value={this.state.year} onChange={this.onChange}> options={year} </select>
+                <select className="birthdates" name="year" value={this.state.year} onChange={this.onChange}> options={year} </select>
           </div>
-          <label className="gender" > Gender </label>
-            <input type="radio"  name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/> Male
-            <input type="radio"  name="gender" value="female" checked={this.state.gender === "female"} onClick={this.getGender}/> Female
-          <div>
-          <label className="orientation"> Sexual Orientation </label>
-            <input type="radio" value="straight" name="orientation" required checked={this.state.orientation === "straight"} onClick={this.getOrientation}/> Straight
-            <input type="radio" value="bisexual" name="orientation" checked={this.state.orientation === "bisexual"} onClick={this.getOrientation}/> Bisexual
-            <input type="radio" value="gay" name="orientation" checked={this.state.orientation === "gay"} onClick={this.getOrientation}/> Gay
+
+          <div><label className="inputForm" > Gender </label></div>
+            <div className="style">
+              <div className="style">              
+                <input className="radio" type="radio" id="r1" name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/>
+                <label className="sex" htmlFor="r1">Male</label>
+              </div>
+            </div>
+            <div className="style">
+              <div className="style">             
+                <input className="radio" type="radio" id="r2" name="gender" value="female" checked={this.state.gender === "female"} onClick={this.getGender}/>
+                <label className="sex" htmlFor="r2">Female</label>
+              <div>
+            </div>
+          </div>
+          <label className="inputForm"> Sexual Orientation </label>
+            <div className="style">
+              <div className="style">
+                <input className="radio" type="radio" id="r3" value="straight" name="orientation" required checked={this.state.orientation === "straight"} onClick={this.getOrientation}/>
+                  <label className="or" htmlFor="r3">Straight</label>
+              </div>
+            </div>
+            <div className="style">
+              <div className="style">
+                <input className="radio" type="radio" id="r4" value="bisexual" name="orientation" checked={this.state.orientation === "bisexual"} onClick={this.getOrientation}/>
+                <label className="or" htmlFor="r4">Bisexual</label>
+              </div>
+            </div>
+            <div className="style">
+              <div className="style">
+                <input className="radio" type="radio" id="r5" value="gay" name="orientation" checked={this.state.orientation === "gay"} onClick={this.getOrientation}/>
+                <label className="or" htmlFor="r5">Gay</label>
+              </div>
+            </div>
           </div>
           <div>
-            <label className="bio"> Biography (optional) </label>
-              <input type="text" name="bio" value={this.state.bio} onChange={this.onChange}/>
+            <label className="inputForm"> Biography (optional) </label>
+              <input className="bio" type="text" name="bio" value={this.state.bio} onChange={this.onChange}/>
           </div>
           <div>
-            <label className="tags"> Hobbies (optional) </label>
+            <label className="inputForm"> Hobbies (optional) </label>
             {this.state.tags ? (<TagsInput className="hobbies" value={this.state.tags} name="tags" onChange={this.handleChange} />) : (<TagsInput className="hobbies" value={tags} name="tags" onChange={this.handleChange} />)}
           </div>
-            <label className="locate"> Location (optional) </label>
+            <label className="inputForm"> Location (optional) </label>
               {!pending && <Geosuggest
                 onSuggestSelect={this.setAddress}
 						    placeholder="Enter Your Address!"
                 initialValue={this.state.address}
                 // value={this.state.address}
               />}
-          <input type="submit" value="Submit" name="submit"  />
-      </form>
-    <div> {this.state.error} </div>
-  </div>
-</div>
-  )
-  }
+            <input id="submit" type="submit" value="Submit" name="submit"  />
+        </form>
+        <div> {this.state.error} </div>
+    </div>
+  )}
 }
 
 export default editProfile;

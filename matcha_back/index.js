@@ -47,5 +47,7 @@ app.post('/logout', User.logout);
 app.post('/searchLogin', User.searchLogin);
 app.post('/deleteAccount', User.deleteAccount);
 app.post('/search', profile.search);
+app.post('/delPic', Pic.delPic);
+app.post('/profilePic', Pic.profilePic);
 
 app.listen(8080);

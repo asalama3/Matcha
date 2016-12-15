@@ -39,7 +39,9 @@
   z-index: 100;
 }
 
-
+.title{
+  width: 460px;
+}
 
 .button a:hover, a:active, a:visited{
   text-decoration: none;
@@ -68,18 +70,21 @@
 }
 
 
+.buttons{
+  text-align: center;
+}
 .welcome p{
   font-family: 'Cormorant Upright', serif;
   font-size: 50px;
   color: #1E2D5B;
   font-weight: bold;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
+  /*border-bottom: 1px solid #e5e5e5;*/
 }
 
 .intro{
   font-family: 'Cormorant Upright', serif;
-  font-size: 30px;
+  font-size: 20px;
   color: #1E2D5B;
   font-weight: bold;
   text-align: center;
@@ -128,7 +133,7 @@
 
 
 .login_button{
-  margin: auto;
+  /*margin: auto;*/
 background-color: #1E2D5B;
 color: #fff;
 font-size: 20px;
@@ -138,11 +143,11 @@ text-transform: uppercase;
 border-color: white;
 color: white;
 font-weight: bold;
-text-align: center;
+/*text-align: center;*/
 margin-top: 20px;
 padding: 4px 90px;
 border: none;
-border-radius: 2px ;
+border-radius: 5px ;
 
 }
 
@@ -170,6 +175,7 @@ z-index: -100;
 input{
   display: block;
   height: 35px;
+  border-radius: 5px;
 }
 
 .create{
@@ -193,7 +199,7 @@ input{
   margin-top: 20px;
   padding: 4px 90px;
   border: none;
-  border-radius: 2px ;
+  border-radius: 5px ;
 }
 
 .birth{
@@ -212,21 +218,12 @@ input{
   width: 300px;
 }
 
-.gender, .orientation{
+.sex, .oriented{
   font-size: 17px;
   margin: 10px;;
   text-align: center;
 
 }
-
-/*input.radio{
-  display: inline-block;
-}
-
-
-.radio_centered{
-  text-align: center;
-}*/
 
 .error{
   text-align: center;
@@ -238,16 +235,15 @@ input{
 	/*margin: 0 50px;*/
 }
 
-.gender {
+.sex {
   width: 180px;
-  border-radius: 3px;
+  border-radius: 5px;
   border: 1px solid #D1D3D4
 }
 
-.orientation{
-  border-radius: 3px;
+.oriented{
+  border-radius: 5px;
   width: 120px;
-  
   border: 1px solid #D1D3D4
   
 }
@@ -268,6 +264,7 @@ input.radio:empty ~ label {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 input.radio:empty ~ label:before {

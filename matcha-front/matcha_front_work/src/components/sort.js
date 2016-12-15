@@ -13,7 +13,8 @@ class Sort extends Component{
 
     state = {
         users: [],
-        sortOnce: false,
+        sortAgeOnce: false,
+        sortLocationOnce: false,
     }
 
 
@@ -23,37 +24,54 @@ class Sort extends Component{
 
     sortAge = (e) => {
         console.log("sort age");
-        if (this.state.sortOnce === false){
-            this.setState({ sortOnce: true  });
+        if (this.state.sortAgeOnce === false){
+            this.setState({ sortAgeOnce: true  });
             console.log(this.state.users);
             const sortUsers = this.state.users.sort((a, b) => {
                 return (a.age - b.age);
             });
             this.setState({ users: sortUsers });
             this.props.onUpdate(sortUsers);
-            console.log(this.state.sortOnce);
+            console.log(this.state.sortAgeOnce);
         }
         else{
-            this.setState({ sortOnce: false  });
+            this.setState({ sortAgeOnce: false  });
             const sortUsers = this.state.users.sort((a, b) => {
                 return (b.age - a.age);
             });
             this.setState({ users: sortUsers });
             this.props.onUpdate(sortUsers);
-            console.log(this.state.sortOnce);
+            console.log(this.state.sortAgeOnce);
         }
     }
 
     sortLocation = (e) => {
         console.log("sort location");
+        if (this.state.sortLocationOnce === false){
+            this.setState({sortLocationOnce: true});
+            const sortUsers = this.state.users.sort((a, b) => {
+                return (a.distance - b.distance);
+            });
+            this.setState({ users: sortUsers });
+            this.props.onUpdate(sortUsers);
+        }
+        else{
+            this.setState({ sortLocationOnce: false });
+            const sortUsers = this.state.users.sort((a,b) =>{
+                return (b.distance - a.distance);
+            });
+            this.setState({ users: sortUsers });
+            this.props.onUpdate(sortUsers);
+        }
     }
+
 
     render() {
         // console.log(this.props, "1111");
         return(
             <div className="sort">
                 <button type="button" onClick={this.sortAge} className="sort_button">Sort by Age </button>
-                <button type="button" className="sort_button">Sort by Location </button>
+                <button type="button" onClick={this.sortLocation} className="sort_button">Sort by Location </button>
                 <button type="button" className="sort_button">Sort by Tags </button>
                 <button type="button" className="sort_button">Sort by Popularity </button>
             </div>

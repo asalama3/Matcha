@@ -3,13 +3,15 @@
 import React from 'react';
 import '../css/editPictures.css';
 import axios from 'axios';
-import {browerHistory} from 'react-router';
+import {browserHistory} from 'react-router';
 import {Grid, Row, Col, Image} from 'react-bootstrap/lib';
 
 class editPictures extends React.Component{
     state = {
       test: null,
       username: null,
+      showImage: true,
+      photo: [],
     }
 
   componentWillMount() {
@@ -25,15 +27,15 @@ class editPictures extends React.Component{
       }
       else{
         console.log('user not logged in:', data.details);
-        browerHistory.push('/');
+        browserHistory.push('/');
       }
     })
   }
 
-    constructor(props) {
-        super(props);
-        this.state = {photo: []};
-        }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {photo: []};
+    //     }
 
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,10 +65,10 @@ class editPictures extends React.Component{
     {
       console.log('handle uploading-', response.data.details);
       console.log('data:', response.data.data);
-      this.setState({photo: response.data.data});
+      this.setState({photo: response.data.data, imagePreviewUrl: ''});
       console.log('photo state' ,this.state.photo);
     }
-      else{
+      else{  
       console.log('not ok:', response.data.details);
 
       }
@@ -95,12 +97,47 @@ class editPictures extends React.Component{
 //     return (
 //       <div>
 //         <img src={'./uploads/andrea2289/bronde.jpg'} />
-//       </div>
+//       </div> 
 //     );
 //   }
     //  <button className="all" onClick={this.renderImage} > </button>
 
+    delImg = async (key, name) => {
+      console.log("delete image on click");
+      // console.log(e.target.src);
+      console.log(key);
+      console.log(name);
+      // this.setState({ showImage: false });
+      // console.log('hhhhhhh' , this.state.showImage);
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8080/delPic',
+        data: {
+          name: name
+        }
+      })
+      if (response.data.status === true)
+      {
+        console.log ("ok deleted");
+        console.log (response.data.details);
+        console.log (response.data.values);
+        this.setState({photo: response.data.values });
+      }
+    }
 
+    profile_pic = async (key, name) => {
+      console.log(key);
+      console.log(name);
+    
+      console.log("ok");
+      const response = await axios ({
+        method: 'post',
+        url: 'http://localhost:8080/profilePic',
+        data: {
+          name: name
+        }
+      })
+    }
 
     render(){
 
@@ -112,10 +149,6 @@ class editPictures extends React.Component{
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
 
-// let urls = [
-    // imagePreviewUrl,
-// ];
-// var imageUrls={urls};
 
 var style = {
   width: 100,
@@ -129,21 +162,27 @@ var style = {
 //   <div className="" >{el.name} </div>
 // }, this);
 
+
 let imgList = [];
-if (this.state.photo){
+console.log(this.state.photo);
+if (this.state.photo !== null){
     imgList = this.state.photo.map((el, key) =>
 
     <Grid key={key}>
     <Row>
       <Col xs={6} md={4}>
           <Image  role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+          <button type="button" onClick={() => this.delImg(key, el.name)} className="delete_img">Delete Image </button>
+          <button type="button" onClick={() => this.profile_pic(key, el.name)} className="profile_pic">Make profile picture </button>
       </Col>
     </Row>
   </Grid>
     );
 }
+// let img = this.state.showImage ? {imgList} : '';
 
-    console.log(imgList);
+
+    // console.log(imgList);
 
         return(
             <div className="pictures">

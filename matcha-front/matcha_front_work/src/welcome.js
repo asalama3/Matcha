@@ -47,9 +47,10 @@ class Welcome extends React.Component {
         <div>
         <p className="title"> MATCHA </p>
         <div className="intro"> From Scratch to Love </div>
-        <button onClick={this.clicka} className="button_style"> Login </button>
-        <button onClick={this.clickb}className="button_style"> Create Account </button>
-
+        <div className="buttons">
+          <button onClick={this.clicka} className="button_style"> Login </button>
+          <button onClick={this.clickb}className="button_style"> Register </button>
+        </div>
         <div className={this.state.login} > <Login /> </div>
         <div className={this.state.create} > <CreateUser /> </div>
 

@@ -89,4 +89,56 @@ const addPic = (req, res) => {
   })
 }
 
-export {addPic};
+const delPic = (req, res) => {
+  MongoConnect(res, function(db){
+  
+  console.log("ok delpic");
+  console.log(req.body.name);
+
+  fs.unlink('./uploads/'+ session.user.username+'/'+req.body.name, (err) => {
+    if (err) throw err;
+  console.log('successfully deleted picture');
+  });
+
+  db.collection('users').update({_id: ObjectId(session.user._id)}, {$pull: {photo : { name: req.body.name} } }, function (err, result){
+    if (err)
+    {
+      console.log(err);
+      res.send({status: false, details: "db error"});
+    }else{
+      db.collection('users').findOne({_id: ObjectId(session.user._id)}, function (err, user){
+        if (err)
+          return res.send({status: false, details: "db error"});
+        if (user)
+        {
+          console.log("ok photo del");
+          console.log("rrrrrrrrrrrr", user.photo);
+          var newPhotoArray = user.photo;
+          res.send({status: true, details: "deleted photo ok", values: newPhotoArray});
+        }
+      })
+    }
+  })
+  
+});
+}
+
+const profilePic = (req, res) => {
+  console.log("entered profile pic");
+//   console.log(req.body.name);
+//   MongoConnect(res, function(db){
+//     db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: {photo: {profile: true} } }, function (err, result){
+//       if (err)
+//       {
+//         console.log(err);
+//         res.send({status: false, details: "db error"});
+//       }
+//       else{
+//         console.log("ok updated");
+//         return res.send ({status: true, details: "success"});
+//       }
+//     })
+//   });  
+}
+
+export {addPic, delPic, profilePic};
