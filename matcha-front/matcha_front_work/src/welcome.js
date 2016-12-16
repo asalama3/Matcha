@@ -3,9 +3,28 @@ import React from 'react';
 import '../css/welcome.css';
 import Login from './login';
 import CreateUser from './create_account';
-
+import axios from 'axios';
+import {browserHistory} from 'react-router';
 
 class Welcome extends React.Component {
+  // componentWillMount() {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://localhost:8080/checklogin',
+  //   }).then(({data}) => {
+  //     console.log(data);
+  //     if (data.status === true)
+  //     {
+  //       console.log("ok logged-in");
+  //       // browserHistory.push('/matcha/profile');        
+  //     }
+  //     else{
+  //       console.log('user not logged in:', data.details);
+  //       browserHistory.push('/');
+  //     }
+  //   })
+  // }
+
   state = {
     login: 'hidden_login_form',
     create: 'hidden_create_form',

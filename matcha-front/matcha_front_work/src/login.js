@@ -41,12 +41,12 @@ login = async (e) => {
       <div>
           <form onSubmit={this.login}>
             <label className="login"> Username </label>
-              <input
+              <input className="login_input"
               name="username"
               type="text"
               />
             <label className="login"> Password </label>
-              <input
+              <input className="login_input"
               name="password"
               type="password"
               />

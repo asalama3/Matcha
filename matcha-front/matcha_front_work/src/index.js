@@ -17,13 +17,13 @@ import deleteAccount from './delete_account';
 
 // console.log('couocu')
 
-import { Router, Route, browserHistory, IndexRoute} from 'react-router';
+import { Redirect, Router, Route, browserHistory, IndexRoute} from 'react-router';
 
 render((
   // <matcha />,
   <Router history={browserHistory}>
     <Route path="/" component={App} >
-    <IndexRoute component={Welcome} />
+      <IndexRoute component={Welcome} />
     </Route>
     <Route path="/matcha" component={AppHeader} >
           <Route path="profile"  component={Profile} />
@@ -35,6 +35,7 @@ render((
           <Route path="delete_account" component={deleteAccount} />
           // <Route path="editLocation" component={editLocation} />
     </Route>
+    <Redirect from='*' to='/matcha/profile' component={App} />
   </Router>
 
 ), document.getElementById('root'))

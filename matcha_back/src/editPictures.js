@@ -125,20 +125,19 @@ const delPic = (req, res) => {
 
 const profilePic = (req, res) => {
   console.log("entered profile pic");
-//   console.log(req.body.name);
-//   MongoConnect(res, function(db){
-//     db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: {photo: {profile: true} } }, function (err, result){
-//       if (err)
-//       {
-//         console.log(err);
-//         res.send({status: false, details: "db error"});
-//       }
-//       else{
-//         console.log("ok updated");
-//         return res.send ({status: true, details: "success"});
-//       }
-//     })
-//   });  
+  console.log('key',req.body.key);
+  MongoConnect(res, function(db){
+  db.collection('users').update({_id: ObjectId(session.user._id)}, {$set: {ProfilePictureNumber : req.body.key} }, function (err, result){
+    if (err)
+    {
+      console.log(err);
+      res.send({status: false, details: "db error"});
+    }else{
+      console.log("ok added profile pic");
+      res.send({status: true, details: 'make profile pic'});
+    }
+  })
+  })
 }
 
 export {addPic, delPic, profilePic};

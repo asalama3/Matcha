@@ -56,7 +56,7 @@ componentWillMount(){
 }
 
 setAddress = async (e) => {
-  console.log(e.label);
+  console.log('label: ', e.label);
   const google = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${e.label}`);
   if (google.data.status === 'OK')
   {
@@ -66,7 +66,7 @@ setAddress = async (e) => {
     // console.log (lat, lng);
     // console.log(e.label);
     this.setState({position: {lat: lat, lng: lng, address: e.label}} );
-    console.log(this.state.position);
+    console.log('position: ', this.state.position);
     }
   };
 
@@ -107,8 +107,8 @@ autofill = async (e) => {
   if (response.data.user.location)
   {
     console.log("address non null");
-    this.setState({address: response.data.user.location.address}) ;
-
+    this.setState({address: response.data.user.location.address, 
+      position: {address: response.data.user.location.address, lat: response.data.user.location.lat, lng: response.data.user.location.lng }}) ;
   }
 }
 };
@@ -130,6 +130,7 @@ autofill = async (e) => {
       // e.target.email.value= '';
       // e.target.bio.value = '';
     }
+    console.log('positon avant submit:', this.state.position);
     const response = await axios ({
    method: 'post',
    url: 'http://localhost:8080/editProfile',

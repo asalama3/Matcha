@@ -46,6 +46,8 @@ componentWillMount(){
        username: this.props.params.user,
       }
     }).then(({data}) => {
+      // Deal if the user doesn't exist
+      // Redirect
       console.log('OK', data)
       this.setState({ user: data.data, photo: data.data.photo })
     })

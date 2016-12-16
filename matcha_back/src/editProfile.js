@@ -7,6 +7,8 @@ const ObjectId = mongodb.ObjectId;
 
 const age_calculated = (birthday) => { 
     var ageDifMs = Date.now() - birthday.getTime();
+    console.log('birthday', birthday);
+    console.log('gettime', birthday.getTime());
     var ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }

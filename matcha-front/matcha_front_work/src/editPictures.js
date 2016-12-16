@@ -134,9 +134,16 @@ class editPictures extends React.Component{
         method: 'post',
         url: 'http://localhost:8080/profilePic',
         data: {
-          name: name
+          name: name,
+          key: key
         }
       })
+      if (response.data.status === true){
+        {
+          console.log("ok profile pic added key");
+          // add message de ok
+        }
+      }
     }
 
     render(){
@@ -171,9 +178,11 @@ if (this.state.photo !== null){
     <Grid key={key}>
     <Row>
       <Col xs={6} md={4}>
-          <Image  role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
-          <button type="button" onClick={() => this.delImg(key, el.name)} className="delete_img">Delete Image </button>
-          <button type="button" onClick={() => this.profile_pic(key, el.name)} className="profile_pic">Make profile picture </button>
+          <div className="hover_class">
+            <button className="trash_button" onClick={() => this.delImg(key, el.name)}><i className="fa fa-trash-o fa-2x" aria-hidden="true"></i></button>
+            <button className="profile_button" onClick={() => this.profile_pic(key, el.name)}> <i className="fa fa-user fa-2x" aria-hidden="true"></i></button>
+            <Image  role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+          </div>
       </Col>
     </Row>
   </Grid>

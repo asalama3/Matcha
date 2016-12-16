@@ -99,13 +99,12 @@ class Search extends Component {
       let ListUsers = [];
       if (this.state.users)
       {
-        // console.log("ok");
     //    console.log(this.state.users[0].username);
      //   console.log(this.state.users[0].photo);
         ListUsers = this.state.newUsers.map((src, key) =>
         <div key={key} className="display_users">
-       {(src.photo && src.photo.length > 0 && 
-           <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[0].name}`} />)
+       {(src.photo && src.photo.length > 0 && src.ProfilePictureNumber &&
+           <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber].name}`} />)
        || ((src.photo.length === 0) && <img role="presentation" src={'http://placehold.it/200x200'} />)}
           <div>username: {src.username}</div>
           <div>Age: {src.age}</div>

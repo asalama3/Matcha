@@ -37,6 +37,27 @@
   font-size: 10pt;
   cursor: pointer;
 }
+
 .submitButton:hover{
     background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+}
+
+
+
+.hover_class button{
+  visibility:hidden;
+}
+
+.hover_class:hover button {
+ visibility:visible;
+}
+
+
+.trash_button, .profile_button{
+  border: none;
+  background: white;
+    margin: 2px 2px;
+    cursor: pointer;
+    text-align: center;
+    
 }

@@ -94,40 +94,76 @@ export default class CreateUser extends Component{
     return (
       <div>
         <form onSubmit={this.createAccount}>
+        <div className="register">
+
+
+             <div className="form-group">
+                <label className="col-lg-3 control-label">Username:</label>
+                <div className="col-lg-8">
+                  <input name="username" className="form-control" defaultValue="Jane" type="text" />
+                </div>
+              </div>
+    <div className="form-group">
+                <label className="col-lg-3 control-label">Firstname:</label>
+                <div className="col-lg-8">
+                  <input name="firstame" className="form-control" defaultValue="Jane" type="text" />
+                </div>
+              </div>
+                  <div className="form-group">
+                <label className="col-lg-3 control-label">Lastname:</label>
+                <div className="col-lg-8">
+                  <input name="lastame" className="form-control" defaultValue="Jane" type="text" />
+                </div>
+              </div>
+                  <div className="form-group">
+                <label className="col-lg-3 control-label">Email:</label>
+                <div className="col-lg-8">
+                  <input name="email" className="form-control" defaultValue="Jane" type="email" />
+                </div>
+              </div>
+                  <div className="form-group">
+                <label className="col-lg-3 control-label">Password:</label>
+                <div className="col-lg-8">
+                  <input name="password" className="form-control" defaultValue="Jane" type="password" />
+                </div>
+              </div>
+              <div>
           <label className="create"> Username </label>
-          <input
+          <input className="create_input"
           // required
           name="username"
           type="text"
           // value={this.state.username}
           // onChange={(event) => this.setState({username: event.target.value})}
           />
+        </div>
           <div>{this.state.userError}
           <label className="create"> Firstname </label>
-          <input
+          <input className="create_input"
           // required
           name="firstname"
           type="text"
           />
           <label className="create"> Lastname </label>
-          <input
+          <input className="create_input"
           // required
           name="lastname"
           type="text"
           />
           <label className="create">Email</label>
-          <input
+          <input className="create_input"
           // required
           name="email"
           type="email"
           />
           <label className="create">Password</label>
-          <input
+          <input className="create_input"
           // required
           name="password"
           type="password"
           />
           <div>
+          </div>
           <hr/>
             <label className="create"> Birthday </label>
               <div className="birthdate">
