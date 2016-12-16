@@ -7,6 +7,8 @@ import '../node_modules/react-input-range/dist/react-input-range.css';
 import searchDisplay from '../src/components/searchDisplay.js';
 import image from '../pictures/drom.jpeg';
 import Sort from '../src/components/sort.js';
+import '../css/search.css';
+
 
 class Search extends Component {
     componentWillMount(){
@@ -24,9 +26,7 @@ class Search extends Component {
             method: 'post',
             url: 'http://localhost:8080/search',
         }).then(({data}) => {
-            if (data.status === true)
-            {
-                console.log("ok search back", data.details);
+            if (data.status === true) {
                 this.setState({users: data.details, newUsers: data.details});
             }
         })
@@ -34,118 +34,122 @@ class Search extends Component {
 
     state = {
         valuesAge: {
-        min: 18,
-        max: 95,
+            min: 18,
+            max: 95,
         },
         valuesLocation: {
-        min: 0,
-        max: 10000,
+            min: 0,
+            max: 100000,
         },
         valuesTags: {
-        min: 0,
-        max: 10,
+            min: 0,
+            max: 10,
         },
         valuesPop: {
-        min: 0,
-        max: 100,
+            min: 0,
+            max: 100,
         },
-        users: '', // all users profiles
-        newUsers: '' // all users at first and then filtered 
+        users: [], // all users profiles
+        newUsers: [], // all users at first and then filtered 
+        like: false,
     };
 
 
+  filters = (element) => {
+      const { min: aMin, max: aMax } = this.state.valuesAge
+      const { min: lMin, max: lMax } = this.state.valuesLocation
+      const { min: pMin, max: pMax } = this.state.valuesPop
+      const { distance, age, pop } = element
+      return (
+          +distance <= +lMax && +distance >= +lMin &&
+          +age <= +aMax && +age >= +aMin /*&&
+          +pop <= +pMax && +pop >= +pMin*/
+      )
+  }
 
-  handleValuesAgeChange = (component, values) => {
-    this.setState({ valuesAge: values });
-    let newArray= [];
-        newArray = this.state.users.filter((element) => {
-            return (element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max && 
-            element.distance >= this.state.valuesLocation.min && element.distance <= this.state.valuesLocation.max)
-        })
-    this.setState({ newUsers: newArray });
-    // console.log(this.state.valuesAge);
-    // console.log(newArray);
-    }
+  filterUser = () => {
+      const newUsers = this.state.users.filter( element => this.filters(element))
+      this.setState({ newUsers })
+  }
 
+  handleChangeAge = (component, values) => {
+        this.setState({ valuesAge: values }, this.filterUser)
+  }
 
-  handleValuesLocationChange = (component, values) => { 
-    this.setState({ valuesLocation: values });
-    console.log(this.state.users[1].distance)
-    
-        let newArray= [];
-        newArray = this.state.users.filter((element) => {
-            return (element.distance >= this.state.valuesLocation.min && element.distance <= this.state.valuesLocation.max &&
-            element.age >= this.state.valuesAge.min && element.age <= this.state.valuesAge.max)
-        })
-    this.setState({ newUsers: newArray });
-    // console.log(this.state.valuesLocation);
-    }
+  handleChangeLocation = (component, values) => {
+        this.setState({ valuesLocation: values }, this.filterUser)
+  }
+
+  handleChangePop = (component, values) => {
+      this.setState({ valuesPop: values }, this.filterUser)
+  }
 
   handleValuesTagsChange = (component, values) => {
     this.setState({ valuesTags: values });
-    // console.log(this.state.valuesTags);
+  }
+
+  updateSort = (sortedAge) => {
+      this.setState({ users: sortedAge });
+  }
+
+    like = (e) => {
+        this.setState({ like: true });
+        // for each user, set in db
     }
 
-  handleValuesPopChange = (component, values) => {
-    this.setState({ valuesPop: values });
-    // console.log(this.state.valuesPop);
-    }
-
-    updateSort = (sortedAge) => {
-        this.setState({ users: sortedAge });
-
-    }
     render(){
       let ListUsers = [];
-      if (this.state.users)
-      {
-    //    console.log(this.state.users[0].username);
-     //   console.log(this.state.users[0].photo);
-        ListUsers = this.state.newUsers.map((src, key) =>
-        <div key={key} className="display_users">
-       {(src.photo && src.photo.length > 0 && src.ProfilePictureNumber &&
-           <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber].name}`} />)
-       || ((src.photo.length === 0) && <img role="presentation" src={'http://placehold.it/200x200'} />)}
-          <div>username: {src.username}</div>
-          <div>Age: {src.age}</div>
-          <div>location: {src.location.address} </div>
-          <div>tags: {src.hobbies}</div>
-        </div>
-      );
-      }
+      const label = this.state.like ? 'Liked' : 'Like'; 
+      if (this.state.users) {
+            ListUsers = this.state.newUsers.map((src, key) => {
+                return (
+                    <div key={key} className="display_users">
+                        {(src.photo && src.photo.length > 0 &&
+                        <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber || 0].name}`} />)
+                        || <img role="presentation" src={'http://placehold.it/200x200'} />}
+                        <div>username: {src.username}</div>
+                        <div>Age: {src.age}</div>
+                        <div>distance away from: {src.distance} km</div>
+                        <div>tags: {src.hobbies}</div>
+                        <div><button onClick={this.like}>{label}</button></div>
+                        <div><a href='#'>See Full Profile</a></div>
+                    </div>
+                )
+            }
+        )}
         return (
             <div className="container">
                 <h1>Search</h1>
             <form className="form">
                 <div className="formField">
                     <h4>Search By Age</h4>
-                        <InputRange
-                            maxValue={95}
-                            minValue={18}
-                            value={this.state.valuesAge}
-                            onChange={this.handleValuesAgeChange.bind(this)}
-                        />
+                    <InputRange
+                        maxValue={95}
+                        minValue={18}
+                        value={this.state.valuesAge}
+                        onChange={this.handleChangeAge.bind(this)}
+                    />
                     <h4>Search By Location</h4>
-                        <InputRange
-                            maxValue={10000}
-                            minValue={0}
-                            value={this.state.valuesLocation}
-                            onChange={this.handleValuesLocationChange.bind(this)}
-                        />
-                    <h4>Search By Hobbies</h4>
-                        <InputRange
-                            maxValue={10}
-                            minValue={0}
-                            value={this.state.valuesTags}
-                            onChange={this.handleValuesTagsChange.bind(this)}
-                        />
+                    <InputRange
+                        maxValue={100000}
+                        minValue={0}
+                        value={this.state.valuesLocation}
+                        onChange={this.handleChangeLocation.bind(this)}
+                    />
                     <h4>Search By Popularity</h4>
-                        <InputRange
-                            maxValue={100}
-                            minValue={0}
-                            value={this.state.valuesPop}
-                            onChange={this.handleValuesPopChange.bind(this)}
-                        />
+                    <InputRange
+                        maxValue={100}
+                        minValue={0}
+                        value={this.state.valuesPop}
+                        onChange={this.handleChangePop.bind(this)}
+                    />
+                    <h4>Search By Hobbies</h4>
+                    <InputRange
+                        maxValue={10}
+                        minValue={0}
+                        value={this.state.valuesTags}
+                        onChange={this.handleValuesTagsChange.bind(this)}
+                    />
                 </div>
             </form>
             
