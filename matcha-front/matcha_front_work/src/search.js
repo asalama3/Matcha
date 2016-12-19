@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
@@ -50,7 +50,7 @@ class Search extends Component {
             max: 100,
         },
         users: [], // all users profiles
-        newUsers: [], // all users at first and then filtered 
+        newUsers: [], // all users at first and then filtered
         like: false,
     };
 
@@ -99,7 +99,7 @@ class Search extends Component {
 
     render(){
       let ListUsers = [];
-      const label = this.state.like ? 'Liked' : 'Like'; 
+      const label = this.state.like ? 'Liked' : 'Like';
       if (this.state.users) {
             ListUsers = this.state.newUsers.map((src, key) => {
                 return (
@@ -112,7 +112,7 @@ class Search extends Component {
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
                         <div><button onClick={this.like}>{label}</button></div>
-                        <div><a href='#'>See Full Profile</a></div>
+                        <div><Link to ={'/matcha/profile/'+src.username} >See Full Profile</Link></div>
                     </div>
                 )
             }
@@ -152,7 +152,7 @@ class Search extends Component {
                     />
                 </div>
             </form>
-            
+
             <div> <Sort onUpdate={this.updateSort} newUsers={this.state.newUsers} /> </div>
             <div>
                 {ListUsers}

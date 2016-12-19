@@ -65,7 +65,7 @@ componentWillMount(){
 
 componentWillReceiveProps = async(newProps) => {
   this.setState({photo: []});
-  // console.log('yo' , newProps.params);
+  console.log('yo' , newProps.params);
   const response = await axios({
   method: 'post',
   url: 'http://localhost:8080/searchLogin',
@@ -89,11 +89,15 @@ if (response.data.data.photo.length > 0 )
 
 }
 
+like = () => {
+  console.log('entered function like');
+}
+
 render(){
 
     // console.log('props' , this.props);
     const user = this.props.params.user;
-    // console.log("You searched : " + user);
+    console.log("You searched : " + user);
 
 var style = {
   width: 200,
@@ -137,6 +141,7 @@ var style = {
               <br />
             <i className="fa fa-map-marker" aria-hidden="true"></i> {this.state.address}
               <br />
+              <i className="fa fa-heart fa-4x my_heart" aria-hidden="true" onClick={this.like}></i>
             </p>
           </div>
         </div>

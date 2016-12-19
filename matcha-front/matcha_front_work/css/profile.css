@@ -1,6 +1,11 @@
 .my_profile{
 }
 
+.my_heart{
+	/*color: red;*/
+	cursor: pointer;
+}
+
 @media(min-width: 900px){ /*Desktop*/
 	.container #img-profile{
 		margin-bottom: 16px;
