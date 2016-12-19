@@ -21,6 +21,10 @@ class Search extends Component {
                 console.log("not logged in");
                 browserHistory.push('/');
             }
+            else{
+                console.log('loggeduser:', data.data);
+                this.setState({ loggedUser: data.data.username});
+            }
         })
         axios({
             method: 'post',
@@ -92,16 +96,28 @@ class Search extends Component {
       this.setState({ users: sortedAge });
   }
 
-    like = (e) => {
-        this.setState({ like: true });
+    like = async (username, key) => {
+        console.log('username liked: ', this);
+        // this.setState({ like: true });
         // for each user, set in db
+        const response = await axios ({
+            method: 'post',
+            url: 'http://localhost:8080/like',
+            data: username,
+        })
+        if (response.data.status === true)
+        {
+            console.log("ok test");
+        }
     }
 
     render(){
       let ListUsers = [];
-      const label = this.state.like ? 'Liked' : 'Like';
+    //   const label = this.state.like ? 'Liked' : 'Like';
       if (this.state.users) {
             ListUsers = this.state.newUsers.map((src, key) => {
+                console.log('src:', src);
+                // console.log('key:', key);
                 return (
                     <div key={key} className="display_users">
                         {(src.photo && src.photo.length > 0 &&
@@ -111,8 +127,8 @@ class Search extends Component {
                         <div>Age: {src.age}</div>
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
-                        <div><button onClick={this.like}>{label}</button></div>
-                        <div><Link to ={'/matcha/profile/'+src.username} >See Full Profile</Link></div>
+                        <div><button onClick={() => this.like(src.username, key) }>{(src.interestedBy.includes(this.state.loggedUser)) ? "liked": "like"}</button></div>
+                        <div><Link to ={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
                     </div>
                 )
             }

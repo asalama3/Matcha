@@ -22,7 +22,7 @@ const editProfile = (req, res) => {
         var birthday = [req.body.year, req.body.month , req.body.day];
         var age = age_calculated(new Date(birthday));
         var user_info = { firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, 
-            orientation: req.body.orientation, bio: req.body.bio, hobbies: req.body.hobbies, location: req.body.location };
+            orientation: req.body.orientation, bio: req.body.bio, hobbies: req.body.hobbies, location: req.body.location, interestedIn: [], interestedBy: [] };
 
         db.collection('users').findOne({_id: ObjectId(session.user._id)}, function (err, user){
             if (err)

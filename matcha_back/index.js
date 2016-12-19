@@ -12,7 +12,7 @@ import * as Profile from './src/profile';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
 import * as profile from './src/search';
-
+import * as like from './src/like';
 app.use(cors());
 app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb',  extended: true }));
@@ -49,5 +49,7 @@ app.post('/deleteAccount', User.deleteAccount);
 app.post('/search', profile.search);
 app.post('/delPic', Pic.delPic);
 app.post('/profilePic', Pic.profilePic);
+app.post('/like', like.like);
+
 
 app.listen(8080);
