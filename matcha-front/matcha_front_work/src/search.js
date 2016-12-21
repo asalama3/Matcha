@@ -55,7 +55,8 @@ class Search extends Component {
         },
         users: [], // all users profiles
         newUsers: [], // all users at first and then filtered
-        like: false,
+        like: '',
+
     };
 
 
@@ -96,19 +97,32 @@ class Search extends Component {
       this.setState({ users: sortedAge });
   }
 
-    like = async (username, key) => {
+    like = async (username, key, Like) => {
         console.log('username liked: ', this);
         // this.setState({ like: true });
         // for each user, set in db
         const response = await axios ({
             method: 'post',
             url: 'http://localhost:8080/like',
-            data: username,
+            data:{
+              username: username,
+            }
         })
-        if (response.data.status === true)
+        if (response.data.status === true && response.data.details === "user already liked by loggedUser")
         {
-            console.log("ok test");
+          Like = 'like';
+          console.log(Like);
+          // this.setState({ like: 'liked' });
+          console.log("ok already liked");
         }
+        else if (response.data.status === true && response.data.details === "user not liked yet by loggedUser")
+        {
+          Like = 'liked';
+          // this.setState({ like: 'like' });
+          console.log(Like);
+          console.log("ok not liked yet");
+        }
+
     }
 
     render(){
@@ -116,8 +130,10 @@ class Search extends Component {
     //   const label = this.state.like ? 'Liked' : 'Like';
       if (this.state.users) {
             ListUsers = this.state.newUsers.map((src, key) => {
-                console.log('src:', src);
+                // console.log('src:', src);
                 // console.log('key:', key);
+                let Like = '';
+                (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = 'like';
                 return (
                     <div key={key} className="display_users">
                         {(src.photo && src.photo.length > 0 &&
@@ -127,7 +143,7 @@ class Search extends Component {
                         <div>Age: {src.age}</div>
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
-                        <div><button onClick={() => this.like(src.username, key) }>{(src.interestedBy.includes(this.state.loggedUser)) ? "liked": "like"}</button></div>
+                        <div><button value={Like} onClick={() => this.like(src.username, key, Like) }>{Like}</button></div>
                         <div><Link to ={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
                     </div>
                 )

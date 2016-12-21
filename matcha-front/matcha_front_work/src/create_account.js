@@ -97,36 +97,7 @@ export default class CreateUser extends Component{
         <div className="register">
 
 
-             <div className="form-group">
-                <label className="col-lg-3 control-label">Username:</label>
-                <div className="col-lg-8">
-                  <input name="username" className="form-control" defaultValue="Jane" type="text" />
-                </div>
-              </div>
-    <div className="form-group">
-                <label className="col-lg-3 control-label">Firstname:</label>
-                <div className="col-lg-8">
-                  <input name="firstame" className="form-control" defaultValue="Jane" type="text" />
-                </div>
-              </div>
-                  <div className="form-group">
-                <label className="col-lg-3 control-label">Lastname:</label>
-                <div className="col-lg-8">
-                  <input name="lastame" className="form-control" defaultValue="Jane" type="text" />
-                </div>
-              </div>
-                  <div className="form-group">
-                <label className="col-lg-3 control-label">Email:</label>
-                <div className="col-lg-8">
-                  <input name="email" className="form-control" defaultValue="Jane" type="email" />
-                </div>
-              </div>
-                  <div className="form-group">
-                <label className="col-lg-3 control-label">Password:</label>
-                <div className="col-lg-8">
-                  <input name="password" className="form-control" defaultValue="Jane" type="password" />
-                </div>
-              </div>
+
               <div>
           <label className="create"> Username </label>
           <input className="create_input"
@@ -198,27 +169,27 @@ export default class CreateUser extends Component{
          <div className="style_radio">
            <div className="style_radio">
             <input className="radio" id="r1" type="radio" value="male" name="gender" required   />
-              <label className="sex" htmlFor="r1">Male</label>
+              <label id="male_sex" htmlFor="r1">Male</label>
             </div>
             <div className="style_radio">
             <input  className="radio" id="r2" type="radio" value="female" name="gender"  />
-              <label className="sex" htmlFor="r2">Female</label>
+              <label id="female_sex" htmlFor="r2">Female</label>
           </div>
           </div>
           <div>
           <div><label className="create"> Sexual Orientation </label></div>
           <div className="style_radio">
-           <div className="style_radio">              
+           <div className="style_radio">
               <input className="radio" id="r3" type="radio" value="straight" name="orientation"  />
-              <label className="oriented" htmlFor="r3">Straight</label>
+              <label id="straight" htmlFor="r3">Straight</label>
              </div>
-           <div className="style_radio">                           
+           <div className="style_radio">
               <input  className="radio" id="r4" type="radio" value="bisexual" name="orientation" />
-              <label className="oriented" htmlFor="r4">Bisexual</label>
+              <label id="bi" htmlFor="r4">Bisexual</label>
               </div>
-           <div className="style_radio">                                         
+           <div className="style_radio">
               <input className="radio" id="r5" type="radio" value="gay" name="orientation" />
-              <label className="oriented" htmlFor="r5">Gay</label>
+              <label id="gay" htmlFor="r5">Gay</label>
               </div>
           </div>
           </div>

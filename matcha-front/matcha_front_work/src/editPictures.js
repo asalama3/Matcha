@@ -68,7 +68,7 @@ class editPictures extends React.Component{
       this.setState({photo: response.data.data, imagePreviewUrl: ''});
       console.log('photo state' ,this.state.photo);
     }
-      else{  
+      else{
       console.log('not ok:', response.data.details);
 
       }
@@ -97,7 +97,7 @@ class editPictures extends React.Component{
 //     return (
 //       <div>
 //         <img src={'./uploads/andrea2289/bronde.jpg'} />
-//       </div> 
+//       </div>
 //     );
 //   }
     //  <button className="all" onClick={this.renderImage} > </button>
@@ -128,7 +128,7 @@ class editPictures extends React.Component{
     profile_pic = async (key, name) => {
       console.log(key);
       console.log(name);
-    
+
       console.log("ok");
       const response = await axios ({
         method: 'post',
@@ -196,7 +196,7 @@ if (this.state.photo !== null){
         return(
             <div className="pictures">
             <div>{imgList}</div>
-            {(this.state.photo.length < 5 &&  
+            {(this.state.photo.length < 5 &&
       <div className="previewComponent">
         <form onSubmit={this.handleSubmit} encType="multipart/form-data">
           <input className="fileInput" type="file" onChange={this.handleImageChange} />

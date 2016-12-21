@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import AppHeader from './AppHeader';
 import App from './App';
 import {render} from 'react-dom';
@@ -14,6 +13,7 @@ import editPictures from './editPictures';
 import Search from './search';
 import * as logout from './logout';
 import deleteAccount from './delete_account';
+
 
 // console.log('couocu')
 

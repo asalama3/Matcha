@@ -7,7 +7,7 @@
 .login_form_active {
   display: block;
   margin: 0px 20px;
-  font-family: 'Cormorant Upright', serif;
+  font-family: "proxima-nova";
   font-size: 40px;
   /*font-weight: bold;*/
 
@@ -20,9 +20,8 @@
 .create_form_active{
   display: block;
   margin: 0px 20px;
-  font-family: 'Cormorant Upright', serif;
-  /*font-size: 40px;*/
-  font-weight: bold;
+  font-family: "proxima-nova";
+  /*font-weight: bold;*/
   min-height: 100%;
 
 }
@@ -49,9 +48,9 @@
 
 .button_style{
   margin: 0px 20px;
-  font-family: 'Cormorant Upright', serif;
-  font-size: 40px;
-  font-weight: bold;
+  font-family: "proxima-nova";
+  font-size: 35px;
+  /*font-weight: bold;*/
   position: relative;
   animation-name: dropButton;
   /*animation-iteration-count: 1;*/
@@ -73,8 +72,14 @@
 .buttons{
   text-align: center;
 }
+
+/*@font-face {
+   font-family: 'myFont';
+   src: url('../fonts/chewy/Chewy.ttf');
+}*/
+
 .welcome p{
-  font-family: 'Cormorant Upright', serif;
+  font-family: "proxima-nova", "Helvetica Neue", helvetica, sans-serif;
   font-size: 50px;
   color: #1E2D5B;
   font-weight: bold;
@@ -83,15 +88,18 @@
 }
 
 .intro{
-  font-family: 'Cormorant Upright', serif;
+  font-family: "proxima-nova", "Helvetica Neue", helvetica, sans-serif;;
   font-size: 20px;
   color: #1E2D5B;
-  font-weight: bold;
+  /*font-weight: bold;*/
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 
 
 }
+
+
+
 
 /* TYPING ANIMATION */
 /*.button p{
@@ -134,6 +142,7 @@
 
 .login_button{
   /*margin: auto;*/
+  width: 420px;
 background-color: #1E2D5B;
 color: #fff;
 font-size: 20px;
@@ -143,8 +152,7 @@ text-transform: uppercase;
 border-color: white;
 color: white;
 font-weight: bold;
-/*text-align: center;*/
-margin-top: 20px;
+margin-top: 25px;
 padding: 4px 90px;
 border: none;
 border-radius: 5px ;
@@ -157,6 +165,7 @@ border-radius: 5px ;
 
 .login_input{
   border-radius: 5px;
+  width: 420px;
 }
 
 /*********************    APP    *********************/
@@ -183,13 +192,18 @@ input{
 
 .create{
   font-size: 20px;
-  margin: 0;
+  margin: 2px;
+
+}
+
+.create_input{
+  width: 420px;
 
 }
 
 .register_button{
+  width: 420px;
   margin: auto;
-  margin-bottom: 40px;
   background-color: #1E2D5B;
   color: #fff;
   font-size: 20px;
@@ -199,8 +213,7 @@ input{
   color: white ;
   font-weight: bold;
   text-align: center;
-  margin-top: 20px;
-  padding: 4px 90px;
+  margin-top: 30px;
   border: none;
   border-radius: 5px ;
 }
@@ -218,15 +231,15 @@ input{
 
 .birthdate{
   margin: 0;
-  width: 300px;
+  width: 422px;
 }
 
-.sex, .oriented{
+/*.sex, .oriented{
   font-size: 17px;
   margin: 10px;;
   text-align: center;
 
-}
+}*/
 
 .error{
   text-align: center;
@@ -244,12 +257,60 @@ input{
   border: 1px solid #D1D3D4
 }
 
-.oriented{
+
+#female_sex{
+  width: 170px;
+  border-radius: 5px;
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  margin-left: 80px;
+  text-align: center;
+}
+
+#male_sex{
+  margin: 0;
+  width: 170px;
+  border-radius: 5px;
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  text-align: center;
+}
+
+#straight{
   border-radius: 5px;
   width: 120px;
-  border: 1px solid #D1D3D4
-  
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  margin: 0px;;
+  text-align: center;
+
 }
+
+#bi{
+  border-radius: 5px;
+  width: 120px;
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  margin-left: 30px;
+  text-align: center;
+
+}
+
+#gay{
+  border-radius: 5px;
+  width: 120px;
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  margin-left: 30px;
+  text-align: center;
+
+}
+/*.oriented{*/
+  /*border-radius: 5px;*/
+  /*width: 120px;*/
+  /*border: 1px solid #D1D3D4*/
+/*}*/
+
 /* hide input */
 input.radio:empty {
 display: none;
@@ -257,6 +318,7 @@ display: none;
 
 /* style label */
 input.radio:empty ~ label {
+  /*margin: 0;*/
 	position: relative;
 	/*float: left;*/
 	line-height: 2.5em;
@@ -309,5 +371,3 @@ input.radio:checked ~ label {
 input.radio:focus ~ label:before {
 	box-shadow: 0 0 0 3px #999;
 }
-
-
