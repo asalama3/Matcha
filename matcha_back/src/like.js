@@ -20,10 +20,12 @@ const like = async(req, res) => {
       else{
         if (user.interestedBy.includes(session.user.username))
         {
+          console.log("user was already liked")          
           // remove from list interestesdby
           res.send({status: true, details: "user already liked by loggedUser"});
         }
         else{
+          console.log("user is not liked")
           // add to list interestedby
           res.send({status: true, details: "user not liked yet by loggedUser"});
         }
