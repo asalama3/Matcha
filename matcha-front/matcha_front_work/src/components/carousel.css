@@ -1,0 +1,36 @@
+.carouselAndControls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel .container {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    width: 1000px;
+    transition: margin-left .3s
+}
+
+.carousel .container .images {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.carouselAndControls button {
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: #1E2D5B;
+    border: none;
+    margin: 0 10px;
+}
