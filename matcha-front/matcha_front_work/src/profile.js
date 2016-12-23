@@ -45,6 +45,10 @@ componentWillMount(){
       // Redirect
       console.log('OK', data, this.state.pending);
       this.setState({ user: data.data, photo: data.data.photo });
+      if (data.data.interestedBy.includes(loggedUser.username))
+      {
+        this.setState({ classe: 'fa fa-heart fa-4x my_heart' })
+      }
     })
     } else {
       console.log('USER LOGGED' , data, loggedUser.photo, this.state.pending);
@@ -71,7 +75,11 @@ componentWillReceiveProps = async(newProps) => {
     username: newProps.params.user,
   }
 });
-this.setState({ user: response.data.data })
+this.setState({ user: response.data.data });
+// if (response.data.data.interestedBy.includes(loggedUser.username))
+// {
+  // this.setState({ classe: 'fa fa-heart fa-4x my_heart' })
+// }
 if (response.data.data.location !== null)
 {
   this.setState({ address: response.data.data.location.address });
@@ -115,7 +123,7 @@ drawImage = () => {
     return false;
   return this.state.photo.map((el, key) =>
         <div key={key}>
-          <img role="presentation" id="img-profile" className="img-thumbnail img-center img-rounded" 
+          <img role="presentation" id="img-profile" className="img-thumbnail img-center img-rounded"
               src={`http://localhost:8080/public/${this.state.user.username}/${el.name}`} style={{
       width: 200,
       height: 300,
