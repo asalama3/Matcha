@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import Header from './header';
-// import Button from 'react-bootstrap/lib/Button';
-import axios from 'axios';
-import {browserHistory} from 'react-router';
 
 class AppHeader extends Component {
   // componentWillMount() {

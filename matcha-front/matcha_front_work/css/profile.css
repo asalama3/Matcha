@@ -20,3 +20,17 @@
         margin-top: 10px;
     }
 }
+
+
+.animatedLike {
+  width: 100px;
+  height: 100px;
+  background: url(../pictures/like_button.png) no-repeat;
+  background-position: 0 0;
+  transition: background 1s steps(28);
+}
+
+
+.animationLike { 
+  background-position: -2800px 0;
+}

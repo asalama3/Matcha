@@ -1,12 +1,12 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory} from 'react-router';
 // import * as NavbarHeader from 'react-bootstrap/lib/NavbarHeader';
 import { Navbar, Nav, MenuItem, NavItem, NavDropdown, FormGroup, FormControl, Button } from 'react-bootstrap/lib/';
 // import Logout from './logout';
 import '../css/welcome.css';
 import { LinkContainer } from 'react-router-bootstrap';
 import axios from 'axios';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 class Header extends React.Component {
 

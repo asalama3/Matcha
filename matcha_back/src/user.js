@@ -128,7 +128,7 @@ const searchLogin = (req, res) => {
       if (user)
       {
         console.log("found user");
-        res.send({status: true, details: 'username found', data: user});
+        res.send({status: true, details: 'username found', data: user, loggedUser: session.user});
       }
       else{
         console.log(" did not find user");

@@ -4,7 +4,7 @@ import { browserHistory, Link } from 'react-router';
 import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
-import searchDisplay from '../src/components/searchDisplay.js';
+// import searchDisplay from '../src/components/searchDisplay.js';
 import image from '../pictures/drom.jpeg';
 import Sort from '../src/components/sort.js';
 import '../css/search.css';
@@ -133,7 +133,7 @@ class Search extends Component {
                 // console.log('src:', src);
                 // console.log('key:', key);
                 let Like = '';
-                (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = 'like';
+                (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'already liked' : Like = 'want to like?';
                 return (
                     <div key={key} className="display_users">
                         {(src.photo && src.photo.length > 0 &&
@@ -143,8 +143,8 @@ class Search extends Component {
                         <div>Age: {src.age}</div>
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
-                        <div><button value={Like} onClick={() => this.like(src.username, key, Like) }>{Like}</button></div>
-                        <div><Link to ={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
+                        <div value={Like} onClick={() => this.like(src.username, key, Like) }>{Like}</div>
+                        <div><Link to={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
                     </div>
                 )
             }

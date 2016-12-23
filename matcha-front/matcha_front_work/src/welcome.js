@@ -3,8 +3,8 @@ import React from 'react';
 import '../css/welcome.css';
 import Login from './login';
 import CreateUser from './create_account';
-import axios from 'axios';
-import {browserHistory} from 'react-router';
+// import axios from 'axios';
+// import {browserHistory} from 'react-router';
 
 class Welcome extends React.Component {
   // componentWillMount() {
