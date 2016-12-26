@@ -13,6 +13,8 @@ class Profile extends Component {
     pending: true,
     className:'animatedLike',
     likePending: false,
+    erro: '',
+    connectedUser: '',
   }
 
   componentDidMount = async() => {
@@ -24,6 +26,7 @@ class Profile extends Component {
       return browserHistory.push('/');
     }
     let loggedUser = checkAuth.data;
+    this.setState({connectedUser: loggedUser.data});
 
     // search using username in params
     if (this.props.params.user) {
@@ -89,6 +92,10 @@ class Profile extends Component {
   // }
 
   like = async () => {
+    console.log(this.state.connectedUser.photo);
+    if (this.state.connectedUser.photo.length === 0){
+      return this.setState({error: 'add a picture to like'})
+    }
     if (this.state.likePending) return false
     this.setState({ likePending: true })
     if (this.state.className === 'animatedLike animationLike') {
@@ -103,7 +110,10 @@ class Profile extends Component {
         username: this.state.user.username,
       }
     })
-    console.log(data)
+    console.log(data);
+    if (data.status === false && data.details.includes('picture') ){
+      this.setState({error: 'you need a picture to like' });
+    }
     if (data.status === true && data.details.includes('disliked')) {
       // dislike
       this.setState({ className: 'animatedLike' });
@@ -121,7 +131,9 @@ class Profile extends Component {
       address,
       className,
       photo,
-    } = this.state
+    } = this.state;
+
+    console.log(this.state.user);
     return (
       <div>
         <h1>PROFILE</h1>
@@ -130,9 +142,7 @@ class Profile extends Component {
             <Carousel src={photo} username={user.username}/>
             <div className="col-sm-7 well margin-well my_profile">
               <p>
-                <i className="glyphicon glyphicon-user" /> {user.firstname}
-                <br />
-                <i className="glyphicon glyphicon-user" /> {user.lastname}
+                <i className="glyphicon glyphicon-user" /> {user.firstname} {user.lastname}
                 <br />
                 <i className="glyphicon glyphicon-user" /> {user.username}
                 <br />
@@ -144,15 +154,17 @@ class Profile extends Component {
                 <br />
                 <i className="fa fa-heart" aria-hidden="true"></i> {user.orientation}
                 <br />
-              <i className="fa fa-comment-o" aria-hidden="true"></i> {user.bio}
+                <i className="fa fa-comment-o" aria-hidden="true"></i> {user.bio}
                 <br />
                 <i className="fa fa-trophy" aria-hidden="true"></i>  {user.hobbies}
                 <br />
-              <i className="fa fa-map-marker" aria-hidden="true"></i> {address}
+                <i className="fa fa-map-marker" aria-hidden="true"></i> {address}
+                <br />              
+                <i className="fa fa-hand-peace-o" aria-hidden="true"></i> Popularity: {user.popularity}
               </p>
-                <div className={this.state.className} onClick={this.like} > </div>
-              
+                { this.props.params.user && this.state.user.username !== this.state.connectedUser.username && <div className={this.state.className} onClick={this.like} ></div> }
             </div>
+            <div> {this.state.error} </div>
           </div>
         </div>
       </div>

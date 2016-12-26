@@ -5,6 +5,8 @@ import mongodb from 'mongodb';
 // import mkdirp from 'mkdirp';
 import fs from 'fs';
 var session = require('express-session');
+import * as pop from './search';
+
 
 
 const age_calculated = (birthday) => {
@@ -22,8 +24,11 @@ const createAccount = (req, res) => {
   console.log(req.body);
   var birthday = [req.body.year, req.body.month , req.body.day];
   var age = age_calculated(new Date(birthday));
-
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '', photo: [] };
+  var views = {
+    number: 0, 
+    name: []
+  }
+  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '', photo: [], views };
   var email = req.body.email;
   var password = req.body.password;
 
@@ -61,6 +66,7 @@ const createAccount = (req, res) => {
 
 const ObjectId = mongodb.ObjectId;
 
+
 const LoginUser =  (req, res) => {
   // console.log("login user")
   MongoConnect(res,  function (db){
@@ -72,12 +78,11 @@ const LoginUser =  (req, res) => {
         if (user.password === hashPass)
         {
           session.user = user;
-
           res.send({status: true, details: 'success'})
         }
-        else{
+        else
           res.send({status: false, details: 'username or password invalid'})
-      }}
+      }
       else
         res.send({status: false, details: 'username or password invalid'});
     })
@@ -120,14 +125,16 @@ const autoFill = (req, res) => {
 };
 
 const searchLogin = (req, res) => {
-  // console.log('req body' , req.body.username);
   MongoConnect(res, function(db) {
-    console.log("entered searchLogin function");
+    // console.log("entered searchLogin function");
     db.collection('users').findOne({username: req.body.username}, function(err, user){
-      // console.log('databse' , user);
       if (user)
       {
-        console.log("found user");
+        console.log(user);
+        // const result = pop.popularity(user);
+        // db.collection('users').update({_id: ObjectId(user._id)}, {$set: {popularity: result} });
+        user = pop.popularity(user);
+        console.log('after pop added' , user);        
         res.send({status: true, details: 'username found', data: user, loggedUser: session.user});
       }
       else{

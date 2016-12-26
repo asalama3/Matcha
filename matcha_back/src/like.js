@@ -90,7 +90,10 @@ const like = (req, res) => {
     const liked = await users.findOne({ username })
 
     if (!liked) return res.send({ status: false, details: 'user not found' });
-    
+    if (liker.username === liked.username)
+      res.send({ status: false, details: 'cannot like yourself'});
+    console.log (liker.photo);
+    if (liker.photo.length === 0) return res.send( {status: false, details: 'you need to add a picture to like' });
     // check block, photo, report...
 
     // already liked

@@ -58,7 +58,7 @@ onChange = (e) =>{
       <Navbar inverse collapseOnSelect >
         <Navbar.Header >
           <Navbar.Brand>
-            <a href="#">Matcha</a>
+            <a href="/matcha/suggestions">Matcha</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

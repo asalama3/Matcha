@@ -1,6 +1,7 @@
 import MongoConnect from '../mongo_connect';
 var session = require('express-session');
 import mongodb from 'mongodb';
+import * as pop from './search';
 
 const ObjectId = mongodb.ObjectId;
 
@@ -17,7 +18,8 @@ const requireLogin = (req, res, next) =>
           else if (!user)
             res.send({status: false, details: "no user found" });
           else{
-            session.user = user;
+            const popUser = pop.popularity(user);            
+            session.user = popUser; 
             // console.log('session right after changed' , session.user);
             res.send({status: true, details: 'ok logged in', data: session.user, username: session.user.username});
             return next(); 

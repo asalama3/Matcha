@@ -56,6 +56,7 @@ class Search extends Component {
         users: [], // all users profiles
         newUsers: [], // all users at first and then filtered
         like: '',
+        loggedUser: '',
 
     };
 
@@ -127,10 +128,10 @@ class Search extends Component {
 
     render(){
       let ListUsers = [];
-    //   const label = this.state.like ? 'Liked' : 'Like';
+      console.log(this.state.newUsers);
       if (this.state.users) {
             ListUsers = this.state.newUsers.map((src, key) => {
-                // console.log('src:', src);
+                console.log('src:', src.interestedBy);
                 // console.log('key:', key);
                 let Like = '';
                 (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'already liked' : Like = 'want to like?';
