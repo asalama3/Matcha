@@ -98,33 +98,33 @@ class Search extends Component {
       this.setState({ users: sortedAge });
   }
 
-    like = async (username, key, Like) => {
-        console.log('username liked: ', this);
-        // this.setState({ like: true });
-        // for each user, set in db
-        const response = await axios ({
-            method: 'post',
-            url: 'http://localhost:8080/like',
-            data:{
-              username: username,
-            }
-        })
-        if (response.data.status === true && response.data.details === "user already liked by loggedUser")
-        {
-          Like = 'like';
-          console.log(Like);
-          // this.setState({ like: 'liked' });
-          console.log("ok already liked");
-        }
-        else if (response.data.status === true && response.data.details === "user not liked yet by loggedUser")
-        {
-          Like = 'liked';
-          // this.setState({ like: 'like' });
-          console.log(Like);
-          console.log("ok not liked yet");
-        }
-
-    }
+    // like = async (username, key, Like) => {
+    //     console.log('username liked: ', this);
+    //     // this.setState({ like: true });
+    //     // for each user, set in db
+    //     const response = await axios ({
+    //         method: 'post',
+    //         url: 'http://localhost:8080/like',
+    //         data:{
+    //           username: username,
+    //         }
+    //     })
+    //     if (response.data.status === true && response.data.details === "user already liked by loggedUser")
+    //     {
+    //       Like = 'like';
+    //       console.log(Like);
+    //       // this.setState({ like: 'liked' });
+    //       console.log("ok already liked");
+    //     }
+    //     else if (response.data.status === true && response.data.details === "user not liked yet by loggedUser")
+    //     {
+    //       Like = 'liked';
+    //       // this.setState({ like: 'like' });
+    //       console.log(Like);
+    //       console.log("ok not liked yet");
+    //     }
+    //
+    // }
 
     render(){
       let ListUsers = [];
@@ -144,7 +144,7 @@ class Search extends Component {
                         <div>Age: {src.age}</div>
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
-                        <div value={Like} onClick={() => this.like(src.username, key, Like) }>{Like}</div>
+                        <div>{Like}</div>
                         <div><Link to={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
                     </div>
                 )

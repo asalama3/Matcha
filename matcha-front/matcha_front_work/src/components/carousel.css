@@ -1,8 +1,10 @@
 .carouselAndControls {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    /*flex-direction: row;*/
+    /*justify-content: center;*/
     align-items: center;
+    width: 400px;
+    float: left;
 }
 
 .carousel {
@@ -12,15 +14,15 @@
     position: relative;
 }
 
-.carousel .container {
+.carousel .wrap {
     display: flex;
-    flex-direction: row;
+    /*flex-direction: row;*/
     padding: 0;
     width: 1000px;
     transition: margin-left .3s
 }
 
-.carousel .container .images {
+.carousel .wrap .images {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -30,7 +32,7 @@
     width: 40px;
     height: 40px;
     color: white;
-    background-color: #1E2D5B;
+    /*background-color: #1E2D5B;*/
     border: none;
     margin: 0 10px;
 }

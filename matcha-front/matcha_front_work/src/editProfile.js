@@ -107,7 +107,7 @@ autofill = async (e) => {
   if (response.data.user.location)
   {
     console.log("address non null");
-    this.setState({address: response.data.user.location.address, 
+    this.setState({address: response.data.user.location.address,
       position: {address: response.data.user.location.address, lat: response.data.user.location.lat, lng: response.data.user.location.lng }}) ;
   }
 }
@@ -227,13 +227,13 @@ render(){
 
           <div><label className="inputForm" > Gender </label></div>
             <div className="style">
-              <div className="style">              
+              <div className="style">
                 <input className="radio" type="radio" id="r1" name="gender" required value="male" checked={this.state.gender === "male"} onClick={this.getGender}/>
                 <label className="sex" htmlFor="r1">Male</label>
               </div>
             </div>
             <div className="style">
-              <div className="style">             
+              <div className="style">
                 <input className="radio" type="radio" id="r2" name="gender" value="female" checked={this.state.gender === "female"} onClick={this.getGender}/>
                 <label className="sex" htmlFor="r2">Female</label>
               <div>
@@ -261,7 +261,9 @@ render(){
           </div>
           <div>
             <label className="inputForm"> Biography (optional) </label>
-              <input className="bio" type="text" name="bio" value={this.state.bio} onChange={this.onChange}/>
+            <br/>
+            <textarea className="bio" type="text" name="bio" value={this.state.bio} onChange={this.onChange}>
+            </textarea>
           </div>
           <div>
             <label className="inputForm"> Hobbies (optional) </label>

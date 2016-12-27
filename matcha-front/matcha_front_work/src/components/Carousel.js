@@ -6,7 +6,7 @@ export default class Carousel extends React.Component {
     state = {
         margin: 0,
     }
-    
+
     _iterval = null
 
     drawSRC = () => this.props.src.map((el, key) =>
@@ -35,7 +35,7 @@ export default class Carousel extends React.Component {
     componentWillUnmount() {
         clearInterval(this._interval)
     }
-    
+
     stopInterval = () => {
         clearInterval(this._interval)
     }
@@ -62,7 +62,7 @@ export default class Carousel extends React.Component {
             <div className="carouselAndControls" onMouseEnter={this.stopInterval} onMouseLeave={this.startInterval}>
                 <button onClick={this.prevImage}><i className="fa fa-arrow-left" aria-hidden="true"/></button>
                 <div className="carousel">
-                    <div className="container" style={{ marginLeft: `-${margin}px` }}>
+                    <div className="wrap" style={{ marginLeft: `-${margin}px` }}>
                         {this.drawSRC()}
                     </div>
                 </div>
