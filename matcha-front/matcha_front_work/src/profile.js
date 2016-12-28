@@ -3,6 +3,10 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import '../css/profile.css';
 import Carousel from './components/Carousel';
+// import report from '../pictures/report_user.png';
+// import block from '../pictures/block_user.png';
+import block from '../pictures/block.png';
+import fake from '../pictures/fake.jpg';
 
 class Profile extends Component {
 
@@ -37,7 +41,7 @@ class Profile extends Component {
           username: this.props.params.user,
         }
       })
-      const askedUser = getProfile.data.data
+      const askedUser = getProfile.data.data;
       if (getProfile.data.status === true) {
         // Deal if the user doesn't exist
         this.setState({ user: askedUser, photo: askedUser.photo, address: askedUser.location.address });
@@ -47,7 +51,7 @@ class Profile extends Component {
       } else {
         console.log('user does not exist')
       }
-    // If there is no params
+    // If there are no params
     } else {
       this.setState({ user: loggedUser.data, photo: loggedUser.data.photo });
       if (loggedUser.data.location.address) {
@@ -55,12 +59,11 @@ class Profile extends Component {
       }
     }
     // search using ME
-     this.setState({pending: false});
+     this.setState({ pending: false });
   }
 
-  componentWillReceiveProps = async(newProps) => {
-    this.setState({photo: []});
-    console.log('yo' , newProps.params);
+  componentWillReceiveProps = async (newProps) => {
+    this.setState({ photo: [] });
     const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/searchLogin',
@@ -69,7 +72,6 @@ class Profile extends Component {
       }
     });
     this.setState({ user: response.data.data });
-    console.log('username logged: ',response.data.loggedUser.username );
     if (response.data.data.interestedBy.includes(response.data.loggedUser.username)) {
       this.setState({ className: 'animatedLike animationLike' })
     }
@@ -80,16 +82,13 @@ class Profile extends Component {
     }
     if (response.data.data.photo.length > 0 ) {
        this.setState({ photo: response.data.data.photo });
-       console.log("recieved : ", this.state.photo);
-    } else {
+    } else{
       this.setState({ photo: [] });
     }
   }
 
 
-
   like = async () => {
-    console.log(this.state.connectedUser.photo);
     if (this.state.connectedUser.photo.length === 0){
       return this.setState({error: 'add a picture to like'})
     }
@@ -107,7 +106,6 @@ class Profile extends Component {
         username: this.state.user.username,
       }
     })
-    console.log(data);
     if (data.status === false && data.details.includes('picture') ){
       this.setState({error: 'you need a picture to like' });
     }
@@ -119,7 +117,7 @@ class Profile extends Component {
       this.setState({ className: 'animatedLike animationLike' });
     }
     this.setState({ likePending: false })
-}
+  }
 
   render(){
     const {
@@ -139,7 +137,22 @@ class Profile extends Component {
       <div className="container">
         <h2>{user.firstname} {user.lastname}</h2>
         <h4> <i className="fa fa-trophy " aria-hidden="true"></i> Popularity:  {user.popularity} % </h4>
-        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username && <div className={this.state.className} onClick={this.like} ></div> }
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="aligned">Like</div>}
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className={this.state.className} onClick={this.like} ></div> }
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="aligned">Block</div> }
+
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="block"> <img className="block_img" src={block}/></div>}
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="aligned">Report</div>}
+
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="report"> <img className="report_img" src={fake}/></div>}
+        { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+          <div className="clear_float" ></div>}
             <Carousel src={photo} username={user.username}/>
               <ul className="list_profile">
                 <li><i className="glyphicon glyphicon-user " /> {user.username} </li>
@@ -151,6 +164,7 @@ class Profile extends Component {
                 <li><i className="fa fa-comment-o biography" aria-hidden="true"></i> {user.bio} </li>
               </ul>
             <div> {this.state.error} </div>
+            <div className="clear_float" ></div>
         </div>
       </div>
     );

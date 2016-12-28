@@ -1,91 +1,68 @@
 const Username = (req, res, next) => {
-  var username = req.body.username;
-
-  // console.log('dwadawd', username);
-
-  if (username && username.length > 3 && username.match(/^[a-zA-Z0-9]\w+$/))
-  {
-    console.log("username ok");
+  const username = req.body.username;
+  if (username && username.length > 3 && username.match(/^[a-zA-Z0-9]\w+$/)) {
     next();
+  } else {
+    res.send({ status: false, details: 'username not valid' });
   }
-  else {
-    console.log("username not ok");
-    res.send({status: false, details:'username not valid'});
-  }
-}
+};
 
 const Firstname = (req, res, next) => {
-  var fname = req.body.firstname;
-  console.log('firstname:', fname);
-  if (fname && fname.length > 3 && fname.match(/^[a-zA-Z0-9]\w+$/))
-  {
-    console.log(" fname ok");
+  const fname = req.body.firstname;
+  if (fname && fname.length > 3 && fname.match(/^[a-zA-Z0-9]\w+$/)) {
     next();
+  } else {
+    res.send({ status: false, details: 'firstname not valid' });
   }
-  else {
-    console.log("fname not ok");
-    res.send({status: false, details:'firstname not valid'});
-  }
-}
+};
 
 const Lastname = (req, res, next) => {
-  var lname = req.body.lastname;
-  console.log('lastname:', lname);
-  if (lname && lname.length > 3 && lname.match(/^[a-zA-Z0-9]\w+$/))
-  {
-    console.log(" lname ok");
+  const lname = req.body.lastname;
+  if (lname && lname.length > 3 && lname.match(/^[a-zA-Z0-9]\w+$/)) {
     next();
+  } else {
+    res.send({ status: false, details: 'lastname not valid' });
   }
-  else {
-    console.log(" lname not ok");
-    res.send({status: false, details:'lastname not valid'});
-  }
-}
+};
 
 const Email = (req, res, next) => {
-  var email = req.body.email;
-  console.log('email', email);
-  if (email && email.match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/))
-  {
-    console.log("email ok");
+  const email = req.body.email;
+  if (email && email.match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
     next();
+  } else {
+    return res.send({ status: false, details: 'email not valid' });
   }
-  else{
-    console.log("email not ok");
-    return res.send({status: false, details: 'email not valid'});
-  }
-}
+  return false;
+};
 
 const Password = (req, res, next) => {
-  var pass = req.body.password;
-  if (pass && pass.length > 5)
-  {
-    // console.log("ok");
+  const pass = req.body.password;
+  if (pass && pass.length > 5) {
     next();
+  } else {
+    return res.send({ status: false, details: 'password not valid' });
   }
-  else{
-    console.log("not ok");
-    return res.send({status: false, details:'password not valid'});
-  }
-}
+  return false;
+};
 
 const Gender = (req, res, next) => {
-  var gender = req.body.gender;
-  if (gender)
+  const gender = req.body.gender;
+  if (gender) {
     next();
-  else
-    res.send({status: false, details: 'gender empty'});
-}
+  } else {
+    res.send({ status: false, details: 'gender empty' });
+  }
+  return false;
+};
 
 const Orientation = (req, res, next) => {
-  var orientation = req.body.orientation;
-  if (orientation){
+  const orientation = req.body.orientation;
+  if (orientation) {
     next();
-  }
-  else{
+  } else {
     req.body.orientation = 'bisexual';
     next();
   }
-}
+};
 
-module.exports = {Username, Firstname, Lastname, Email, Password, Gender, Orientation};
+module.exports = { Username, Firstname, Lastname, Email, Password, Gender, Orientation };

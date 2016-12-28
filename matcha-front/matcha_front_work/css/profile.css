@@ -6,30 +6,30 @@
   /*width: 30%;*/
 }
 
-.my_heart{
-    color: red;
-	cursor: pointer;
-}
-
-
 .animatedLike {
-  /*float: left;*/
+  float: left;
   width: 100px;
   height: 100px;
   background: url(../pictures/like_button.png) no-repeat;
   background-position: 0 0;
   transition: background 1s steps(28);
+  cursor: pointer;
+  display: block;
 }
-
 
 .animationLike {
   background-position: -2800px 0;
-}
-/*
-.wrap{
-  border: 2px solid black;
-}*/
+  cursor: pointer;
+  display: block;
+  float: left;
 
+}
+
+.report, .block {
+  display:block;
+  float: left;
+
+}
 
 .list_profile{
   float: left;
@@ -37,12 +37,31 @@
   max-width: 300px;
 }
 
-.list_profile li {
-
-}
-
 .list_profile i {
   padding-right: 40px;
   width: 50px;
   height: 30px;
+}
+
+.container h4, .container h2{
+  margin: 0 !important;
+  margin-top: 5px !important;
+}
+
+.clear_float{
+  clear: both;
+}
+
+.block_img, .report_img{
+  width: 40px;
+  height: 40px;
+  margin: 20px;
+  margin-top: 25px;
+}
+
+
+.aligned{
+  float: left;
+  font-style: italic;
+  font-size: 10px;
 }

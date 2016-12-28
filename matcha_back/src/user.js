@@ -1,171 +1,134 @@
-import MongoConnect from '../mongo_connect';
-import * as Account from './parser.js';
+import fs from 'fs';
 import crypto from 'crypto';
 import mongodb from 'mongodb';
-// import mkdirp from 'mkdirp';
-import fs from 'fs';
-var session = require('express-session');
+import mongoConnect from '../mongo_connect';
 import * as pop from './search';
+// import mkdirp from 'mkdirp';
+const session = require('express-session');
 
-
-
-const age_calculated = (birthday) => {
-    var ageDifMs = Date.now() - birthday.getTime();
-    var ageDate = new Date(ageDifMs);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-}
-
-const createAccount = (req, res) => {
-  MongoConnect(res, function(db){
-
-  var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
-  console.log(hashPass);
-
-  console.log(req.body);
-  var birthday = [req.body.year, req.body.month , req.body.day];
-  var age = age_calculated(new Date(birthday));
-  var views = {
-    number: 0, 
-    name: []
-  }
-  var user = { username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, password: hashPass, age: age, day: req.body.day, month: req.body.month, year: req.body.year, gender: req.body.gender, orientation: req.body.orientation, location: '', photo: [], views };
-  var email = req.body.email;
-  var password = req.body.password;
-
-
-  db.collection('users').findOne({username: req.body.username}, (err, username) => {
-    if (err || username)
-      return res.send({status: false, details: 'username already used'});
-    else
-    {
-        db.collection('users').findOne({email: email}, function (err, usermail){
-        if (err || usermail)
-          return res.send({status: false, details: 'email already used'});
-        else
-        {
-          var dir = './uploads/'+req.body.username;
-          fs.mkdirSync(dir, function(err){
-            if (err)
-              {
-                console.log("error mkdirp");
-                res.send({status: false, details: "error mkdirp"});
-              }
-            })
-          db.collection('users').insert(user, (err) =>{
-            if (err)
-              return res.send({status: false, details: "db error"})
-            else
-              return res.send({status: true, details: "registered"});
-            });
-          }
-        })
-      }
-    })
-  })
+const ageCalculated = (birthday) => {
+  const ageDifMs = Date.now() - birthday.getTime();
+  const ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
-const ObjectId = mongodb.ObjectId;
+const createAccount = (req, res) => {
+  mongoConnect(res, (db) => {
+    const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
+    const birthday = [req.body.year, req.body.month, req.body.day];
+    const age = ageCalculated(new Date(birthday));
+    const views = {
+      number: 0,
+      name: [],
+    };
+    const user = {
+      username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      password: hashPass,
+      age,
+      day: req.body.day,
+      month: req.body.month,
+      year: req.body.year,
+      gender: req.body.gender,
+      orientation: req.body.orientation,
+      location: '',
+      photo: [],
+      views };
+    const email = req.body.email;
+    // const password = req.body.password;
+    db.collection('users').findOne({ username: req.body.username }, (err, username) => {
+      if (err || username) return res.send({ status: false, details: 'username already used' });
+      db.collection('users').findOne({ email }, (error, usermail) => {
+        if (error || usermail) return res.send({ status: false, details: 'email already used' });
+        const dir = `./uploads/${req.body.username}`;
+        fs.mkdirSync(dir, (er) => {
+          if (er) res.send({ status: false, details: 'error mkdirp' });
+        });
+        db.collection('users').insert(user, (e) => {
+          if (e) return res.send({ status: false, details: 'db error' });
+          return res.send({ status: true, details: 'registered' });
+        });
+      });
+    });
+  });
+};
 
+const objectId = mongodb.ObjectId;
 
-const LoginUser =  (req, res) => {
-  // console.log("login user")
-  MongoConnect(res,  function (db){
-
-    var hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
-    db.collection('users').findOne({username: req.body.username},  function (err, user){
-      if (user)
-      {
-        if (user.password === hashPass)
-        {
+const LoginUser = (req, res) => {
+  mongoConnect(res, (db) => {
+    const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
+    db.collection('users').findOne({ username: req.body.username }, (err, user) => {
+      if (user) {
+        if (user.password === hashPass) {
           session.user = user;
-          res.send({status: true, details: 'success'})
+          res.send({ status: true, details: 'success' });
+        } else {
+          res.send({ status: false, details: 'username or password invalid' });
         }
-        else
-          res.send({status: false, details: 'username or password invalid'})
+      } else {
+        res.send({ status: false, details: 'username or password invalid' });
       }
-      else
-        res.send({status: false, details: 'username or password invalid'});
-    })
-  })
-}
-
+    });
+  });
+};
 
 const logout = (req, res) => {
-  console.log("entered logout function");
-  console.log('before' , session.user);
-
-  // session.destroy();
   delete session.user;
-  // session.user = {};
-  console.log("session", session.user);
-  res.send({status: true, details: 'logout'});
-}
-
+  res.send({ status: true, details: 'logout' });
+};
 
 const autoFill = (req, res) => {
-  // console.log("autofill");
-  // console.log(session.user._id);
-
-  MongoConnect(res, function (db) {
-    db.collection('users').findOne({ _id: ObjectId(session.user._id) }, function (err, user) {
+  mongoConnect(res, (db) => {
+    db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
       if (err) {
-        res.send({ status: false, details: "no connexion to db" });
-      }
-      else if (!user) {
-        res.send({ status: false, details: "no user found" });
-      }
-      else {
+        res.send({ status: false, details: 'no connexion to db' });
+      } else if (!user) {
+        res.send({ status: false, details: 'no user found' });
+      } else {
         user.password = null;
         user._id = null;
         user.username = null;
-        res.send({ status: true, details: "all good", user: user });
+        res.send({ status: true, details: 'all good', user });
       }
-    })
-  })
+    });
+  });
 };
 
 const searchLogin = (req, res) => {
-  MongoConnect(res, function(db) {
-    // console.log("entered searchLogin function");
-    db.collection('users').findOne({username: req.body.username}, function(err, user){
-      if (user)
-      {
-        console.log(user);
-        // const result = pop.popularity(user);
-        // db.collection('users').update({_id: ObjectId(user._id)}, {$set: {popularity: result} });
-        user = pop.popularity(user);
-        console.log('after pop added' , user);        
-        res.send({status: true, details: 'username found', data: user, loggedUser: session.user});
+  mongoConnect(res, (db) => {
+    const users = db.collection('users');
+    users.findOne({ username: req.body.username }, (err, user) => {
+      if (user) {
+        if (user.views.name.indexOf(session.user.username) === -1) {
+          user.views.number += 1;
+          user.views.name.push(session.user.username);
+          user = pop.popularity(user);
+          users.update({ username: req.body.username}, { $set: { ...user }});
+        }
+        res.send({ status: true, details: 'username found', data: user, loggedUser: session.user });
+      } else {
+        res.send({ status: false, details: 'user not found' });
       }
-      else{
-        console.log(" did not find user");
-        res.send({status:false, details: 'user not found'});
-      }
-    })
-  })
-}
+    });
+  });
+};
 
 const deleteAccount = (req, res) => {
-  MongoConnect(res, function(db) {
-    console.log("entered delete account function");
-      db.collection('users').findOne({_id: ObjectId(session.user._id)}, function(err, user){
-        if (err)
-        {
-          res.send({status: false, details: "no connexion to db"});
-        }
-        else if (!user)
-        {
-          res.send({status: false, details: "no user found"});
-        }
-        else {
-          console.log('before' , session.user);
-          db.collection('users').remove({_id: ObjectId(session.user._id)});
-          console.log('after' ,session.user);
-          res.send ({status: true, details: 'user deleted from db'});
-        }
-      })
+  mongoConnect(res, (db) => {
+    db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
+      if (err) {
+        res.send({ status: false, details: 'no connexion to db' });
+      } else if (!user) {
+        res.send({ status: false, details: 'no user found' });
+      } else {
+        db.collection('users').remove({ _id: objectId(session.user._id) });
+        res.send({ status: true, details: 'user deleted from db' });
+      }
+    });
+  });
+};
 
-  })
-}
-
-export {createAccount, LoginUser, autoFill, logout, searchLogin, deleteAccount};
+export { createAccount, LoginUser, autoFill, logout, searchLogin, deleteAccount };

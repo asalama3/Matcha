@@ -65,11 +65,11 @@ class Search extends Component {
       const { min: aMin, max: aMax } = this.state.valuesAge
       const { min: lMin, max: lMax } = this.state.valuesLocation
       const { min: pMin, max: pMax } = this.state.valuesPop
-      const { distance, age, pop } = element
+      const { distance, age, popularity } = element
       return (
           +distance <= +lMax && +distance >= +lMin &&
-          +age <= +aMax && +age >= +aMin /*&&
-          +pop <= +pMax && +pop >= +pMin*/
+          +age <= +aMax && +age >= +aMin &&
+          +popularity <= +pMax && +popularity >= +pMin
       )
   }
 
@@ -90,12 +90,12 @@ class Search extends Component {
       this.setState({ valuesPop: values }, this.filterUser)
   }
 
-  handleValuesTagsChange = (component, values) => {
-    this.setState({ valuesTags: values });
-  }
+  // handleValuesTagsChange = (component, values) => {
+  //   this.setState({ valuesTags: values });
+  // }
 
-  updateSort = (sortedAge) => {
-      this.setState({ users: sortedAge });
+  updateSort = (sorted) => {
+      this.setState({ users: sorted });
   }
 
     // like = async (username, key, Like) => {
@@ -128,10 +128,9 @@ class Search extends Component {
 
     render(){
       let ListUsers = [];
-      console.log(this.state.newUsers);
       if (this.state.users) {
             ListUsers = this.state.newUsers.map((src, key) => {
-                console.log('src:', src.interestedBy);
+                // console.log('src:', src.interestedBy);
                 // console.log('key:', key);
                 let Like = '';
                 (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'already liked' : Like = 'want to like?';
@@ -144,6 +143,7 @@ class Search extends Component {
                         <div>Age: {src.age}</div>
                         <div>distance away from: {src.distance} km</div>
                         <div>tags: {src.hobbies}</div>
+                        <div>Popularity: {src.popularity}</div>
                         <div>{Like}</div>
                         <div><Link to={'/matcha/profile/' + src.username} >See Full Profile</Link></div>
                     </div>
@@ -155,33 +155,26 @@ class Search extends Component {
                 <h1>Search</h1>
             <form className="form">
                 <div className="formField">
-                    <h4>Search By Age</h4>
+                    <h5>Search By Age</h5>
                     <InputRange
                         maxValue={95}
                         minValue={18}
                         value={this.state.valuesAge}
                         onChange={this.handleChangeAge.bind(this)}
                     />
-                    <h4>Search By Location</h4>
+                    <h5>Search By Location</h5>
                     <InputRange
                         maxValue={100000}
                         minValue={0}
                         value={this.state.valuesLocation}
                         onChange={this.handleChangeLocation.bind(this)}
                     />
-                    <h4>Search By Popularity</h4>
+                    <h5>Search By Popularity</h5>
                     <InputRange
                         maxValue={100}
                         minValue={0}
                         value={this.state.valuesPop}
                         onChange={this.handleChangePop.bind(this)}
-                    />
-                    <h4>Search By Hobbies</h4>
-                    <InputRange
-                        maxValue={10}
-                        minValue={0}
-                        value={this.state.valuesTags}
-                        onChange={this.handleValuesTagsChange.bind(this)}
                     />
                 </div>
             </form>
