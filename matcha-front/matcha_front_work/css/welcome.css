@@ -5,7 +5,6 @@
 /*********************    WELCOME    *********************/
 .hidden_login_form {
   display: none;
-
 }
 
 .login_form_active {
@@ -14,7 +13,6 @@
   font-family: "proxima-nova";
   font-size: 40px;
   /*font-weight: bold;*/
-
 }
 
 .hidden_create_form{
@@ -27,7 +25,6 @@
   font-family: "proxima-nova";
   /*font-weight: bold;*/
   min-height: 100%;
-
 }
 
 .welcome{
@@ -72,7 +69,6 @@
   100% {top:0px; }
 }
 
-
 .buttons{
   text-align: center;
 }
@@ -98,12 +94,7 @@
   /*font-weight: bold;*/
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
-
-
 }
-
-
-
 
 /* TYPING ANIMATION */
 /*.button p{
@@ -143,24 +134,22 @@
   font-size: 20px;
 }
 
-
 .login_button{
   /*margin: auto;*/
   width: 420px;
-background-color: #1E2D5B;
-color: #fff;
-font-size: 20px;
-height: auto;
-font-weight: normal;
-text-transform: uppercase;
-border-color: white;
-color: white;
-font-weight: bold;
-margin-top: 25px;
-padding: 4px 90px;
-border: none;
-border-radius: 5px ;
-
+  background-color: #1E2D5B;
+  color: #fff;
+  font-size: 20px;
+  height: auto;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-color: white;
+  color: white;
+  font-weight: bold;
+  margin-top: 25px;
+  padding: 4px 90px;
+  border: none;
+  border-radius: 5px ;
 }
 
 .error{
@@ -174,15 +163,14 @@ border-radius: 5px ;
 
 /*********************    APP    *********************/
 
-
 #video{
-min-height: 100%;
-min-width: 100%;
-top: 0;
-padding: none;
-position: fixed;
-opacity: 0.6;
-z-index: -100;
+  min-height: 100%;
+  min-width: 100%;
+  top: 0;
+  padding: none;
+  position: fixed;
+  opacity: 0.6;
+  z-index: -100;
 }
 
 
@@ -197,12 +185,10 @@ input{
 .create{
   font-size: 20px;
   margin: 2px;
-
 }
 
 .create_input{
   width: 420px;
-
 }
 
 .register_button{
@@ -238,13 +224,6 @@ input{
   width: 422px;
 }
 
-/*.sex, .oriented{
-  font-size: 17px;
-  margin: 10px;;
-  text-align: center;
-
-}*/
-
 .error{
   text-align: center;
 }
@@ -260,7 +239,6 @@ input{
   border-radius: 5px;
   border: 1px solid #D1D3D4
 }
-
 
 #female_sex{
   width: 170px;
@@ -297,7 +275,6 @@ input{
   font-size: 15px;
   margin-left: 30px;
   text-align: center;
-
 }
 
 #gay{

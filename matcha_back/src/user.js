@@ -76,6 +76,7 @@ const LoginUser = (req, res) => {
 };
 
 const logout = (req, res) => {
+  console.log('logout');
   delete session.user;
   res.send({ status: true, details: 'logout' });
 };
@@ -98,6 +99,7 @@ const autoFill = (req, res) => {
 };
 
 const searchLogin = (req, res) => {
+  console.log(req.body.username);
   mongoConnect(res, (db) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {

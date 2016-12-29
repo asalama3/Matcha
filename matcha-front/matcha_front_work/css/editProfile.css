@@ -16,17 +16,10 @@
   /*margin: auto;*/
 }
 
-/*body{
-  margin: 0;
-  padding: 0;
-  /*background: linear-gradient(to left, gray, rgba(0,255,0,0));*/
-/*}*/
-
 .form{
   height: 100%;
   width: 100%;
 }
-
 
 .form h2{
   font-family: Helvetica;

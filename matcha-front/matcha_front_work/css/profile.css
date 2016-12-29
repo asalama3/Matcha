@@ -28,7 +28,6 @@
 .report, .block {
   display:block;
   float: left;
-
 }
 
 .list_profile{
@@ -58,7 +57,6 @@
   margin: 20px;
   margin-top: 25px;
 }
-
 
 .aligned{
   float: left;

@@ -1,5 +1,4 @@
-import React            from 'react'
-
+import React from 'react'
 import './carousel.css'
 
 export default class Carousel extends React.Component {
@@ -18,14 +17,14 @@ export default class Carousel extends React.Component {
                 width: '200px',
                 height: '200px',
             }}
-        />
+        />,
     )
 
     updateMargin = () => {
-        const { length } = this.props.src
-        const { margin } = this.state
-        const newMargin = (margin + 200) % (length * 200)
-        this.setState({ margin: newMargin })
+        const { length } = this.props.src;
+        const { margin } = this.state;
+        const newMargin = (margin + 200) % (length * 200);
+        this.setState({ margin: newMargin });
     }
 
     componentDidMount() {
@@ -33,11 +32,11 @@ export default class Carousel extends React.Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this._interval)
+        clearInterval(this._interval);
     }
 
     stopInterval = () => {
-        clearInterval(this._interval)
+        clearInterval(this._interval);
     }
 
     startInterval = () => {
@@ -45,19 +44,19 @@ export default class Carousel extends React.Component {
     }
 
     prevImage = () => {
-        const { margin } = this.state
-        const { length } = this.props.src
+        const { margin } = this.state;
+        const { length } = this.props.src;
         let newMargin;
         if (margin === 0) {
-            newMargin = 200 * (length - 1)
+            newMargin = 200 * (length - 1);
         } else {
             newMargin = margin - 200
         }
-        this.setState({ margin: newMargin })
+        this.setState({ margin: newMargin });
     }
 
     render() {
-        const { margin } = this.state
+        const { margin } = this.state;
         return (
             <div className="carouselAndControls" onMouseEnter={this.stopInterval} onMouseLeave={this.startInterval}>
                 <button onClick={this.prevImage}><i className="fa fa-arrow-left" aria-hidden="true"/></button>
@@ -68,6 +67,6 @@ export default class Carousel extends React.Component {
                 </div>
                 <button onClick={this.updateMargin}><i className="fa fa-arrow-right" aria-hidden="true"/></button>
             </div>
-        )
+        );
     }
 }
