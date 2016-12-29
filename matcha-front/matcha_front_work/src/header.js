@@ -12,6 +12,16 @@ class Header extends React.Component {
     error: '',
   }
 
+  componentWillMount() {
+    global.socket.on('notification', (data) => {
+      console.log(data);
+    });
+  }
+
+  componentWillUnmount() {
+    global.socket.removeEventListener('notification');
+  }
+
   handleSubmit = async (e) => {
     console.log(e.target.username.value);
     e.preventDefault();

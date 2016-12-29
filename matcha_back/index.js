@@ -1,4 +1,6 @@
 import express from 'express';
+import http from 'http';
+import socketIO from 'socket.io';
 import * as User from './src/user';
 import * as Account from './src/parser';
 import * as Logged from './src/logged';
@@ -13,6 +15,15 @@ const session = require('express-session');
 const cors = require('cors');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
+const users = [];
+
+io.on('connection', (socket) => {
+	if (!session.user) return false;
+	users.push({ username: session.user.username, socket });
+});
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '2mb' }));
@@ -22,7 +33,7 @@ app.use(session({
 		resave: false,
 		saveUninitialized: false,
 	}));
-app.use('/public', express.static(__dirname + '/uploads/'));
+app.use('/public', express.static(`${__dirname}/uploads/`));
 app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname,
 Account.Email, Account.Password, Account.Gender,
 Account.Orientation, User.createAccount);
@@ -37,7 +48,7 @@ app.post('/deleteAccount', User.deleteAccount);
 app.post('/search', profile.search);
 app.post('/delPic', Pic.delPic);
 app.post('/profilePic', Pic.profilePic);
-app.post('/like', like.like);
+app.post('/like', like.like(users));
 
 
-app.listen(8080);
+server.listen(8080);

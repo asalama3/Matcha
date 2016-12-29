@@ -8,7 +8,7 @@ const session = require('express-session');
 //   details: 'an error occurred',
 // });
 
-const like = (req, res) => {
+const like = (socketList) => (req, res) => {
   const { username } = req.body;
   mongoConnect(res, async (db) => {
     const users = db.collection('users');
@@ -27,6 +27,10 @@ const like = (req, res) => {
       res.send({ status: true, details: 'user successfully disliked' });
     // not already liked
     } else {
+      const likerSocket = socketList.filter(el => el.username === liked.username);
+      if (likerSocket && likerSocket.length) {
+        likerSocket.forEach(el => el.socket.emit('notification', { message: `you successfully liked ${liked.username}` }));
+      }
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });
       res.send({ status: true, details: 'user successfully liked' });
