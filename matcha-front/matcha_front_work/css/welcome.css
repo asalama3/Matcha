@@ -96,6 +96,22 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
+.notif{
+  margin-top: 10px;
+  border-radius: 15px;
+  /*background-color: blue;*/
+  outline: none;
+  border: none;
+}
+
+.active_notif {
+  margin-top: 10px;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+  color: red;
+}
+
 /* TYPING ANIMATION */
 /*.button p{
   color: #1E2D5B;

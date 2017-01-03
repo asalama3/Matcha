@@ -25,6 +25,7 @@
     "express-session": "^1.14.2",
     "fs": "0.0.1-security",
     "geolib": "^2.0.22",
+    "jsonwebtoken": "^7.2.1",
     "mkdirp": "^0.5.1",
     "mongodb": "^2.2.11",
     "multer": "^1.2.0",

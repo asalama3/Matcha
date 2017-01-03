@@ -10,11 +10,14 @@ class Header extends React.Component {
   state={
     username: '',
     error: '',
+    notif: 'notif',
   }
 
   componentWillMount() {
     global.socket.on('notification', (data) => {
+      this.setState({ notif: 'active_notif' });
       console.log(data);
+      console.log('okodkcsko');
     });
   }
 
@@ -77,6 +80,7 @@ class Header extends React.Component {
               <Button type="submit" >Submit</Button>
             </Navbar.Form>
             </form>
+            <button className={this.state.notif}><i className="fa fa-bell" aria-hidden="true"></i></button>
             <Nav pullRight>
               <LinkContainer to="/matcha/logout">
                 <NavItem eventKey={4}>Logout</NavItem>

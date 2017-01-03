@@ -55,7 +55,7 @@ export default class CreateUser extends Component {
     this.setState({ error: response.data.details });
     if (response.data.status === true) {
       browserHistory.push('/');
-      this.setState({ error: 'you can now login' });
+      this.setState({ error: 'sucess ! you can now login !' });
     }
   }
 

@@ -114,7 +114,7 @@ class editPictures extends React.Component {
             <Col xs={6} md={4}>
               <div className="hover_class">
                 <button className="trash_button" onClick={() => this.delImg(key, el.name)}><i className="fa fa-trash-o fa-2x" aria-hidden="true"></i></button>
-                <button className="profile_button" onClick={() => this.profile_pic(key, el.name)}> <i className="fa fa-user fa-2x" aria-hidden="true"></i></button>
+                <button className="profile_button" onClick={() => this.profilePic(key, el.name)}> <i className="fa fa-user fa-2x" aria-hidden="true"></i></button>
                 <Image role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
               </div>
             </Col>

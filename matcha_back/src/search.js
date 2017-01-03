@@ -6,19 +6,27 @@ const session = require('express-session');
 const popularity = (allUsers) => {
   if (Array.isArray(allUsers)) {
     const pop = allUsers.map((src) => {
+      if (src.interestedBy) {
       const numberLikes = src.interestedBy.length;
       const numberViews = src.views.number;
       src.popularity = (numberLikes / numberViews) * 100;
+      } else {
+        src.popularity = 0;
+      }
       return src;
     });
     return pop;
   }
-  const numberLikes = allUsers.interestedBy.length;
-  const numberViews = allUsers.views.number;
-  if (numberViews === 0) {
-       allUsers.popularity = 0;
+  if (allUsers.interestedBy) {
+    const numberLikes = allUsers.interestedBy.length;
+    const numberViews = allUsers.views.number;
+    if (numberViews === 0) {
+         allUsers.popularity = 0;
+    } else {
+      allUsers.popularity = (numberLikes / numberViews) * 100;
+    }
   } else {
-    allUsers.popularity = (numberLikes / numberViews) * 100;
+    allUsers.popularity = 0;
   }
   return allUsers;
 };
@@ -61,7 +69,7 @@ const search = async (req, res) => {
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
           user.distance = geolib.getDistance(
-            { latitude: user.location.lat , longitude: user.location.lng },
+            { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: session.user.location.lat, longitude: session.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });

@@ -12,6 +12,7 @@ import * as like from './src/like';
 
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 const app = express();
@@ -19,6 +20,11 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const users = [];
+
+// lui envoyer au login l'id et le username pour generer le token;
+// a insere dans le user.LoginUser pour generer un token;
+const token = jwt.sign({ foo: 'bar' }, 'yay', { algorithm: 'RS256' });
+console.log(token);
 
 io.on('connection', (socket) => {
 	if (!session.user) return false;
@@ -32,8 +38,51 @@ app.use(session({
 		secret: 'ssshhhhh',
 		resave: false,
 		saveUninitialized: false,
+		cookie: {},
 	}));
 app.use('/public', express.static(`${__dirname}/uploads/`));
+
+
+/* replace function requireLogin to check le login */
+/* req a remplace session */
+// getToken = (req) => {
+//     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+//         return req.headers.authorization.split(' ')[1];
+//     } else if (req.query && req.query.token) {
+//       return req.query.token;
+//     }
+//     return null;
+//   }
+//
+// app.use((req, res, next) => {
+// 	const token = getToken(req);
+// 	jwt.verify(token, 'yay', async(err, decoded) => {
+// 		if (err) {
+// 			// handle errors
+// 		} else {
+// 			mongoConnect(res, (db) => {
+// 				db.collection('users').findOne({ _id: objectId(decoded.id) }, (err, user) => {
+// 					if (err) res.send({ status: false, details: 'db error' });
+// 					else if (!user) res.send({ status: false, details: 'no user found' });
+// 					else {
+// 						const userWithPop = pop.popularity(user);
+// 						req.user = userWithPop;
+// 						res.send({
+// 							status: true,
+// 							details: 'ok logged in',
+// 							data: req.user,
+// 							username: req.user.username,
+// 						});
+// 						return next();
+// 					}
+// 					return false;
+// 				});
+// 			});
+// 		}
+// 	})
+// });
+
+
 app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname,
 Account.Email, Account.Password, Account.Gender,
 Account.Orientation, User.createAccount);
