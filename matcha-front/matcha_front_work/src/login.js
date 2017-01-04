@@ -23,8 +23,10 @@ class Login extends Component {
         password: e.target.password.value,
       },
     });
+    console.log('dscdscd');
     this.setState({ error: response.data.details });
     if (response.data.status === true) {
+      console.log(response.data.details);
       browserHistory.push('/matcha/profile');
     }
   }

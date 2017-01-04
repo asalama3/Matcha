@@ -43,7 +43,7 @@
 }
 
 .container h4, .container h2{
-  margin: 0 !important;
+  /*margin: 0 !important;*/
   margin-top: 5px !important;
 }
 
@@ -62,4 +62,10 @@
   float: left;
   font-style: italic;
   font-size: 10px;
+}
+
+.separation{
+  width: 60%;
+  margin: 0;
+  margin-bottom: 10px;
 }

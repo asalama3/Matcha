@@ -22,9 +22,11 @@ class Profile extends Component {
   componentDidMount = async () => {
     const checkAuth = await axios({
       method: 'post',
-      url: 'http://localhost:8080/checklogin',
+      url: 'http://localhost:8080/login',
     });
+    console.log(checkAuth.data);
     if (checkAuth.data.status === false) {
+      console.log('dfdfdfffffdfddf');
       return browserHistory.push('/');
     }
     const loggedUser = checkAuth.data;
@@ -131,6 +133,7 @@ class Profile extends Component {
       <div>
         <div className="container">
           <h2>{user.firstname} {user.lastname}</h2>
+          <hr className="separation" />
           <h4> <i className="fa fa-trophy " aria-hidden="true"></i> Popularity: {user.popularity} % </h4>
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className="aligned">Like</div>}

@@ -1,4 +1,5 @@
 const Username = (req, res, next) => {
+  console.log('username ')
   const username = req.body.username;
   if (username && username.length > 3 && username.match(/^[a-zA-Z0-9]\w+$/)) {
     next();
@@ -36,6 +37,7 @@ const Email = (req, res, next) => {
 };
 
 const Password = (req, res, next) => {
+  console.log('password')
   const pass = req.body.password;
   if (pass && pass.length > 5) {
     next();

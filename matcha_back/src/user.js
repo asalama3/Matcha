@@ -5,6 +5,7 @@ import mongoConnect from '../mongo_connect';
 import * as pop from './search';
 // import mkdirp from 'mkdirp';
 const session = require('express-session');
+const jwt = require('jsonwebtoken');
 
 const ageCalculated = (birthday) => {
   const ageDifMs = Date.now() - birthday.getTime();
@@ -58,12 +59,26 @@ const createAccount = (req, res) => {
 const objectId = mongodb.ObjectId;
 
 const LoginUser = (req, res) => {
+  console.log('okddf');
   mongoConnect(res, (db) => {
     const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
     db.collection('users').findOne({ username: req.body.username }, (err, user) => {
       if (user) {
         if (user.password === hashPass) {
-          session.user = user;
+          // session.user = user;
+          const token = jwt.sign({ username: user.username, id: user._id }, 'yay');
+          jwt.verify(token, 'yay', async(err, decoded) => {
+            console.log(token);
+            console.log(decoded.username);
+            console.log(decoded.id);
+          });
+          // const token = jwt.sign({
+          //   username: user.username, id: user._id },
+          //   'yay',
+          //   { algorithm: 'RS256',
+          // });
+          console.log('vrvfv');
+          req.user = user;
           res.send({ status: true, details: 'success' });
         } else {
           res.send({ status: false, details: 'username or password invalid' });

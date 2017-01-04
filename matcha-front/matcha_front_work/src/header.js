@@ -35,6 +35,9 @@ class Header extends React.Component {
       data: {
         username: this.state.username,
       },
+      // headers: {
+      //   Authorization: `Bearer ${localStorage.getItem('token')}`
+      // }
     });
     if (response.data.status === true) {
       console.log(response.data.data);
@@ -53,10 +56,10 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <Navbar inverse collapseOnSelect >
+        <Navbar className="headerStyle" inverse collapseOnSelect >
           <Navbar.Header >
             <Navbar.Brand>
-              <a href="/matcha/suggestions">Matcha</a>
+              <a className="headerList" href="/matcha/suggestions">Matcha</a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -81,9 +84,9 @@ class Header extends React.Component {
             </Navbar.Form>
             </form>
             <button className={this.state.notif}><i className="fa fa-bell" aria-hidden="true"></i></button>
-            <Nav pullRight>
-              <LinkContainer to="/matcha/logout">
-                <NavItem eventKey={4}>Logout</NavItem>
+            <Nav pullRight >
+              <LinkContainer  to="/matcha/logout">
+                <NavItem  eventKey={4}>Logout</NavItem>
               </LinkContainer>
               <LinkContainer to="/matcha/delete_account">
                 <NavItem eventKey={4}>Delete Account</NavItem>
