@@ -43,9 +43,7 @@ app.use(session({
 	}));
 app.use('/public', express.static(`${__dirname}/uploads/`));
 
-app.use(expressJwt({
-		secret: 'yay',
-	}).unless({ path: './login' }));
+app.use(expressJwt({ secret: 'yay' }).unless({ path: ['/login'] }));
 
 
 /* replace function requireLogin to check le login */
