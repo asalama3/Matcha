@@ -28,18 +28,18 @@ class editProfile extends Component {
     tags: [],
   }
 
-  componentWillMount() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/checklogin',
-    }).then(({ data }) => {
-      if (data.status === true) {
-        this.autofill();
-      } else {
-        browserHistory.push('/');
-      }
+  componentDidMount = async() => {
+    const fillData = await axios.get('http://localhost:8080/fill_data', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
     });
-  }
+    if (fillData.data.status === true) {
+      this.autofill();
+    } else {
+      browserHistory.push('/');
+    }
+  };
 
   setAddress = async (e) => {
     const google = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${e.label}`);
@@ -59,10 +59,13 @@ class editProfile extends Component {
     this.setState({ [e.target.name]: text });
   }
 
-  autofill = async (e) => {
+  autofill = async () => {
     const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/autoFill',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
     });
     if (response.data.user) {
       this.setState({
@@ -113,9 +116,14 @@ class editProfile extends Component {
        hobbies: this.state.tags,
        location: this.state.position,
      },
+     headers: {
+       Authorization: `Bearer ${localStorage.getItem('token')}`
+     },
     });
     if (response.data.status === true) {
       browserHistory.push('/matcha/profile');
+    } else {
+      // add error message from middleware ou editprofile function
     }
   }
 

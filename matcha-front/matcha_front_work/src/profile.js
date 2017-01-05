@@ -20,16 +20,17 @@ class Profile extends Component {
   }
 
   componentDidMount = async () => {
-    const checkAuth = await axios({
-      method: 'post',
-      url: 'http://localhost:8080/login',
+
+    const checkAuth = await axios.get('http://localhost:8080/my_profile', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
     });
-    console.log(checkAuth.data);
     if (checkAuth.data.status === false) {
-      console.log('dfdfdfffffdfddf');
       return browserHistory.push('/');
     }
     const loggedUser = checkAuth.data;
+    console.log('dfff', loggedUser);
     this.setState({ connectedUser: loggedUser.data });
 
     // search using username in params
@@ -39,6 +40,9 @@ class Profile extends Component {
         url: 'http://localhost:8080/searchLogin',
         data: {
           username: this.props.params.user,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
       });
       const askedUser = getProfile.data.data;
@@ -69,6 +73,9 @@ class Profile extends Component {
       url: 'http://localhost:8080/searchLogin',
       data: {
         username: newProps.params.user,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
     this.setState({ user: response.data.data });
@@ -103,6 +110,9 @@ class Profile extends Component {
       url: 'http://localhost:8080/like',
       data: {
         username: this.state.user.username,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
     if (data.status === false && data.details.includes('picture')) {

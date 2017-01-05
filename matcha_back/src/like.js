@@ -1,7 +1,7 @@
 import mongodb from 'mongodb';
 import mongoConnect from '../mongo_connect';
 
-const session = require('express-session');
+// const session = require('express-session');
 
 // const sendError = (res) => res.send({
 //   status: false,
@@ -12,7 +12,7 @@ const like = (socketList) => (req, res) => {
   const { username } = req.body;
   mongoConnect(res, async (db) => {
     const users = db.collection('users');
-    const liker = await users.findOne({ username: session.user.username });
+    const liker = await users.findOne({ username: req.user.username });
     const liked = await users.findOne({ username });
     if (!liked) return res.send({ status: false, details: 'user not found' });
     if (liker.username === liked.username) return res.send({ status: false, details: 'cannot like yourself' });
@@ -27,10 +27,10 @@ const like = (socketList) => (req, res) => {
       res.send({ status: true, details: 'user successfully disliked' });
     // not already liked
     } else {
-      const likerSocket = socketList.filter(el => el.username === liked.username);
-      if (likerSocket && likerSocket.length) {
-        likerSocket.forEach(el => el.socket.emit('notification', { message: `you successfully liked ${liked.username}` }));
-      }
+      // const likerSocket = socketList.filter(el => el.username === liked.username);
+      // if (likerSocket && likerSocket.length) {
+        // likerSocket.forEach(el => el.socket.emit('notification', { message: `you successfully liked ${liked.username}` }));
+      // }
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });
       res.send({ status: true, details: 'user successfully liked' });

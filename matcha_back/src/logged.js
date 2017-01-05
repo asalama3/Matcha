@@ -6,7 +6,7 @@ const objectId = mongodb.ObjectId;
 
 const session = require('express-session');
 
-
+// HAS BEEN REPLACED BY MIDDLEWARE
 const requireLogin = (req, res, next) => {
   if (session.user) {
     mongoConnect(res, (db) => {

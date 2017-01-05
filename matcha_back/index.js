@@ -1,12 +1,11 @@
 import express from 'express';
 import mongodb from 'mongodb';
 import mongoConnect from './mongo_connect';
-import http from 'http';
-import socketIO from 'socket.io';
+// import http from 'http';
+// import socketIO from 'socket.io';
 import * as User from './src/user';
 import * as Account from './src/parser';
 import * as Logged from './src/logged';
-// import * as Profile from './src/profile';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
 import * as profile from './src/search';
@@ -18,14 +17,13 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const expressJwt = require('express-jwt');
 const app = express();
+const objectId = mongodb.ObjectId;
+
 // const server = http.createServer(app);
 // const io = socketIO(server);
 
 const users = [];
-
-// lui envoyer au login l'id et le username pour generer le token;
-// a insere dans le user.LoginUser pour generer un token;
-
+const paths = ['/login', '/createaccount'];
 
 // io.on('connection', (socket) => {
 // 	if (!session.user) return false;
@@ -43,7 +41,7 @@ app.use(session({
 	}));
 app.use('/public', express.static(`${__dirname}/uploads/`));
 
-app.use(expressJwt({ secret: 'yay' }).unless({ path: ['/login'] }));
+// app.use(expressJwt({ secret: 'yay' }).unless({ path: paths }));
 
 
 /* replace function requireLogin to check le login */
@@ -58,9 +56,15 @@ const getToken = (req) => {
   }
 
 app.use((req, res, next) => {
-	console.log('app use');
+	// console.log('app use');
+	// console.log('url', req.url);
+	if (paths.includes(req.url)) {
+		console.log('no middleware');
+		return next();
+	}
 	const token = getToken(req);
 	jwt.verify(token, 'yay', async(err, decoded) => {
+		console.log('middleware');
 		if (err) {
 			// handle errors
 		} else {
@@ -87,12 +91,20 @@ app.use((req, res, next) => {
 });
 
 
-app.post('/createaccount', Account.Username, Account.Firstname, Account.Lastname,
+app.post('/create_account', Account.Username, Account.Firstname, Account.Lastname,
 Account.Email, Account.Password, Account.Gender,
 Account.Orientation, User.createAccount);
 app.post('/login', User.LoginUser);
+app.get('/my_profile', (req, res) => {
+	console.log('ofishvodfhjvdfvdhjshnfjkuvddirhvbdfuhvduvDSkv');
+	 res.send({ status: true, data: req.user });
+});
 // app.post('/checklogin', Logged.requireLogin);
 app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
+app.get('/fill_data', (req, res) => {
+	console.log('hvodfhvDSkv');
+	res.send({ status: true });
+});
 app.post('/autoFill', User.autoFill);
 app.post('/editPic', Pic.addPic);
 app.post('/logout', User.logout);

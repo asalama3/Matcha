@@ -27,6 +27,7 @@ class Login extends Component {
     this.setState({ error: response.data.details });
     if (response.data.status === true) {
       console.log(response.data.details);
+      localStorage.setItem('token', response.headers['x-access-token']);
       browserHistory.push('/matcha/profile');
     }
   }

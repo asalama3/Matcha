@@ -38,7 +38,7 @@ export default class CreateUser extends Component {
 
     const response = await axios({
       method: 'post',
-      url: 'http://localhost:8080/createaccount',
+      url: 'http://localhost:8080/create_account',
       data: {
         username: e.target.username.value,
         firstname: e.target.firstname.value,

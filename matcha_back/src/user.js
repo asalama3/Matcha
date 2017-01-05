@@ -59,26 +59,18 @@ const createAccount = (req, res) => {
 const objectId = mongodb.ObjectId;
 
 const LoginUser = (req, res) => {
-  console.log('okddf');
   mongoConnect(res, (db) => {
+    // console.log('body' , req.body);
     const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
     db.collection('users').findOne({ username: req.body.username }, (err, user) => {
       if (user) {
         if (user.password === hashPass) {
           // session.user = user;
           const token = jwt.sign({ username: user.username, id: user._id }, 'yay');
-          jwt.verify(token, 'yay', async(err, decoded) => {
-            console.log(token);
-            console.log(decoded.username);
-            console.log(decoded.id);
-          });
-          // const token = jwt.sign({
-          //   username: user.username, id: user._id },
-          //   'yay',
-          //   { algorithm: 'RS256',
-          // });
-          console.log('vrvfv');
           req.user = user;
+          console.log(token);
+          res.header('Access-Control-Expose-Headers', 'x-access-token');
+          res.set('x-access-token', token);
           res.send({ status: true, details: 'success' });
         } else {
           res.send({ status: false, details: 'username or password invalid' });
@@ -98,7 +90,7 @@ const logout = (req, res) => {
 
 const autoFill = (req, res) => {
   mongoConnect(res, (db) => {
-    db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
+    db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
       if (err) {
         res.send({ status: false, details: 'no connexion to db' });
       } else if (!user) {
@@ -114,18 +106,18 @@ const autoFill = (req, res) => {
 };
 
 const searchLogin = (req, res) => {
-  console.log(req.body.username);
+  console.log(req.user.username);
   mongoConnect(res, (db) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
-        if (user.views.name.indexOf(session.user.username) === -1) {
+        if (user.views.name.indexOf(req.user.username) === -1) {
           user.views.number += 1;
-          user.views.name.push(session.user.username);
+          user.views.name.push(req.user.username);
           user = pop.popularity(user);
-          users.update({ username: req.body.username}, { $set: { ...user }});
+          users.update({ username: req.body.username }, { $set: { ...user } });
         }
-        res.send({ status: true, details: 'username found', data: user, loggedUser: session.user });
+        res.send({ status: true, details: 'username found', data: user, loggedUser: req.user });
       } else {
         res.send({ status: false, details: 'user not found' });
       }

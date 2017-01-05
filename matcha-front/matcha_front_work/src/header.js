@@ -14,15 +14,16 @@ class Header extends React.Component {
   }
 
   componentWillMount() {
-    global.socket.on('notification', (data) => {
-      this.setState({ notif: 'active_notif' });
-      console.log(data);
-      console.log('okodkcsko');
-    });
+    console.log('ifjfiufunuidzfhjidzjnfknjkdfhiuafjk');
+  //   global.socket.on('notification', (data) => {
+  //     this.setState({ notif: 'active_notif' });
+  //     console.log(data);
+  //     console.log('okodkcsko');
+  //   });
   }
 
   componentWillUnmount() {
-    global.socket.removeEventListener('notification');
+    // global.socket.removeEventListener('notification');
   }
 
   handleSubmit = async (e) => {
@@ -35,9 +36,9 @@ class Header extends React.Component {
       data: {
         username: this.state.username,
       },
-      // headers: {
-      //   Authorization: `Bearer ${localStorage.getItem('token')}`
-      // }
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
     });
     if (response.data.status === true) {
       console.log(response.data.data);

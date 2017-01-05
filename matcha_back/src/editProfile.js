@@ -1,7 +1,7 @@
 import mongodb from 'mongodb';
 import mongoConnect from '../mongo_connect';
 
-const session = require('express-session');
+// const session = require('express-session');
 
 const objectId = mongodb.ObjectId;
 
@@ -31,11 +31,11 @@ const editProfile = (req, res) => {
       interestedIn: [],
       interestedBy: [],
     };
-    db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
+    db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
       if (err) res.send({ status: false, details: 'db error' });
       else if (!user) res.send({ status: false, details: 'no user found' });
       else {
-        db.collection('users').update({ _id: objectId(session.user._id) }, { $set: userInfo }, (error) => {
+        db.collection('users').update({ _id: objectId(req.user._id) }, { $set: userInfo }, (error) => {
           if (error) res.send({ status: false, details: 'db error' });
         });
         return res.send({ status: true, details: 'test edit profile' });

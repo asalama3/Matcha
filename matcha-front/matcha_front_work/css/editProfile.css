@@ -43,21 +43,32 @@
 
 .bio{
   height: 200px;
-  width: 400px;
+  width: 300px;
 }
 
 .or{
   border-radius: 5px;
-  width: 180px;
+  width: 160px;
   border: 1px solid #D1D3D4;
-  font-size: 17px;
-  margin: 10px;;
+  font-size: 15px;
+  margin-top: 10px;;
+  text-align: center;
+}
+
+.sex{
+  border-radius: 5px;
+  width: 160px;
+  border: 1px solid #D1D3D4;
+  font-size: 15px;
+  margin-top: 10px;;
   text-align: center;
 }
 
 input {
-  width: 400px;
+  width: 300px;
 }
+
+
 
 #submit{
   width: 200px !important;
