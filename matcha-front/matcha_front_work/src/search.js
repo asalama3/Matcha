@@ -7,25 +7,31 @@ import '../node_modules/react-input-range/dist/react-input-range.css';
 import Sort from '../src/components/sort';
 
 class Search extends Component {
-  componentWillMount() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/checklogin',
-    }).then(({ data }) => {
-      if (data.status === false) {
-        browserHistory.push('/');
-      } else {
-        this.setState({ loggedUser: data.data.username });
-      }
+  componentDidMount = async () => {
+    const checkAuth = await axios.get('http://localhost:8080/check_auth', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
     });
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/search',
-    }).then(({ data }) => {
-      if (data.status === true) {
-        this.setState({ users: data.details, newUsers: data.details });
-      }
-    });
+    if (checkAuth.data.status === false) {
+      browserHistory.push('/');
+    } else {
+      this.setState({ loggedUser: checkAuth.data.data.username });
+
+      axios({
+        method: 'post',
+        url: 'http://localhost:8080/search',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      }).then(({ data }) => {
+        console.log('hello');
+        console.log(data.details);
+        if (data.status === true) {
+          this.setState({ users: data.details, newUsers: data.details });
+        }
+      });
+    }
   }
 
   state = {
@@ -88,6 +94,7 @@ class Search extends Component {
     let ListUsers = [];
     if (this.state.users) {
       ListUsers = this.state.newUsers.map((src, key) => {
+        console.log(src.username);
         let Like = '';
         (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'already liked' : Like = 'want to like?';
         return (

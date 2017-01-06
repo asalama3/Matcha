@@ -1,7 +1,9 @@
 import geolib from 'geolib';
 import mongoConnect from '../mongo_connect';
 
-const session = require('express-session');
+// const session = require('express-session');
+
+const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object;
 
 const popularity = (allUsers) => {
   if (Array.isArray(allUsers)) {
@@ -33,8 +35,8 @@ const popularity = (allUsers) => {
 
 const search = async (req, res) => {
   mongoConnect(res, async (db) => {
-    if (session.user.gender === 'female') {
-      if (session.user.orientation === 'straight') {
+    if (req.user.gender === 'female') {
+      if (req.user.orientation === 'straight') {
         try {
           const match = await db.collection('users').aggregate([
             {
@@ -47,8 +49,8 @@ const search = async (req, res) => {
           match.forEach((user) => {
             if (!user.location) return user.distance = -1;
             user.distance = geolib.getDistance(
-              { latitude: user.location.lat , longitude: user.location.lng },
-              { latitude: session.user.location.lat, longitude: session.user.location.lng });
+              { latitude: user.location.lat, longitude: user.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng });
             user.distance = (user.distance / 1000).toFixed(2);
           });
           const addedPop = popularity(match);
@@ -57,12 +59,12 @@ const search = async (req, res) => {
           console.error(err);
         }
       }
-      if (session.user.orientation === 'gay') {
+      if (req.user.orientation === 'gay') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $or: [{gender: 'female', orientation: 'gay' }, { gender: 'female', orientation: 'bisexual' }], username: { $nin: [session.user.username] }
+              $or: [{gender: 'female', orientation: 'gay' }, { gender: 'female', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
             },
           },
         ]).toArray();
@@ -70,18 +72,18 @@ const search = async (req, res) => {
           if (!user.location) return user.distance = -1;
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: session.user.location.lat, longitude: session.user.location.lng });
+            { latitude: req.user.location.lat, longitude: req.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
       }
-      if (session.user.orientation === 'bisexual') {
+      if (req.user.orientation === 'bisexual') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $nor: [{ gender: 'female', orientation: 'straight' }, { gender: 'male', orientation: 'gay' }, { username: session.user.username }]
+              $nor: [{ gender: 'female', orientation: 'straight' }, { gender: 'male', orientation: 'gay' }, { username: req.user.username }]
             },
           },
         ]).toArray();
@@ -89,15 +91,17 @@ const search = async (req, res) => {
           if (!user.location) return user.distance = -1;
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: session.user.location.lat, longitude: session.user.location.lng });
+            { latitude: req.user.location.lat, longitude: req.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
       }
     }
-    if (session.user.gender === 'male') {
-      if (session.user.orientation === 'straight') {
+    if (req.user.gender === 'male') {
+      console.log('male');
+      if (req.user.orientation === 'straight') {
+        console.log('malzcdse');
         const match = await db.collection('users').aggregate([
           {
             $match:
@@ -107,21 +111,27 @@ const search = async (req, res) => {
           },
         ]).toArray();
         match.forEach((user) => {
+          // console.log(typeof req.user.location);
+          if (!req.user.location || isEmpty(req.user.location)) {
+            req.user.location.lat = '14.32';
+            req.user.location.lng = '10.12';
+            console.log(req.user.location.lat);
+          }
           if (!user.location) return user.distance = -1;
           user.distance = geolib.getDistance(
-            { latitude: user.location.lat , longitude: user.location.lng },
-            { latitude: session.user.location.lat, longitude: session.user.location.lng });
+            { latitude: user.location.lat, longitude: user.location.lng },
+            { latitude: req.user.location.lat, longitude: req.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
       }
-      if (session.user.orientation === 'gay') {
+      if (req.user.orientation === 'gay') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $or: [{ gender: 'male', orientation: 'gay' }, { gender: 'male', orientation: 'bisexual' }], username: { $nin: [session.user.username] }
+              $or: [{ gender: 'male', orientation: 'gay' }, { gender: 'male', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
             },
           },
         ]).toArray();
@@ -129,18 +139,18 @@ const search = async (req, res) => {
           if (!user.location) return user.distance = -1;
           user.distance = geolib.getDistance(
             { latitude: user.location.lat , longitude: user.location.lng },
-            { latitude: session.user.location.lat, longitude: session.user.location.lng });
+            { latitude: req.user.location.lat, longitude: req.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
       }
-      if (session.user.orientation === 'bisexual') {
+      if (req.user.orientation === 'bisexual') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $nor: [{ gender: 'male', orientation: 'straight' }, { gender: 'female', orientation: 'gay' }, { username: session.user.username }]
+              $nor: [{ gender: 'male', orientation: 'straight' }, { gender: 'female', orientation: 'gay' }, { username: req.user.username }]
             },
           },
         ]).toArray();
@@ -148,7 +158,7 @@ const search = async (req, res) => {
           if (!user.location) return user.distance = -1;
             user.distance = geolib.getDistance(
               { latitude: user.location.lat , longitude: user.location.lng },
-              { latitude: session.user.location.lat, longitude: session.user.location.lng });
+              { latitude: req.user.location.lat, longitude: req.user.location.lng });
             user.distance = (user.distance / 1000).toFixed(2);
         });
           const addedPop = popularity(match);

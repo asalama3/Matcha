@@ -14,7 +14,6 @@ class Header extends React.Component {
   }
 
   componentWillMount() {
-    console.log('ifjfiufunuidzfhjidzjnfknjkdfhiuafjk');
   //   global.socket.on('notification', (data) => {
   //     this.setState({ notif: 'active_notif' });
   //     console.log(data);
@@ -54,6 +53,27 @@ class Header extends React.Component {
     this.setState({ [e.target.name]: text });
   }
 
+  logout = () => {
+    console.log('entered');
+    localStorage.removeItem('token');
+    browserHistory.push('/');
+  }
+
+  deleteAccount = () => {
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/deleteAccount',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(({ data }) => {
+      if (data.status === true) {
+        localStorage.removeItem('token');
+        browserHistory.push('/');
+      }
+    });
+  }
+
   render() {
     return (
       <div>
@@ -86,11 +106,11 @@ class Header extends React.Component {
             </form>
             <button className={this.state.notif}><i className="fa fa-bell" aria-hidden="true"></i></button>
             <Nav pullRight >
-              <LinkContainer  to="/matcha/logout">
-                <NavItem  eventKey={4}>Logout</NavItem>
+              <LinkContainer to="">
+                <NavItem eventKey={4} onClick={this.logout}>Logout</NavItem>
               </LinkContainer>
-              <LinkContainer to="/matcha/delete_account">
-                <NavItem eventKey={4}>Delete Account</NavItem>
+              <LinkContainer to="">
+                <NavItem eventKey={4} onClick={this.deleteAccount}>Delete Account</NavItem>
               </LinkContainer>
             </Nav>
           </Navbar.Collapse>

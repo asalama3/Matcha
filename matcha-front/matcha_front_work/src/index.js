@@ -7,11 +7,9 @@ import '../css/index.css';
 import Welcome from './welcome';
 import Profile from './profile';
 import editProfile from './editProfile';
-import editLocation from './editLocation';
 import editPictures from './editPictures';
 import Search from './search';
-import logout from './logout';
-import deleteAccount from './delete_account';
+// import deleteAccount from './delete_account';
 
 render((
   <Router history={browserHistory}>
@@ -24,9 +22,6 @@ render((
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
           <Route path="search" component={Search} />
-          <Route path="logout" component={logout} />
-          <Route path="delete_account" component={deleteAccount} />
-          // <Route path="editLocation" component={editLocation} />
     </Route>
     <Redirect from='*' to='/matcha/profile' component={App} />
   </Router>

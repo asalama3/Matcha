@@ -20,7 +20,6 @@ class Profile extends Component {
   }
 
   componentDidMount = async () => {
-
     const checkAuth = await axios.get('http://localhost:8080/my_profile', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`

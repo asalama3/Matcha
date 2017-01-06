@@ -2,7 +2,7 @@ import mongodb from 'mongodb';
 import fs from 'fs';
 import mongoConnect from '../mongo_connect';
 
-const session = require('express-session');
+// const session = require('express-session');
 
 const objectId = mongodb.ObjectId;
 
@@ -13,7 +13,7 @@ const addPic = (req, res) => {
     } else if (req.body.size < 1000000) {
         if (req.body.type === 'image/jpeg' || req.body.type === 'image/jpg' ||
             req.body.type === 'image/png' || req.body.type === 'image/gif') {
-              db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
+              db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
                 if (err) {
                   return res.send({ status: false, details: 'db error' });
                 } else if (!user) {
@@ -26,7 +26,7 @@ const addPic = (req, res) => {
                   res.send({ status: false, details: 'invalid input string' });
                 }
                 const imageBuffer = new Buffer(matches[2], 'base64');
-                fs.writeFile(`./uploads/${session.user.username}/${req.body.name}`, imageBuffer, (error) => {
+                fs.writeFile(`./uploads/${req.user.username}/${req.body.name}`, imageBuffer, (error) => {
                   if (error) {
                     res.send({ status: false, details: 'invalid input string' });
                   }
@@ -38,7 +38,7 @@ const addPic = (req, res) => {
                    photo = [];
                   }
                   photo.push({ name: req.body.name, profil: false });
-                  db.collection('users').update({ _id: objectId(session.user._id) }, { $set: { photo: photo } }, (er) => {
+                  db.collection('users').update({ _id: objectId(req.user._id) }, { $set: { photo } }, (er) => {
                     if (er) {
                       res.send({ status: false, details: 'db error' });
                     } else {
@@ -57,16 +57,16 @@ const addPic = (req, res) => {
 };
 
 
-const delPic = (req, res) => {
+const deletePic = (req, res) => {
   mongoConnect(res, (db) => {
-    fs.unlink(`./uploads/${session.user.username}/${req.body.name}`, (err) => {
+    fs.unlink(`./uploads/${req.user.username}/${req.body.name}`, (err) => {
       if (err) throw err;
     });
-    db.collection('users').update({ _id: objectId(session.user._id) }, { $pull: { photo: { name: req.body.name } } }, (err) => {
+    db.collection('users').update({ _id: objectId(req.user._id) }, { $pull: { photo: { name: req.body.name } } }, (err) => {
       if (err) {
         res.send({ status: false, details: 'db error' });
       } else {
-        db.collection('users').findOne({ _id: objectId(session.user._id) }, (error, user) => {
+        db.collection('users').findOne({ _id: objectId(req.user._id) }, (error, user) => {
           if (error) {
             return res.send({ status: false, details: 'db error' });
           }
@@ -83,7 +83,7 @@ const delPic = (req, res) => {
 
 const profilePic = (req, res) => {
   mongoConnect(res, (db) => {
-    db.collection('users').update({ _id: objectId(session.user._id) }, { $set: { ProfilePictureNumber: req.body.key } }, (err) => {
+    db.collection('users').update({ _id: objectId(req.user._id) }, { $set: { ProfilePictureNumber: req.body.key } }, (err) => {
       if (err) {
         res.send({ status: false, details: 'db error' });
       } else {
@@ -93,4 +93,4 @@ const profilePic = (req, res) => {
   });
 };
 
-export { addPic, delPic, profilePic };
+export { addPic, deletePic, profilePic };

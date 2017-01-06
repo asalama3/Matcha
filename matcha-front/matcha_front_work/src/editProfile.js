@@ -194,7 +194,7 @@ class editProfile extends Component {
             <label className="inputForm"> Sexual Orientation </label>
             <MatchInputRad labelClassName="or" name="orientation" value="straight" checked={this.state.orientation === 'straight'} id="r3" content="Straight" onClick={this.getOrientation} />
             <MatchInputRad labelClassName="or" name="orientation" value="bisexual" checked={this.state.orientation === 'bisexual'} id="r4" content="Bisexual" onClick={this.getOrientation} />
-            <MatchInputRad labelClassName="or" name="orientation" value="gay" checked={this.state.orientation === 'gay'} id="r5" content="Bisexual" onClick={this.getOrientation} />
+            <MatchInputRad labelClassName="or" name="orientation" value="gay" checked={this.state.orientation === 'gay'} id="r5" content="Gay" onClick={this.getOrientation} />
             <div>
               <label className="inputForm"> Biography (optional) </label>
               <br/>

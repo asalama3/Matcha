@@ -5,14 +5,14 @@ import mongoConnect from './mongo_connect';
 // import socketIO from 'socket.io';
 import * as User from './src/user';
 import * as Account from './src/parser';
-import * as Logged from './src/logged';
+// import * as Logged from './src/logged';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
-import * as profile from './src/search';
-import * as like from './src/like';
+import * as Profile from './src/search';
+import * as Like from './src/like';
 
 const bodyParser = require('body-parser');
-const session = require('express-session');
+// const session = require('express-session');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const expressJwt = require('express-jwt');
@@ -23,7 +23,7 @@ const objectId = mongodb.ObjectId;
 // const io = socketIO(server);
 
 const users = [];
-const paths = ['/login', '/createaccount'];
+const paths = ['/login', '/create_account'];
 
 // io.on('connection', (socket) => {
 // 	if (!session.user) return false;
@@ -33,12 +33,12 @@ const paths = ['/login', '/createaccount'];
 app.use(cors());
 app.use(bodyParser.json({ limit: '2mb' }));
 app.use(bodyParser.urlencoded({ limit: '2mb', extended: true }));
-app.use(session({
-		secret: 'ssshhhhh',
-		resave: false,
-		saveUninitialized: false,
-		cookie: {},
-	}));
+// app.use(session({
+		// secret: 'ssshhhhh',
+		// resave: false,
+		// saveUninitialized: false,
+		// cookie: {},
+	// }));
 app.use('/public', express.static(`${__dirname}/uploads/`));
 
 // app.use(expressJwt({ secret: 'yay' }).unless({ path: paths }));
@@ -53,11 +53,9 @@ const getToken = (req) => {
       return req.query.token;
     }
     return null;
-  }
+  };
 
 app.use((req, res, next) => {
-	// console.log('app use');
-	// console.log('url', req.url);
 	if (paths.includes(req.url)) {
 		console.log('no middleware');
 		return next();
@@ -66,14 +64,15 @@ app.use((req, res, next) => {
 	jwt.verify(token, 'yay', async(err, decoded) => {
 		console.log('middleware');
 		if (err) {
+			return res.send({ status: false, details: 'cannot get authentification' });
 			// handle errors
 		} else {
 			mongoConnect(res, (db) => {
-				db.collection('users').findOne({ _id: objectId(decoded.id) }, (err, user) => {
-					if (err) res.send({ status: false, details: 'db error' });
+				db.collection('users').findOne({ _id: objectId(decoded.id) }, (error, user) => {
+					if (error) res.send({ status: false, details: 'db error' });
 					else if (!user) res.send({ status: false, details: 'no user found' });
 					else {
-						const userWithPop = profile.popularity(user);
+						const userWithPop = Profile.popularity(user);
 						req.user = userWithPop;
 						// res.send({
 						// 	status: true,
@@ -87,34 +86,27 @@ app.use((req, res, next) => {
 				});
 			});
 		}
-	})
+	});
 });
 
+app.get('/my_profile', User.myProfile);
+app.get('/fill_data', User.fillData);
+app.get('/edit_pictures', User.editPictures);
+app.get('/check_auth', User.checkAuth);
 
 app.post('/create_account', Account.Username, Account.Firstname, Account.Lastname,
-Account.Email, Account.Password, Account.Gender,
-Account.Orientation, User.createAccount);
-app.post('/login', User.LoginUser);
-app.get('/my_profile', (req, res) => {
-	console.log('ofishvodfhjvdfvdhjshnfjkuvddirhvbdfuhvduvDSkv');
-	 res.send({ status: true, data: req.user });
-});
-// app.post('/checklogin', Logged.requireLogin);
+	Account.Email, Account.Password, Account.Gender,
+	Account.Orientation, User.createAccount);
+app.post('/login', Account.Username, Account.Password, User.LoginUser);
 app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
-app.get('/fill_data', (req, res) => {
-	console.log('hvodfhvDSkv');
-	res.send({ status: true });
-});
 app.post('/autoFill', User.autoFill);
-app.post('/editPic', Pic.addPic);
-app.post('/logout', User.logout);
 app.post('/searchLogin', User.searchLogin);
 app.post('/deleteAccount', User.deleteAccount);
-app.post('/search', profile.search);
-app.post('/delPic', Pic.delPic);
+app.post('/search', Profile.search);
+app.post('/addPic', Pic.addPic);
+app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
-app.post('/like', like.like(users));
-
+app.post('/like', Like.like(users));
 
 // server.listen(8080);
 app.listen(8080);

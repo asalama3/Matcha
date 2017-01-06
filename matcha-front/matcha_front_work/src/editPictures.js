@@ -12,17 +12,17 @@ class editPictures extends React.Component {
     photo: [],
   }
 
-  componentWillMount() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/checklogin',
-    }).then(({ data }) => {
-      if (data.status === true) {
-        this.setState({ data: data.data, username: data.username, photo: data.data.photo });
-      } else {
-        browserHistory.push('/');
-      }
+  componentDidMount = async () => {
+    const checkAuth = await axios.get('http://localhost:8080/edit_pictures', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
     });
+    if (checkAuth.data.status === true) {
+      this.setState({ data: checkAuth.data.data, username: checkAuth.data.data.username, photo: checkAuth.data.data.photo });
+    } else {
+      browserHistory.push('/');
+    }
   }
 
   handleSubmit = async (e) => {
@@ -32,12 +32,15 @@ class editPictures extends React.Component {
     } else {
     const response = await axios({
       method: 'post',
-      url: 'http://localhost:8080/editPic',
+      url: 'http://localhost:8080/addPic',
       data: {
         size: this.state.file.size,
         type: this.state.file.type,
         photo: this.state.imagePreviewUrl,
         name: this.state.file.name,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
     if (response.data.status === true) {
@@ -71,6 +74,9 @@ class editPictures extends React.Component {
       data: {
         name,
       },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
     });
     if (response.data.status === true) {
       this.setState({ photo: response.data.values });
@@ -84,6 +90,9 @@ class editPictures extends React.Component {
       data: {
         name,
         key,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
     if (response.data.status === true) {

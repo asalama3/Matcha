@@ -34,7 +34,7 @@ const createAccount = (req, res) => {
       year: req.body.year,
       gender: req.body.gender,
       orientation: req.body.orientation,
-      location: '',
+      location: {},
       photo: [],
       views };
     const email = req.body.email;
@@ -82,12 +82,6 @@ const LoginUser = (req, res) => {
   });
 };
 
-const logout = (req, res) => {
-  console.log('logout');
-  delete session.user;
-  res.send({ status: true, details: 'logout' });
-};
-
 const autoFill = (req, res) => {
   mongoConnect(res, (db) => {
     db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
@@ -106,7 +100,6 @@ const autoFill = (req, res) => {
 };
 
 const searchLogin = (req, res) => {
-  console.log(req.user.username);
   mongoConnect(res, (db) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {
@@ -127,17 +120,28 @@ const searchLogin = (req, res) => {
 
 const deleteAccount = (req, res) => {
   mongoConnect(res, (db) => {
-    db.collection('users').findOne({ _id: objectId(session.user._id) }, (err, user) => {
+    db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
       if (err) {
         res.send({ status: false, details: 'no connexion to db' });
       } else if (!user) {
         res.send({ status: false, details: 'no user found' });
       } else {
-        db.collection('users').remove({ _id: objectId(session.user._id) });
+        db.collection('users').remove({ _id: objectId(req.user._id) });
+        fs.rmdir(`./uploads/${req.user.username}`, (error) => {
+          if (error) res.send({ status: false, details: 'error rmdir' });
+        });
         res.send({ status: true, details: 'user deleted from db' });
       }
     });
   });
 };
 
-export { createAccount, LoginUser, autoFill, logout, searchLogin, deleteAccount };
+const myProfile = (req, res) => res.send({ status: true, data: req.user });
+
+const fillData = (req, res) => res.send({ status: true });
+
+const editPictures = (req, res) => res.send({ status: true, data: req.user });
+
+const checkAuth = (req, res) => res.send({ status: true, data: req.user });
+
+export { createAccount, LoginUser, autoFill, searchLogin, deleteAccount, myProfile, fillData, editPictures, checkAuth };
