@@ -25,10 +25,25 @@ export default class CreateUser extends Component {
     error: '',
     login: 'hidden_login_form',
     create: 'hidden_create_form',
+    position: {},
   }
 
   createAccount = async (e) => {
+    e.persist(); // long request - converve valeurs de l'evenement
     e.preventDefault(); // no reload
+    const ip = await axios.get('http://ip-api.com/json');
+    console.log(ip.data);
+    let location = null;
+    // console.log(ip.data.status);
+    if (ip.data.status === 'success') {
+      this.setState({ position: {
+        lat: ip.data.lat,
+        lng: ip.data.lon,
+        address: '',
+        },
+      });
+    }
+
     if (e.target.firstname.value.length > 30 || e.target.lastname.value.length > 30 || e.target.email.value.length > 30 || e.target.password.value.length > 30) {
       e.target.firstname.value = '';
       e.target.lastname.value = '';
@@ -50,6 +65,7 @@ export default class CreateUser extends Component {
         year: e.target.year.value,
         gender: e.target.gender.value,
         orientation: e.target.orientation.value,
+        position: this.state.position,
       },
     });
     this.setState({ error: response.data.details });

@@ -1,11 +1,10 @@
 import express from 'express';
 import mongodb from 'mongodb';
 import mongoConnect from './mongo_connect';
-// import http from 'http';
-// import socketIO from 'socket.io';
+import http from 'http';
+import socketIO from 'socket.io';
 import * as User from './src/user';
 import * as Account from './src/parser';
-// import * as Logged from './src/logged';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
 import * as Profile from './src/search';
@@ -19,30 +18,34 @@ const expressJwt = require('express-jwt');
 const app = express();
 const objectId = mongodb.ObjectId;
 
-// const server = http.createServer(app);
-// const io = socketIO(server);
+const server = http.createServer(app);
+const io = socketIO(server);
 
 const users = [];
 const paths = ['/login', '/create_account'];
 
-// io.on('connection', (socket) => {
-// 	if (!session.user) return false;
-// 	users.push({ username: session.user.username, socket });
-// });
+io.on('connection', (socket) => {
+  socket.on('auth', (token) => {
+    // console.log('token: ' , token);
+    jwt.verify(token, 'yay', async(err, decoded) => {
+      // console.log('decoded: ', decoded.username);
+      if (err) {
+        // handle errors
+        // return res.send({ status: false, details: 'cannot get authentification' });
+      } else {
+        users.push({ username: decoded.username, socket });
+      }
+      // console.log(users);
+    });
+  });
+});
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '2mb' }));
 app.use(bodyParser.urlencoded({ limit: '2mb', extended: true }));
-// app.use(session({
-		// secret: 'ssshhhhh',
-		// resave: false,
-		// saveUninitialized: false,
-		// cookie: {},
-	// }));
 app.use('/public', express.static(`${__dirname}/uploads/`));
 
 // app.use(expressJwt({ secret: 'yay' }).unless({ path: paths }));
-
 
 /* replace function requireLogin to check le login */
 /* req a remplace session */
@@ -57,12 +60,10 @@ const getToken = (req) => {
 
 app.use((req, res, next) => {
 	if (paths.includes(req.url)) {
-		console.log('no middleware');
 		return next();
 	}
 	const token = getToken(req);
 	jwt.verify(token, 'yay', async(err, decoded) => {
-		console.log('middleware');
 		if (err) {
 			return res.send({ status: false, details: 'cannot get authentification' });
 			// handle errors
@@ -108,5 +109,5 @@ app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
 
-// server.listen(8080);
-app.listen(8080);
+server.listen(8080);
+// app.listen(8080);

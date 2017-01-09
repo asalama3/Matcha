@@ -29,9 +29,7 @@ class Profile extends Component {
       return browserHistory.push('/');
     }
     const loggedUser = checkAuth.data;
-    console.log('dfff', loggedUser);
     this.setState({ connectedUser: loggedUser.data });
-
     // search using username in params
     if (this.props.params.user) {
       const getProfile = await axios({
@@ -48,7 +46,7 @@ class Profile extends Component {
       if (getProfile.data.status === true) {
         // Deal if the user doesn't exist
         this.setState({ user: askedUser, photo: askedUser.photo, address: askedUser.location.address });
-        if (askedUser.interestedBy.includes(loggedUser.username)) {
+        if (askedUser.interestedBy.includes(loggedUser.data.username)) {
           this.setState({ className: 'animatedLike animationLike' });
         }
       } else {

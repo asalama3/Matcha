@@ -14,15 +14,14 @@ class Header extends React.Component {
   }
 
   componentWillMount() {
-  //   global.socket.on('notification', (data) => {
-  //     this.setState({ notif: 'active_notif' });
-  //     console.log(data);
-  //     console.log('okodkcsko');
-  //   });
+    global.socket.on('notification', (data) => {
+      this.setState({ notif: 'active_notif' });
+      console.log('data', data);
+    });
   }
 
   componentWillUnmount() {
-    // global.socket.removeEventListener('notification');
+    global.socket.removeEventListener('notification');
   }
 
   handleSubmit = async (e) => {
@@ -40,7 +39,7 @@ class Header extends React.Component {
       }
     });
     if (response.data.status === true) {
-      console.log(response.data.data);
+      // console.log(response.data.data);
       browserHistory.push(`/matcha/profile/${response.data.data.username}`);
     } else {
       this.setState({ error: 'no username found' });
@@ -54,7 +53,6 @@ class Header extends React.Component {
   }
 
   logout = () => {
-    console.log('entered');
     localStorage.removeItem('token');
     browserHistory.push('/');
   }
@@ -72,6 +70,12 @@ class Header extends React.Component {
         browserHistory.push('/');
       }
     });
+  }
+
+  notifications = () => {
+    // activate menu
+    // disactivate color red from button
+    
   }
 
   render() {
@@ -104,7 +108,8 @@ class Header extends React.Component {
               <Button type="submit" >Submit</Button>
             </Navbar.Form>
             </form>
-            <button className={this.state.notif}><i className="fa fa-bell" aria-hidden="true"></i></button>
+            <button className={this.state.notif} onClick={this.notifications}>
+              <i className="fa fa-bell" aria-hidden="true"></i></button>
             <Nav pullRight >
               <LinkContainer to="">
                 <NavItem eventKey={4} onClick={this.logout}>Logout</NavItem>

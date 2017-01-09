@@ -34,7 +34,7 @@ const createAccount = (req, res) => {
       year: req.body.year,
       gender: req.body.gender,
       orientation: req.body.orientation,
-      location: {},
+      location: req.body.position,
       photo: [],
       views };
     const email = req.body.email;
@@ -49,6 +49,7 @@ const createAccount = (req, res) => {
         });
         db.collection('users').insert(user, (e) => {
           if (e) return res.send({ status: false, details: 'db error' });
+          console.log('new user registered' , user);
           return res.send({ status: true, details: 'registered' });
         });
       });

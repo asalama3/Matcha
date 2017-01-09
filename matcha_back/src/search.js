@@ -3,7 +3,7 @@ import mongoConnect from '../mongo_connect';
 
 // const session = require('express-session');
 
-const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object;
+// const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object;
 
 const popularity = (allUsers) => {
   if (Array.isArray(allUsers)) {
@@ -11,7 +11,7 @@ const popularity = (allUsers) => {
       if (src.interestedBy) {
       const numberLikes = src.interestedBy.length;
       const numberViews = src.views.number;
-      src.popularity = (numberLikes / numberViews) * 100;
+      src.popularity = Math.round((numberLikes / numberViews) * 100);
       } else {
         src.popularity = 0;
       }
@@ -25,7 +25,7 @@ const popularity = (allUsers) => {
     if (numberViews === 0) {
          allUsers.popularity = 0;
     } else {
-      allUsers.popularity = (numberLikes / numberViews) * 100;
+      allUsers.popularity = Math.round((numberLikes / numberViews) * 100);
     }
   } else {
     allUsers.popularity = 0;
@@ -48,6 +48,11 @@ const search = async (req, res) => {
           ]).toArray();
           match.forEach((user) => {
             if (!user.location) return user.distance = -1;
+            // if (!req.user.location || isEmpty(req.user.location)) {
+            //   req.user.location.lat = '14.32';
+            //   req.user.location.lng = '10.12';
+            //   console.log(req.user.location.lat);
+            // }
             user.distance = geolib.getDistance(
               { latitude: user.location.lat, longitude: user.location.lng },
               { latitude: req.user.location.lat, longitude: req.user.location.lng });
@@ -70,6 +75,11 @@ const search = async (req, res) => {
         ]).toArray();
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
+          // if (!req.user.location || isEmpty(req.user.location)) {
+          //   req.user.location.lat = '14.32';
+          //   req.user.location.lng = '10.12';
+          //   console.log(req.user.location.lat);
+          // }
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
@@ -89,6 +99,11 @@ const search = async (req, res) => {
         ]).toArray();
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
+          // if (!req.user.location || isEmpty(req.user.location)) {
+          //   req.user.location.lat = '14.32';
+          //   req.user.location.lng = '10.12';
+          //   console.log(req.user.location.lat);
+          // }
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
@@ -112,12 +127,14 @@ const search = async (req, res) => {
         ]).toArray();
         match.forEach((user) => {
           // console.log(typeof req.user.location);
-          if (!req.user.location || isEmpty(req.user.location)) {
-            req.user.location.lat = '14.32';
-            req.user.location.lng = '10.12';
-            console.log(req.user.location.lat);
-          }
-          if (!user.location) return user.distance = -1;
+          // if (!req.user.location || isEmpty(req.user.location)) {
+          //   req.user.location.lat = '14.32';
+          //   req.user.location.lng = '10.12';
+          //   console.log(req.user.location.lat);
+          // }
+          // if (!user.location) return user.distance = -1;
+          console.log(user.location);
+          console.log(user.location);
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
@@ -137,8 +154,13 @@ const search = async (req, res) => {
         ]).toArray();
          match.forEach((user) => {
           if (!user.location) return user.distance = -1;
+          // if (!req.user.location || isEmpty(req.user.location)) {
+          //   req.user.location.lat = '14.32';
+          //   req.user.location.lng = '10.12';
+          //   console.log(req.user.location.lat);
+          // }
           user.distance = geolib.getDistance(
-            { latitude: user.location.lat , longitude: user.location.lng },
+            { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
           user.distance = (user.distance / 1000).toFixed(2);
         });
@@ -156,8 +178,13 @@ const search = async (req, res) => {
         ]).toArray();
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
+          // if (!req.user.location || isEmpty(req.user.location)) {
+          //   req.user.location.lat = '14.32';
+          //   req.user.location.lng = '10.12';
+          //   console.log(req.user.location.lat);
+          // }
             user.distance = geolib.getDistance(
-              { latitude: user.location.lat , longitude: user.location.lng },
+              { latitude: user.location.lat, longitude: user.location.lng },
               { latitude: req.user.location.lat, longitude: req.user.location.lng });
             user.distance = (user.distance / 1000).toFixed(2);
         });

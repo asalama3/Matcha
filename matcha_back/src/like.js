@@ -27,10 +27,12 @@ const like = (socketList) => (req, res) => {
       res.send({ status: true, details: 'user successfully disliked' });
     // not already liked
     } else {
-      // const likerSocket = socketList.filter(el => el.username === liked.username);
-      // if (likerSocket && likerSocket.length) {
-        // likerSocket.forEach(el => el.socket.emit('notification', { message: `you successfully liked ${liked.username}` }));
-      // }
+      const likerSocket = socketList.filter(el => el.username === liked.username);
+      console.log('liked user', liked.username);
+      console.log('liker socket', likerSocket);
+      if (likerSocket && likerSocket.length) {
+        likerSocket.forEach(el => el.socket.emit('notification', { message: `${liker.username} successfully liked your profile ${liked.username}` }));
+      }
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });
       res.send({ status: true, details: 'user successfully liked' });
