@@ -42,10 +42,13 @@ class editProfile extends Component {
   };
 
   setAddress = async (e) => {
+    console.log('hey');
     const google = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${e.label}`);
     if (google.data.status === 'OK') {
       const lat = google.data.results[0].geometry.location.lat;
       const lng = google.data.results[0].geometry.location.lng;
+      console.log(lat);
+      console.log(lng);
     this.setState({ position: { lat, lng, address: e.label } });
     }
   };
@@ -81,7 +84,7 @@ class editProfile extends Component {
         tags: response.data.user.hobbies,
         pending: false,
       });
-      if (response.data.user.location) {
+      if (response.data.user.location.address) {
         this.setState({ address: response.data.user.location.address,
         position: { address: response.data.user.location.address, lat: response.data.user.location.lat, lng: response.data.user.location.lng } });
       }
@@ -121,7 +124,7 @@ class editProfile extends Component {
      },
     });
     if (response.data.status === true) {
-      browserHistory.push('/matcha/profile');
+      // browserHistory.push('/matcha/profile');
     } else {
       // add error message from middleware ou editprofile function
     }

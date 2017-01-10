@@ -164,7 +164,7 @@ class Profile extends Component {
                 <li><i className="fa fa-birthday-cake " aria-hidden="true"></i> {user.age} ans </li>
                 <li><i className="fa fa-map-marker " aria-hidden="true"></i> {address} </li>
                 <li><i className="fa fa-futbol-o " aria-hidden="true"></i> {test} </li>
-                <li><i className="fa fa-comment-o biography" aria-hidden="true"></i> {user.bio} </li>
+                <li><i className="fa fa-comment-o biography" aria-hidden="true"></i> <p> {user.bio} </p></li>
               </ul>
               <div> {this.state.error} </div>
               <div className="clear_float" ></div>

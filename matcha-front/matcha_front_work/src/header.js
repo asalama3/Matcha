@@ -13,6 +13,8 @@ class Header extends React.Component {
     notif: 'notif',
     menu: 'dropdown-content',
     message: '',
+    loggedUser: null,
+    pending: true,
   }
 
   componentWillMount() {
@@ -20,6 +22,7 @@ class Header extends React.Component {
       this.setState({ notif: 'active_notif' });
       console.log('data', data);
       this.setState({ message: data.message });
+      console.log('mess' , this.state.message);
     });
   }
 
@@ -27,9 +30,20 @@ class Header extends React.Component {
     global.socket.removeEventListener('notification');
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
+    const checkAuth = await axios.get('http://localhost:8080/check_auth', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+    const loggedUser = checkAuth.data;
+    this.setState({ loggedUser: checkAuth.data });
+      this.setState({ pending: false });
+    console.log('logged user', loggedUser);
     // handle refresh page without clicking on notif keep button red
+    // viewed vs. ' ' in database axios request
   }
+
   handleSubmit = async (e) => {
     console.log(e.target.username.value);
     e.preventDefault();
@@ -85,9 +99,18 @@ class Header extends React.Component {
     } else {
       this.setState({ menu: 'dropdown-content' });
     }
+    if (this.state.message === '') {
+      this.setState({ message: 'pas de notif' });
+    }
   }
 
   render() {
+    let notifs = [];
+    if (!this.state.pending) {
+      console.log('sdsdcds', this.state.loggedUser.data);
+      notifs = this.state.loggedUser.data.notifications.map((src, key) => <p key={key}> {src} </p>);
+      console.log(notifs);
+    }
     return (
       <div>
         <Navbar className="headerStyle" inverse collapseOnSelect >
@@ -121,7 +144,7 @@ class Header extends React.Component {
               <button className={this.state.notif} onClick={this.notifications}>
               <i className="fa fa-bell" aria-hidden="true"></i></button>
               <div className={this.state.menu}>
-                <p>{this.state.message}</p>
+                {notifs}
               </div>
             </div>
             <Nav pullRight >
