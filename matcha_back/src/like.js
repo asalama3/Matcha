@@ -31,7 +31,7 @@ const like = (socketList) => (req, res) => {
       console.log('liked user', liked.username);
       console.log('liker socket', likerSocket);
       if (likerSocket && likerSocket.length) {
-        likerSocket.forEach(el => el.socket.emit('notification', { message: `${liker.username} successfully liked your profile ${liked.username}` }));
+        likerSocket.forEach(el => el.socket.emit('notification', { message: `${liker.username} liked your profile ` }));
       }
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });

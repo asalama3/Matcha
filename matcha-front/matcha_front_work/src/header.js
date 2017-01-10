@@ -11,12 +11,15 @@ class Header extends React.Component {
     username: '',
     error: '',
     notif: 'notif',
+    menu: 'dropdown-content',
+    message: '',
   }
 
   componentWillMount() {
     global.socket.on('notification', (data) => {
       this.setState({ notif: 'active_notif' });
       console.log('data', data);
+      this.setState({ message: data.message });
     });
   }
 
@@ -24,6 +27,9 @@ class Header extends React.Component {
     global.socket.removeEventListener('notification');
   }
 
+  componentDidMount() {
+    // handle refresh page without clicking on notif keep button red
+  }
   handleSubmit = async (e) => {
     console.log(e.target.username.value);
     e.preventDefault();
@@ -73,9 +79,12 @@ class Header extends React.Component {
   }
 
   notifications = () => {
-    // activate menu
-    // disactivate color red from button
-    
+    this.setState({ notif: 'notif' });
+    if (this.state.menu === 'dropdown-content') {
+      this.setState({ menu: 'menu' });
+    } else {
+      this.setState({ menu: 'dropdown-content' });
+    }
   }
 
   render() {
@@ -108,8 +117,13 @@ class Header extends React.Component {
               <Button type="submit" >Submit</Button>
             </Navbar.Form>
             </form>
-            <button className={this.state.notif} onClick={this.notifications}>
+            <div className="dropdown">
+              <button className={this.state.notif} onClick={this.notifications}>
               <i className="fa fa-bell" aria-hidden="true"></i></button>
+              <div className={this.state.menu}>
+                <p>{this.state.message}</p>
+              </div>
+            </div>
             <Nav pullRight >
               <LinkContainer to="">
                 <NavItem eventKey={4} onClick={this.logout}>Logout</NavItem>
