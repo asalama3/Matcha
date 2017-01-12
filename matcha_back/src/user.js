@@ -1,6 +1,7 @@
 import fs from 'fs';
 import crypto from 'crypto';
 import mongodb from 'mongodb';
+import moment from 'moment';
 import mongoConnect from '../mongo_connect';
 import * as pop from './search';
 // import mkdirp from 'mkdirp';
@@ -60,6 +61,8 @@ const createAccount = (req, res) => {
 const objectId = mongodb.ObjectId;
 
 const LoginUser = (req, res) => {
+  const currentDate = new Date();
+  console.log('date', currentDate);
   mongoConnect(res, (db) => {
     // console.log('body' , req.body);
     const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
@@ -119,6 +122,24 @@ const searchLogin = (req, res) => {
   });
 };
 
+const viewUser = (req, res) => {
+  mongoConnect(res, (db) => {
+    const users = db.collection('users');
+    users.findOne({ username: req.body.username }, (err, user) => {
+      if (user) {
+        if (user.views.name.indexOf(req.user.username) === -1) {
+          user.views.number += 1;
+          user.views.name.push(req.user.username);
+          users.update({ username: req.body.username }, { $set: { ...user } });
+        }
+        res.send({ status: true, details: 'user ok viewed' });
+      } else {
+        res.send({ status: false, details: 'user not found' });
+      }
+    });
+  });
+};
+
 const deleteAccount = (req, res) => {
   mongoConnect(res, (db) => {
     db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
@@ -137,6 +158,24 @@ const deleteAccount = (req, res) => {
   });
 };
 
+const logout = (req, res) => {
+  mongoConnect(res, (db) => {
+    const users = db.collection('users');
+    users.findOne({ username: req.body.username }, (err, user) => {
+      if (err) {
+        res.send({ status: false, details: 'no connection' });
+      } else if (!user) {
+        res.send({ status: false, details: 'no user found' });
+      } else {
+        user.lastConnection = moment().format('MMMM Do YYYY, h:mm:ss a');
+        console.log(user.lastConnection);
+        users.update({ username: req.body.username }, { $set: { ...user } });
+        res.send({ status: true, details: 'last connection added' });
+      }
+    });
+  });
+};
+
 const myProfile = (req, res) => res.send({ status: true, data: req.user });
 
 const fillData = (req, res) => res.send({ status: true });
@@ -145,4 +184,4 @@ const editPictures = (req, res) => res.send({ status: true, data: req.user });
 
 const checkAuth = (req, res) => res.send({ status: true, data: req.user });
 
-export { createAccount, LoginUser, autoFill, searchLogin, deleteAccount, myProfile, fillData, editPictures, checkAuth };
+export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, logout, myProfile, fillData, editPictures, checkAuth };

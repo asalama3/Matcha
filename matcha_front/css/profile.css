@@ -15,6 +15,7 @@
   transition: background 1s steps(28);
   cursor: pointer;
   display: block;
+  float: left;
 }
 
 .animationLike {
@@ -22,9 +23,11 @@
   cursor: pointer;
   display: block;
   float: left;
-
 }
 
+h2{
+  float: left;
+}
 .report, .block {
   display:block;
   float: left;
@@ -62,6 +65,8 @@
   float: left;
   font-style: italic;
   font-size: 10px;
+  padding-right: 15px;
+  padding-bottom: 15px;
 }
 
 .separation{
@@ -73,4 +78,10 @@
 
 .text{
   padding-right: 40px;
+}
+
+.center{
+    width:100%;
+    display:flex;
+    align-items: center;
 }

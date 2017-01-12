@@ -28,20 +28,18 @@ const like = (socketList) => (req, res) => {
     // not already liked
     } else {
       const likerSocket = socketList.filter(el => el.username === liked.username);
-      console.log('liked user', liked.username);
+      // console.log('liked user', liked.username);
       const message = `${liker.username} liked your profile `;
-      console.log('liker socket', likerSocket);
-      if (likerSocket && likerSocket.length) {
+      if (likerSocket && likerSocket.length && !liked.interestedIn.includes(liker.username)) {
         likerSocket.forEach(el => el.socket.emit('notification', { message: `${liker.username} liked your profile ` }));
+      } else {
+        likerSocket.forEach(el => el.socket.emit('notification', { message: `${liker.username} liked your profile and it's a match! ` }));
       }
-      console.log('notif', liked.notifications);
       const notif = liked.notifications ? [...liked.notifications, message] : [message];
-      console.log(notif);
       users.update({ username: liked.username }, { $set: { notifications: notif } });
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });
       res.send({ status: true, details: 'user successfully liked' });
-      console.log('liked', liked);
     }
     return false;
   });

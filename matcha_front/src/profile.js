@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+// import Popup from 'react-popup';
 import { browserHistory } from 'react-router';
 import '../css/profile.css';
 import Carousel from './components/Carousel';
@@ -136,24 +137,26 @@ class Profile extends Component {
     if (test) {
       test = user.hobbies.join(' ');
     }
+
+    const style = {
+      clear: 'both'
+    };
+
     return (
       <div>
         <div className="container">
+          <div className="center">
           <h2>{user.firstname} {user.lastname}</h2>
+          { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
+            <div className={this.state.className} onClick={this.like} ></div> } </div>
+            <div style={style} ></div>
+          <div> Last Connection Date : {user.lastConnection} </div>
           <hr className="separation" />
           <h4> <i className="fa fa-trophy " aria-hidden="true"></i> Popularity: {user.popularity} % </h4>
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="aligned">Like</div>}
+            <div className="aligned">BLOCK THIS USER</div> }
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className={this.state.className} onClick={this.like} ></div> }
-          { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="aligned">Block</div> }
-          { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="block"> <img role='presentation' className="block_img" src={block}/></div>}
-          { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="aligned">Report</div>}
-          { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="report"> <img role='presentation' className="report_img" src={fake}/></div>}
+            <div className="aligned">REPORT AS FAKE</div>}
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className="clear_float" ></div>}
               <Carousel src={photo} username={user.username}/>

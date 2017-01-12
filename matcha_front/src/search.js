@@ -82,12 +82,28 @@ class Search extends Component {
         this.setState({ valuesLocation: values }, this.filterUser);
   }
 
-  handleChangePop = (component, values) => {
+    handleChangePop = (component, values) => {
       this.setState({ valuesPop: values }, this.filterUser);
   }
 
   updateSort = (sorted) => {
       this.setState({ users: sorted });
+  }
+
+  viewUser = async (username) => {
+    const response = await axios ({
+      method: 'post',
+      url: 'http://localhost:8080/view_user',
+      data: {
+        username,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+    if (response.data.status === true) {
+      console.log('ok view user');
+    }
   }
 
   render() {
@@ -108,7 +124,7 @@ class Search extends Component {
             <div>tags: {src.hobbies}</div>
             <div>Popularity: {src.popularity}</div>
             <div>{Like}</div>
-            <div><Link to={`/matcha/profile/${src.username}`} >See Full Profile</Link></div>
+            <div><Link to={`/matcha/profile/${src.username}`} onClick={() => this.viewUser(src.username)} >See Full Profile</Link></div>
           </div>
         );
       });

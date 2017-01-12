@@ -22,7 +22,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const users = [];
-const paths = ['/login', '/create_account'];
+const paths = ['/login', '/create_account', '/logout'];
 
 io.on('connection', (socket) => {
   socket.on('auth', (token) => {
@@ -108,6 +108,7 @@ app.post('/addPic', Pic.addPic);
 app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
-
+app.post('/view_user', User.viewUser);
+app.post('/logout', User.logout);
 server.listen(8080);
 // app.listen(8080);

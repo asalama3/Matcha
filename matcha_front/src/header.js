@@ -12,18 +12,18 @@ class Header extends React.Component {
     error: '',
     notif: 'notif',
     menu: 'dropdown-content',
-    message: '',
+    // message: '',
     loggedUser: null,
     pending: true,
+    notifications: [],
   }
 
-  componentWillMount() {
-    global.socket.on('notification', (data) => {
-      this.setState({ notif: 'active_notif' });
-      console.log('data', data);
-      this.setState({ message: data.message });
-      console.log('mess' , this.state.message);
-    });
+  handleNotif = ({ message }) => {
+      this.setState({
+        notif: 'active_notif',
+        // message,
+        notifications: [message, ...this.state.notifications],
+      });
   }
 
   componentWillUnmount() {
@@ -37,9 +37,12 @@ class Header extends React.Component {
       },
     });
     const loggedUser = checkAuth.data;
-    this.setState({ loggedUser: checkAuth.data });
-      this.setState({ pending: false });
-    console.log('logged user', loggedUser);
+    this.setState({
+      loggedUser,
+      notifications: loggedUser.data.notifications,
+      pending: false,
+    });
+    global.socket.on('notification', this.handleNotif);
     // handle refresh page without clicking on notif keep button red
     // viewed vs. ' ' in database axios request
   }
@@ -59,7 +62,6 @@ class Header extends React.Component {
       }
     });
     if (response.data.status === true) {
-      // console.log(response.data.data);
       browserHistory.push(`/matcha/profile/${response.data.data.username}`);
     } else {
       this.setState({ error: 'no username found' });
@@ -72,9 +74,18 @@ class Header extends React.Component {
     this.setState({ [e.target.name]: text });
   }
 
-  logout = () => {
-    localStorage.removeItem('token');
-    browserHistory.push('/');
+  logout = async () => {
+    const response = await axios ({
+      method: 'post',
+      url: 'http://localhost:8080/logout',
+      data: {
+          username: this.state.loggedUser.data.username,
+      }
+    });
+    if (response.data.status === true) {
+      localStorage.removeItem('token');
+      browserHistory.push('/');
+    }
   }
 
   deleteAccount = () => {
@@ -107,9 +118,7 @@ class Header extends React.Component {
   render() {
     let notifs = [];
     if (!this.state.pending) {
-      console.log('sdsdcds', this.state.loggedUser.data);
-      notifs = this.state.loggedUser.data.notifications.map((src, key) => <p key={key}> {src} </p>);
-      console.log(notifs);
+      notifs = this.state.notifications.map((src, key) => <p key={key}> {src} </p>);
     }
     return (
       <div>
