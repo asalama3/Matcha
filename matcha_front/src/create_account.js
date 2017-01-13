@@ -50,6 +50,7 @@ export default class CreateUser extends Component {
       e.target.email.value = '';
       e.target.password.value = '';
     }
+    console.log(this.state.position);
 
     const response = await axios({
       method: 'post',

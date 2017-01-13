@@ -34,10 +34,14 @@ io.on('connection', (socket) => {
         // return res.send({ status: false, details: 'cannot get authentification' });
       } else {
         users.push({ username: decoded.username, socket });
+        // connect to bd add status online
       }
       // console.log(users);
     });
   });
+  socket.on('disconnect', () => {
+    mongoConnect(null, (db)) // connect add new date
+  })
 });
 
 app.use(cors());
@@ -101,14 +105,14 @@ app.post('/create_account', Account.Username, Account.Firstname, Account.Lastnam
 app.post('/login', Account.Username, Account.Password, User.LoginUser);
 app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
-app.post('/searchLogin', User.searchLogin);
+app.post('/searchLogin', User.searchLogin(users));
 app.post('/deleteAccount', User.deleteAccount);
 app.post('/search', Profile.search);
 app.post('/addPic', Pic.addPic);
 app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
-app.post('/view_user', User.viewUser);
+app.post('/view_user', User.viewUser(users));
 app.post('/logout', User.logout);
 server.listen(8080);
 // app.listen(8080);

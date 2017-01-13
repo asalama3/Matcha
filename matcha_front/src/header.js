@@ -21,7 +21,6 @@ class Header extends React.Component {
   handleNotif = ({ message }) => {
       this.setState({
         notif: 'active_notif',
-        // message,
         notifications: [message, ...this.state.notifications],
       });
   }
@@ -117,7 +116,7 @@ class Header extends React.Component {
 
   render() {
     let notifs = [];
-    if (!this.state.pending) {
+    if (!this.state.pending && this.state.notifications) {
       notifs = this.state.notifications.map((src, key) => <p key={key}> {src} </p>);
     }
     return (
@@ -132,12 +131,13 @@ class Header extends React.Component {
           <Navbar.Collapse>
             <Nav>
               <NavDropdown eventKey={3} title="Menu" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1} href="/matcha/editProfile">Edit Profile</MenuItem>
-                <MenuItem eventKey={3.2} href="/matcha/editPictures">Edit Pictures</MenuItem>
-                <MenuItem eventKey={3.2} href="/matcha/profile">Profile</MenuItem>
-                <MenuItem eventKey={3.3} href="/matcha/search">Search</MenuItem>
+                <MenuItem eventKey={3.1} href="/matcha/editProfile">Edit My Profile</MenuItem>
+                <MenuItem eventKey={3.2} href="/matcha/editPictures">Edit My Pictures</MenuItem>
+                <MenuItem eventKey={3.2} href="/matcha/profile"> My Profile</MenuItem>
+                <MenuItem eventKey={3.3} href="/matcha/search">Search Users</MenuItem>
                 <MenuItem eventKey={3.3}>Suggestions</MenuItem>
-                <MenuItem eventKey={3.3}>Live Chat</MenuItem>
+                <MenuItem eventKey={3.3} href="/matcha/notifications">Notifications</MenuItem>
+                <MenuItem eventKey={3.3} href="/matcha/chat">Live Chat</MenuItem>
               </NavDropdown>
             </Nav>
             <form onSubmit={this.handleSubmit} >

@@ -9,6 +9,8 @@ import Profile from './profile';
 import editProfile from './editProfile';
 import editPictures from './editPictures';
 import Search from './search';
+import Chat from './chat';
+import Notifications from './notifications';
 // import deleteAccount from './delete_account';
 
 render((
@@ -22,6 +24,8 @@ render((
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
           <Route path="search" component={Search} />
+          <Route path="chat" component={Chat} />
+          <Route path="notifications" component={Notifications} />
     </Route>
     <Redirect from='*' to='/matcha/profile' component={App} />
   </Router>

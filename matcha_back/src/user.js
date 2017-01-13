@@ -103,7 +103,7 @@ const autoFill = (req, res) => {
   });
 };
 
-const searchLogin = (req, res) => {
+const searchLogin = (socketList) => (req, res) => {
   mongoConnect(res, (db) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {
@@ -113,6 +113,13 @@ const searchLogin = (req, res) => {
           user.views.name.push(req.user.username);
           user = pop.popularity(user);
           users.update({ username: req.body.username }, { $set: { ...user } });
+          const likerSocket = socketList.filter(el => el.username === user.username);
+          if (likerSocket && likerSocket.length) { // keep message event if likerSocket is not online !!!
+            const message = `${req.user.username} just looked at your profile !`;
+            likerSocket.forEach(el => el.socket.emit('notification', { message }));
+            const notif = user.notifications ? [...user.notifications, message] : [message];
+            users.update({ username: user.username }, { $set: { notifications: notif } });
+          }
         }
         res.send({ status: true, details: 'username found', data: user, loggedUser: req.user });
       } else {
@@ -122,15 +129,25 @@ const searchLogin = (req, res) => {
   });
 };
 
-const viewUser = (req, res) => {
+const viewUser = (socketList) => (req, res) => {
   mongoConnect(res, (db) => {
     const users = db.collection('users');
+    // console.log(req.body.username);
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
         if (user.views.name.indexOf(req.user.username) === -1) {
           user.views.number += 1;
           user.views.name.push(req.user.username);
           users.update({ username: req.body.username }, { $set: { ...user } });
+          const likerSocket = socketList.filter(el => el.username === user.username);
+          // console.log('likerSocket', likerSocket);
+          const message = `${req.user.username} just looked at your profile !`;
+          const notif = user.notifications ? [...user.notifications, message] : [message];
+          if (likerSocket && likerSocket.length) {
+            likerSocket.forEach(el => el.socket.emit('notification', { message }));
+            // console.log('notif', notif);
+          }
+          users.update({ username: user.username }, { $set: { notifications: notif } });
         }
         res.send({ status: true, details: 'user ok viewed' });
       } else {
