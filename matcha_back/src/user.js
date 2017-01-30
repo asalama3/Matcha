@@ -175,23 +175,23 @@ const deleteAccount = (req, res) => {
   });
 };
 
-const logout = (req, res) => {
-  mongoConnect(res, (db) => {
-    const users = db.collection('users');
-    users.findOne({ username: req.body.username }, (err, user) => {
-      if (err) {
-        res.send({ status: false, details: 'no connection' });
-      } else if (!user) {
-        res.send({ status: false, details: 'no user found' });
-      } else {
-        user.lastConnection = moment().format('MMMM Do YYYY, h:mm:ss a');
-        console.log(user.lastConnection);
-        users.update({ username: req.body.username }, { $set: { ...user } });
-        res.send({ status: true, details: 'last connection added' });
-      }
-    });
-  });
-};
+// const logout = (req, res) => {
+//   mongoConnect(res, (db) => {
+//     const users = db.collection('users');
+//     users.findOne({ username: req.body.username }, (err, user) => {
+//       if (err) {
+//         res.send({ status: false, details: 'no connection' });
+//       } else if (!user) {
+//         res.send({ status: false, details: 'no user found' });
+//       } else {
+//         // user.lastConnection = moment().format('MMMM Do YYYY, h:mm:ss a');
+//         // console.log(user.lastConnection);
+//         users.update({ username: req.body.username }, { $set: { ...user } });
+//         res.send({ status: true, details: 'last connection added' });
+//       }
+//     });
+//   });
+// };
 
 const myProfile = (req, res) => res.send({ status: true, data: req.user });
 
@@ -201,4 +201,4 @@ const editPictures = (req, res) => res.send({ status: true, data: req.user });
 
 const checkAuth = (req, res) => res.send({ status: true, data: req.user });
 
-export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, logout, myProfile, fillData, editPictures, checkAuth };
+export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth };

@@ -24,8 +24,8 @@ const io = socketIO(server);
 const users = [];
 const paths = ['/login', '/create_account', '/logout'];
 
-io.on('connection', (socket) => {
-  socket.on('auth', (token) => {
+io.on('connection', (socket) => { // se connecte a un socket
+  socket.on('auth', (token) => { // emet un evenement
     // console.log('token: ' , token);
     jwt.verify(token, 'yay', async(err, decoded) => {
       // console.log('decoded: ', decoded.username);
@@ -33,15 +33,28 @@ io.on('connection', (socket) => {
         // handle errors
         // return res.send({ status: false, details: 'cannot get authentification' });
       } else {
+        mongoConnect(null, (db) => {
+          const user = db.collection('users');
+          user.update({ username: decoded.username }, { $set: { lastConnection: 'connected' } });
+        });
         users.push({ username: decoded.username, socket });
+        socket.username = decoded.username;
         // connect to bd add status online
       }
       // console.log(users);
     });
   });
-  socket.on('disconnect', () => {
-    mongoConnect(null, (db)) // connect add new date
-  })
+    socket.on('disconnect', () => {
+      const { username } = socket;
+      console.log('heyeheyeyheye');
+      mongoConnect(null, (db) => {
+        db.collection('users').findOne({ username }, (err, user) => {
+          if (user) {
+            db.collection('users').update({ username }, { $set: { lastConnection: new Date() } });
+          }
+        });
+      });
+    });
 });
 
 app.use(cors());
@@ -113,6 +126,6 @@ app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
 app.post('/view_user', User.viewUser(users));
-app.post('/logout', User.logout);
+// app.post('/logout', User.logout);
 server.listen(8080);
 // app.listen(8080);

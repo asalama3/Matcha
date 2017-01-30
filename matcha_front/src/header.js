@@ -27,6 +27,7 @@ class Header extends React.Component {
 
   componentWillUnmount() {
     global.socket.removeEventListener('notification');
+    global.socket.disconnect();
   }
 
   componentDidMount = async () => {
@@ -74,17 +75,17 @@ class Header extends React.Component {
   }
 
   logout = async () => {
-    const response = await axios ({
-      method: 'post',
-      url: 'http://localhost:8080/logout',
-      data: {
-          username: this.state.loggedUser.data.username,
-      }
-    });
-    if (response.data.status === true) {
+    // const response = await axios ({
+    //   method: 'post',
+    //   url: 'http://localhost:8080/logout',
+    //   data: {
+    //       username: this.state.loggedUser.data.username,
+    //   }
+    // });
+    // if (response.data.status === true) {
       localStorage.removeItem('token');
       browserHistory.push('/');
-    }
+    // }
   }
 
   deleteAccount = () => {
