@@ -214,6 +214,8 @@
   padding: 4px 90px;
   border: none;
   border-radius: 5px ;
+  display: block;
+  height: 35px;
 }
 
 .error{
@@ -223,6 +225,8 @@
 .login_input{
   border-radius: 5px;
   width: 420px;
+  display: block;
+  height: 35px;
 }
 
 /*********************    APP    *********************/
@@ -241,9 +245,15 @@
 /*********************    CREATE ACCOUNT   *********************/
 
 input{
+  /*display: block;*/
+  /*height: 35px;*/
+  /*border-radius: 5px;*/
+}
+
+.displayInput {
   display: block;
-  height: 35px;
   border-radius: 5px;
+  height: 35px;
 }
 
 .create{
@@ -253,6 +263,10 @@ input{
 
 .create_input{
   width: 420px;
+  display: block;
+  height: 35px;
+  border-radius: 5px;
+  
 }
 
 .register_button{

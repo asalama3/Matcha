@@ -27,10 +27,12 @@ class Notifications extends React.Component {
   render() {
     let notifs = [];
     if (!this.state.pending && this.state.notifications) {
-      notifs = this.state.notifications.map((src, key) => <p key={key}> {src} </p>);
+      notifs = this.state.notifications.map((src, key) => <li key={key}> {src} </li>);
   }
     return(
-      <div> {notifs}</div>
+      <div>
+        {notifs}
+      </div>
     );
   }
 }

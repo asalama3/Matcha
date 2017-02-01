@@ -201,4 +201,15 @@ const editPictures = (req, res) => res.send({ status: true, data: req.user });
 
 const checkAuth = (req, res) => res.send({ status: true, data: req.user });
 
-export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth };
+const matches = (req, res) => {
+  mongoConnect(res, async (db) => {
+    const data = await db.collection('chats').find({ $or: [
+        { 'userA.username': req.user.username },
+        { 'userB.username': req.user.username },
+      ],
+    }).toArray();
+    res.send({ status: true, details: 'matches', data });
+  });
+};
+
+export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth, matches };

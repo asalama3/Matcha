@@ -45,7 +45,18 @@ const like = (socketList) => (req, res) => {
         const likedMatch = liked.match ? [...liked.match, liker.username] : [liker.username];
         const likerMatch = liker.match ? [...liker.match, liked.username] : [liked.username];
         users.update({ username: liked.username }, { $set: { notifications: notif, match: likedMatch } });
-        users.update({ username: liker.username }, { $set: { match: likerMatch } });
+        // users.update({ username: liker.username }, { $set: { match: likerMatch } });
+        const chats = db.collection('chats');
+        chats.insert({
+          userA: {
+            username: liker.username, image: liker.photo[0],
+          },
+          userB: {
+            username: liked.username, image: liked.photo[0],
+          },
+          messages: [],
+        });
+
       }
       users.update({ username: liker.username }, { $push: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $push: { interestedBy: liker.username } });

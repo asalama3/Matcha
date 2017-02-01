@@ -150,7 +150,7 @@ class Profile extends Component {
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className={this.state.className} onClick={this.like} ></div> } </div>
             <div style={style} ></div>
-          <div> Last Connection Date : {user.lastConnection} </div>
+          <div> Status : {user.lastConnection} </div>
           <hr className="separation" />
           <h4> <i className="fa fa-trophy " aria-hidden="true"></i> Popularity: {user.popularity} % </h4>
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&

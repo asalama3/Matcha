@@ -158,18 +158,21 @@ class editProfile extends Component {
               name="firstname"
               type="text"
               value={this.state.firstname}
+              className="displayInput"
             />
             <label className="inputForm" > Lastname </label>
             <input required onChange={this.onChange}
               name="lastname"
               type="text"
               value={this.state.lastname}
+              className="displayInput"
             />
             <label className="inputForm" > Email </label>
             <input required onChange={this.onChange}
               name="email"
               type="email"
               value={this.state.email}
+              className="displayInput"
             />
             <div>
               <div><label className="inputForm"> Birthday </label></div>
@@ -218,7 +221,7 @@ class editProfile extends Component {
                 initialValue={this.state.address}
                 // value={this.state.address}
               />}
-            <input id="submit" type="submit" value="Submit" name="submit" />
+            <input id="submit" type="submit" value="Submit" name="submit" className="displayInput"/>
         </form>
         <div> {this.state.error} </div>
     </div>);

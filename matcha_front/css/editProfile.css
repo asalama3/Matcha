@@ -27,6 +27,8 @@
 
 .hobbies{
   width: 500px;
+  display: block;
+  /*height: 35px;*/
 }
 
 .inputForm{

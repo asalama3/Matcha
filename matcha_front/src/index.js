@@ -9,7 +9,7 @@ import Profile from './profile';
 import editProfile from './editProfile';
 import editPictures from './editPictures';
 import Search from './search';
-import Chat from './chat';
+import Chat from './chats';
 import Notifications from './notifications';
 // import deleteAccount from './delete_account';
 

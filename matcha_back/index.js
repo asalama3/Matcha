@@ -1,5 +1,6 @@
 import express from 'express';
 import mongodb from 'mongodb';
+import moment from 'moment';
 import mongoConnect from './mongo_connect';
 import http from 'http';
 import socketIO from 'socket.io';
@@ -46,11 +47,11 @@ io.on('connection', (socket) => { // se connecte a un socket
   });
     socket.on('disconnect', () => {
       const { username } = socket;
-      console.log('heyeheyeyheye');
+      // console.log('heyeheyeyheye');
       mongoConnect(null, (db) => {
         db.collection('users').findOne({ username }, (err, user) => {
           if (user) {
-            db.collection('users').update({ username }, { $set: { lastConnection: new Date() } });
+            db.collection('users').update({ username }, { $set: { lastConnection: moment().format('MMMM Do YYYY, h:mm:ss a') } });
           }
         });
       });
@@ -111,6 +112,7 @@ app.get('/my_profile', User.myProfile);
 app.get('/fill_data', User.fillData);
 app.get('/edit_pictures', User.editPictures);
 app.get('/check_auth', User.checkAuth);
+app.get('/get_matches', User.matches);
 
 app.post('/create_account', Account.Username, Account.Firstname, Account.Lastname,
 	Account.Email, Account.Password, Account.Gender,
