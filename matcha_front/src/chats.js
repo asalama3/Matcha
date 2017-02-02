@@ -16,7 +16,7 @@ class Chats extends React.Component {
   componentDidMount = async () => {
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
     });
     if (checkAuth.data.status === true) {
@@ -27,7 +27,7 @@ class Chats extends React.Component {
     }
     const response = await axios.get('http://localhost:8080/get_matches', {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
     if (response.data.status === true) {
@@ -38,10 +38,32 @@ class Chats extends React.Component {
 
   changeSelected = index => this.setState({ selectedChat: index });
 
+  sendMessage = (data) => {
+    const { chats, user } = this.state;
+    global.socket.emit('messsage', data);
+    const newChats = chats.map((el) => {
+      if (el.userA.username === data.to || el.userB.username === data.to) {
+        return {
+          ...el,
+          messages: [
+            ...el.messages,
+            { from: user.username, message: data.message },
+          ],
+        };
+      }
+      return el;
+    });
+    this.setState({ chats: newChats });
+  }
+
   render() {
     let chatList = [];
+    let chat;
+    let other;
     const { pending, chats, user, selectedChat } = this.state;
     if (!pending && chats) {
+      chat = chats[selectedChat];
+      other = chat.userA.username === user.username ? chat.userB.username : chat.userA.username;
       chatList = chats.map((src, index) =>
         <li
           onClick={() => this.changeSelected(index)}
@@ -53,76 +75,16 @@ class Chats extends React.Component {
         </li>);
     }
     return (
-      <div>
-        <div>
+      <div className="contain">
+        <div className= "all">
           <ul className="chatList">
             {chatList}
           </ul>
         </div>
-        {chats.length > 0 && <Chat messages={chats[selectedChat].messages} />}
+        {chats.length > 0 && <Chat messages={chat.messages} other={other} onSend={this.sendMessage} />}
       </div>
     );
   }
 }
 
 export default Chats;
-
-
-// import React from 'react';
-//
-// const chats = [
-//   {
-//     me: monUsername,
-//     him: sonUsername,
-//     messages: [
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//       { from: username, message: 'faefwaag' },
-//     ]
-//   },
-// ]
-//
-// export default class Chats extends React.Component {
-//   state = {
-//     chats: [],
-//     selectedChats: 0,
-//   }
-//
-//   componentDidMount() {
-//     const { chats } = this.state;
-//     this.setState({ chats: api.getChats() }); // axios back
-//     global.socket.on('new message', (data) => { // cherche quel chat correspond
-//       const newChats = chats.map((chat) => {
-//         if (chat.him === data.from) {
-//           chat.messages = [...chat.message, data.message];
-//         }
-//         return chat;
-//       });
-//       this.setState({ chats: newChats });
-//     });
-//   }
-//
-//   componentWillunMount() {
-//   }
-//
-//   sendMessage = (data) => {
-//     global.socket.emit('new message', data);
-//   }
-//
-//   changeSelected = (evt) => {
-//     this.setState({ selectedChats: evt.target.id });
-//   }
-//
-//   render() {
-//     const chatList = this.state.chats.map((el, index) => <li key={index} id={index}>{el.him}</li>);
-//     <div>
-//       <ul>{chatList}</ul>
-//       <Chat chat={this.state.chats[selectedChats]} onSend={this.sendMessage}></Chat>
-//     </div>
-//   }
-// }

@@ -3,5 +3,18 @@
 }
 
 .chatList{
-  float: left;
+  /*float: left;*/
+
+
+}
+
+.all {
+  vertical-align: top;
+  display: inline-block;
+  margin-right: 5vw;
+}
+
+.contain{
+  width: 100%;
+  display: inline-block;
 }

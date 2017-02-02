@@ -56,6 +56,9 @@ io.on('connection', (socket) => { // se connecte a un socket
         });
       });
     });
+    socket.on('message', (data) => {
+      console.log('data:', data);
+    });
 });
 
 app.use(cors());

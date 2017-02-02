@@ -8,7 +8,11 @@ class Chat extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { other, onSend } = this.props;
+    onSend({ message: e.target.message.value, to: other });
+    e.target.message.value = '';
   }
+
   drawMessages = () => this.props.messages.map((el, key) =>
     <div key={key}>
 
@@ -23,7 +27,7 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main">
         <div className="drawMessages">
           {this.drawMessages()}
       </div>
@@ -33,12 +37,12 @@ class Chat extends React.Component {
             type='text'
             autoComplete="off"
             placeholder="Enter a message"
+            name="message"
           />
           <button className="chatButton">
             SEND
           </button>
         </form>
-        <div className="clear_float" ></div>
         </div>
     )
   }
