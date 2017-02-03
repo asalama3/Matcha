@@ -45,20 +45,59 @@ io.on('connection', (socket) => { // se connecte a un socket
       // console.log(users);
     });
   });
-    socket.on('disconnect', () => {
-      const { username } = socket;
-      // console.log('heyeheyeyheye');
-      mongoConnect(null, (db) => {
-        db.collection('users').findOne({ username }, (err, user) => {
-          if (user) {
-            db.collection('users').update({ username }, { $set: { lastConnection: moment().format('MMMM Do YYYY, h:mm:ss a') } });
-          }
-        });
+  socket.on('disconnect', () => {
+    const { username } = socket;
+    mongoConnect(null, (db) => {
+      db.collection('users').findOne({ username }, (err, user) => {
+        if (user) {
+          db.collection('users').update({ username }, { $set: { lastConnection: moment().format('MMMM Do YYYY, h:mm:ss a') } });
+        }
       });
     });
-    socket.on('message', (data) => {
-      console.log('data:', data);
+  });
+  socket.on('new message', (data) => {
+    mongoConnect(null, async (db) => {
+      const { username } = socket;
+      // console.log('online user', username);
+      const chats = db.collection('chats');
+      const chat = await chats.findOne({ $and: [
+        { $or: [
+          { 'userA.username': username },
+          { 'userB.username': username },
+          ] },
+        { $or: [
+          { 'userA.username': data.to },
+          { 'userB.username': data.to },
+          ] },
+        ]
+      });
+      if (!chat) return (false);
+      const message = {
+        from: username,
+        message: data.message,
+      };
+      // console.log('online users', users);
+      const toSendMessage = users.filter(user => {
+        return data.to === user.username
+      }); // get all users connected and send them the mess
+      // console.log('to', toSendMessage);
+      if (toSendMessage && toSendMessage.length) {
+        toSendMessage.forEach((user) => {
+          user.socket.emit('receive new message', message);
+        });
+      } else {
+        const notifText = `${username} sent you a new mesage`;
+        const notif = data.to.notifications ? [...data.to.notifications, notifText] : [notifText];
+        db.collection('users').update({ username: data.to }, { $set: { notifications: notif } });
+      }
+       await chats.update({ $or: [
+          { 'userA.username': username, 'userB.username': data.to },
+          { 'userB.username': username, 'userA.username': data.to },
+        ] },
+        { $push: { messages: message } }
+      );
     });
+  });
 });
 
 app.use(cors());

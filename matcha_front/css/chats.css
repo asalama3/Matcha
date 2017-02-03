@@ -1,20 +1,23 @@
 .changeChat{
   cursor: pointer;
+  border-bottom: 1px solid black;
+  list-style: none;
+  padding: 15px;
+
 }
 
 .chatList{
-  /*float: left;*/
-
-
 }
 
 .all {
   vertical-align: top;
   display: inline-block;
-  margin-right: 5vw;
+  margin-right: 4vw;
 }
 
 .contain{
   width: 100%;
   display: inline-block;
+  text-align: center;
+
 }

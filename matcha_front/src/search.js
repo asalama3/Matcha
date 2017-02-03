@@ -5,6 +5,7 @@ import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
 import Sort from '../src/components/sort';
+import heart from '../pictures/coeur.jpg';
 
 class Search extends Component {
   componentDidMount = async () => {
@@ -102,7 +103,10 @@ class Search extends Component {
       },
     });
     if (response.data.status === true) {
-      console.log('ok view user');
+      // console.log('ok view user');
+      // browserHistory.push(`/matcha/profile/${username}`);
+      browserHistory.push(`/matcha/profile/${username}`);
+
     }
   }
 
@@ -112,19 +116,24 @@ class Search extends Component {
       ListUsers = this.state.newUsers.map((src, key) => {
         console.log(src.username);
         let Like = '';
-        (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'already liked' : Like = 'want to like?';
+        (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
         return (
           <div key={key} className="display_users">
+            <div className="displayUsername">username: {src.username}</div>
             {(src.photo && src.photo.length > 0 &&
-            <img role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber || 0].name}`} />)
-            || <img role="presentation" src={'http://placehold.it/200x200'} />}
-            <div>username: {src.username}</div>
-            <div>Age: {src.age}</div>
-            <div>distance away from: {src.distance} km</div>
-            <div>tags: {src.hobbies}</div>
-            <div>Popularity: {src.popularity}</div>
-            <div>{Like}</div>
-            <div><Link to={`/matcha/profile/${src.username}`} onClick={() => this.viewUser(src.username)} >See Full Profile</Link></div>
+            <img onClick={() => this.viewUser(src.username)} role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber || 0].name}`}  />)
+            || <img onClick={() => this.viewUser(src.username)} role="presentation" src={'http://placehold.it/300x300'} className="image_profile" />}
+
+            <div className="userInfoBis">
+              <div className="DisplayPop">Popularity: {src.popularity} %</div>
+              {(Like === 'liked') && <img className="alreadyLiked" src={heart} />}
+            </div>
+            <div className="userInfo">
+              <div className="userAge">Age: {src.age} </div>
+              <div className="userDis">distance: {src.distance} km</div>
+            </div>
+            <div>#{src.hobbies}</div>
+            <span>{Like}</span>
           </div>
         );
       });

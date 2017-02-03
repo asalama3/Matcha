@@ -34,13 +34,30 @@ class Chats extends React.Component {
       this.setState({ chats: response.data.data, pending: false });
     }
     console.log(response);
+    global.socket.on('receive new message', this.handleNewMessage);
   };
 
   changeSelected = index => this.setState({ selectedChat: index });
 
+  handleNewMessage = (message) => {
+    const newMessage = this.state.chats.map((el) => {
+      if (el.userA.username === message.from || el.userB.username === message.from) {
+        return {
+          ...el,
+          messages: [
+            ...el.messages,
+            message,
+          ],
+        };
+      }
+      return el;
+    });
+    this.setState({ chats: newMessage });
+  }
+
   sendMessage = (data) => {
     const { chats, user } = this.state;
-    global.socket.emit('messsage', data);
+    global.socket.emit('new message', data);
     const newChats = chats.map((el) => {
       if (el.userA.username === data.to || el.userB.username === data.to) {
         return {
@@ -70,7 +87,7 @@ class Chats extends React.Component {
           key={index}
           className="changeChat">
             <div>
-              {src.userB.username === user.userame ? src.userA.username : src.userB.username}
+              {src.userA.username === user.username ? src.userB.username : src.userA.username}
             </div>
         </li>);
     }

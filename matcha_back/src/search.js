@@ -56,7 +56,7 @@ const search = async (req, res) => {
             user.distance = geolib.getDistance(
               { latitude: user.location.lat, longitude: user.location.lng },
               { latitude: req.user.location.lat, longitude: req.user.location.lng });
-            user.distance = (user.distance / 1000).toFixed(2);
+            user.distance = Math.round((user.distance / 1000));
           });
           const addedPop = popularity(match);
           res.send({ status: true, details: addedPop });
@@ -69,7 +69,7 @@ const search = async (req, res) => {
           {
             $match:
             {
-              $or: [{gender: 'female', orientation: 'gay' }, { gender: 'female', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
+              $or: [{ gender: 'female', orientation: 'gay' }, { gender: 'female', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
             },
           },
         ]).toArray();
@@ -83,7 +83,7 @@ const search = async (req, res) => {
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = (user.distance / 1000).toFixed(2);
+          user.distance = Math.round((user.distance / 1000));
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
@@ -107,7 +107,7 @@ const search = async (req, res) => {
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = (user.distance / 1000).toFixed(2);
+          user.distance = Math.round((user.distance / 1000));
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
@@ -138,7 +138,7 @@ const search = async (req, res) => {
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = (user.distance / 1000).toFixed(2);
+          user.distance = Math.round((user.distance / 1000));
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
@@ -162,7 +162,7 @@ const search = async (req, res) => {
           user.distance = geolib.getDistance(
             { latitude: user.location.lat, longitude: user.location.lng },
             { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = (user.distance / 1000).toFixed(2);
+          user.distance = Math.round((user.distance / 1000));
         });
         const addedPop = popularity(match);
         res.send({ status: true, details: addedPop });
@@ -186,7 +186,7 @@ const search = async (req, res) => {
             user.distance = geolib.getDistance(
               { latitude: user.location.lat, longitude: user.location.lng },
               { latitude: req.user.location.lat, longitude: req.user.location.lng });
-            user.distance = (user.distance / 1000).toFixed(2);
+            user.distance = Math.round((user.distance / 1000));
         });
           const addedPop = popularity(match);
           res.send({ status: true, details: addedPop });

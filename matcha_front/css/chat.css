@@ -18,8 +18,9 @@
 .chatButton{
   width: 100%;
   font-size: 1.4vmin;
-  background: #337ab7;
+  background: #1E2D5B;
   border: 1px solid black;
+  color: white;
 
 }
 
@@ -28,6 +29,7 @@
   min-height: 500px;
   border: 1px solid black;
   width: 100%;
+  text-align: left;
 }
 
 .sender {
@@ -41,6 +43,6 @@ margin-left: 1%;
 
 .main{
   width: 80%;
+  max-width: 800px;
   display: inline-block;
-
 }

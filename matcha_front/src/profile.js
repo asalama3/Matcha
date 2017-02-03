@@ -33,6 +33,7 @@ class Profile extends Component {
     this.setState({ connectedUser: loggedUser.data });
     // search using username in params
     if (this.props.params.user) {
+      console.log(this.props.params.user);
       const getProfile = await axios({
         method: 'post',
         url: 'http://localhost:8080/searchLogin',
