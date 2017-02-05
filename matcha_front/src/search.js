@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import InputRange from 'react-input-range';
 import '../css/search.css';
 import '../node_modules/react-input-range/dist/react-input-range.css';
 import Sort from '../src/components/sort';
-import heart from '../pictures/coeur.jpg';
+import redHeart from '../pictures/red_heart.png';
+import whiteHeart from '../pictures/white_heart.png';
+import blank from '../pictures/blank.png';
+import photo from '../pictures/default.jpg';
 
 class Search extends Component {
+  state={
+    users: '',
+    loggedUser: '',
+    newUsers: '',
+  }
   componentDidMount = async () => {
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
       headers: {
@@ -112,28 +120,36 @@ class Search extends Component {
 
   render() {
     let ListUsers = [];
+
     if (this.state.users) {
+
       ListUsers = this.state.newUsers.map((src, key) => {
-        console.log(src.username);
         let Like = '';
         (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
+        let after = '#';
+        let interests = src.hobbies;
+        console.log(src.hobbies);
+        if (interests) {
+          interests = src.hobbies.join(' #');
+          interests = `${after}${interests}`;
+        }
         return (
           <div key={key} className="display_users">
-            <div className="displayUsername">username: {src.username}</div>
+            <div className="displayUsername">Username: {src.username}</div>
             {(src.photo && src.photo.length > 0 &&
             <img onClick={() => this.viewUser(src.username)} role="presentation" className="image_profile" src={`http://localhost:8080/public/${src.username}/${src.photo[src.ProfilePictureNumber || 0].name}`}  />)
-            || <img onClick={() => this.viewUser(src.username)} role="presentation" src={'http://placehold.it/300x300'} className="image_profile" />}
+            || <img onClick={() => this.viewUser(src.username)} role="presentation" src={photo} className="image_profile" />}
 
             <div className="userInfoBis">
               <div className="DisplayPop">Popularity: {src.popularity} %</div>
-              {(Like === 'liked') && <img className="alreadyLiked" src={heart} />}
+              {(Like === 'liked' && <img role="presentation" className="alreadyLiked" src={redHeart} />)
+              || (Like === '' && <img role="presentation" className="notLiked" src={whiteHeart} />)}
             </div>
             <div className="userInfo">
               <div className="userAge">Age: {src.age} </div>
-              <div className="userDis">distance: {src.distance} km</div>
+              <div className="userDis">Distance: {src.distance} km</div>
             </div>
-            <div>#{src.hobbies}</div>
-            <span>{Like}</span>
+            {(src.hobbies && <div>{interests}</div>) || <div>No interests yet</div>} 
           </div>
         );
       });

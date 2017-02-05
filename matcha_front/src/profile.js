@@ -134,9 +134,11 @@ class Profile extends Component {
       photo,
     } = this.state;
 
-    let test = user.hobbies;
-    if (test) {
-      test = user.hobbies.join(' ');
+    let after = '#';
+    let interests = user.hobbies;
+    if (interests) {
+      interests = user.hobbies.join(' #');
+      interests = `${after}${interests}`;
     }
 
     const style = {
@@ -167,7 +169,7 @@ class Profile extends Component {
                 <li><i className="fa fa-heart " aria-hidden="true"></i> {user.orientation} </li>
                 <li><i className="fa fa-birthday-cake " aria-hidden="true"></i> {user.age} ans </li>
                 <li><i className="fa fa-map-marker " aria-hidden="true"></i> {address} </li>
-                <li><i className="fa fa-futbol-o " aria-hidden="true"></i> {test} </li>
+                <li><i className="fa fa-futbol-o " aria-hidden="true"></i> {interests} </li>
                 <li><i className="fa fa-comment-o biography" aria-hidden="true"></i> <p> {user.bio} </p></li>
               </ul>
               <div> {this.state.error} </div>

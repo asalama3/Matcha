@@ -80,18 +80,32 @@ text-align: left;
 
 .userAge{
   display: inline-block;
-  width: 49%;
+  width: 50%;
+  /*text-align: center;*/
 }
 
 .userDis{
   display: inline-block;
-  width: 49%;
+  width: 50%;
+  text-align: right;
 }
 
 
 .alreadyLiked{
   display: inline-block;
   width: 20px;
-  text-align: right;
+  float: right;
+  padding-top: 2px;
+
+  /*textalign: right;*/
+
+}
+
+.notLiked{
+  display: inline-block;
+  width: 20px;
+  float: right;
+  /*text-align: right;*/
+  padding-top: 2px;
 
 }
