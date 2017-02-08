@@ -137,7 +137,7 @@ class Profile extends Component {
     alert("This user has been reported");
   }
 
-  block = async() => {
+  block = async () => {
     console.log(this.state.user.username);
     const response = await axios({
       method: 'put',
@@ -196,7 +196,7 @@ class Profile extends Component {
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className="clear_float" ></div>}
               {this.state.photo && this.state.photo.length > 0  && <Carousel src={photo} username={user.username}/> ||
-              <div className="addPic"> Please add at least one picture to complete your profile </div>} 
+              <div className="addPic"> Please add at least one picture to complete your profile </div>}
               <ul className="list_profile">
                 <li><i className="glyphicon glyphicon-user " /> {user.username} </li>
                 <li><i className="fa fa-venus-mars " aria-hidden="true"></i> {user.gender} </li>

@@ -229,7 +229,7 @@ const block = (req, res) => {
         if (user.views.name.indexOf(req.user.username)) {
           const del = user.views.name.indexOf(req.user.username);
           user.views.number -= 1;
-          user.views.name.splice(del);
+          user.views.name.splice(del, 1);
           users.update({ username: req.body.username }, { $set: { ...user } } );
         }
       } else {
@@ -242,7 +242,7 @@ const block = (req, res) => {
         if (user.views.name.indexOf(req.body.username)) {
           const del = user.views.name.indexOf(req.body.username);
           user.views.number -= 1;
-          user.views.name.splice(del);
+          user.views.name.splice(del, 1);
           users.update({ username: req.user.username }, { $set: { ...user } } );
         }
       } else {
@@ -267,8 +267,8 @@ const block = (req, res) => {
     chats.remove({ $or: [
        { 'userA.username': req.user.username, 'userB.username': req.body.username },
        { 'userB.username': req.body.username, 'userA.username': req.user.username },
-     ]
-   });
+     ],
+   }, (err, result) => console.log(err ? 'err' : 'result'));
   });
 }
 

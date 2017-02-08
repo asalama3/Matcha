@@ -5,19 +5,23 @@ import mongoConnect from '../mongo_connect';
 
 // const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object;
 
+const areBlocked = (userA, userB) =>
+  (userA.blocked && userA.blocked && userA.blocked.length && !!userA.blocked.find(el => el === userB.username))
+  ||
+  (userB.blocked && userB.blocked.length && !!userB.blocked.find(el => el === userA.username));
+
+const addPop = (user) => {
+  if (user.interestedBy) {
+    const numberLikes = user.interestedBy.length;
+    const numberViews = user.views.number;
+    return Math.round((numberLikes / numberViews) * 100);
+  }
+  return 0;
+};
+
 const popularity = (allUsers) => {
   if (Array.isArray(allUsers)) {
-    const pop = allUsers.map((src) => {
-      if (src.interestedBy) {
-      const numberLikes = src.interestedBy.length;
-      const numberViews = src.views.number;
-      src.popularity = Math.round((numberLikes / numberViews) * 100);
-      } else {
-        src.popularity = 0;
-      }
-      return src;
-    });
-    return pop;
+    const pop = allUsers.map(addPop);
   }
   if (allUsers.interestedBy) {
     const numberLikes = allUsers.interestedBy.length;
@@ -116,30 +120,23 @@ const search = async (req, res) => {
             },
           },
         ]).toArray();
-        match.forEach((user) => {
-          if (req.user.blocked) {
-            const block = req.user.blocked.map((src, key) => {
-              if (user.username.includes(src)) {
-                const test = user.username.includes(src);
-                console.log('ok ca marche');
-                console.log(user);
-                // user.splice(test);
-              }
-            })
-          }
-          if (!user.location) return user.distance = -1;
-          // if (!req.user.location || isEmpty(req.user.location)) {
-          //   req.user.location.lat = '14.32';
-          //   req.user.location.lng = '10.12';
-          //   console.log(req.user.location.lat);
-          // }
-          user.distance = geolib.getDistance(
-            { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = Math.round((user.distance / 1000));
-        });
-        const addedPop = popularity(match);
-        res.send({ status: true, details: addedPop });
+        const noBlock = match.filter((user) => !areBlocked(user, req.user));
+        console.log(noBlock);
+        const withDistAndPop = noBlock.map(el => {
+          // ADD DISTANCE
+          if (el.location) {
+            el.distance = geolib.getDistance(
+              { latitude: el.location.lat, longitude: el.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng }
+            );
+          } else el.distance = -1;
+
+          // ADD POP
+          el.popularity = addPop(el);
+          return el;
+      });
+      console.log(withDistAndPop);
+      res.send({ status: true, details: withDistAndPop });
       }
     }
     if (req.user.gender === 'male') {
@@ -196,7 +193,6 @@ const search = async (req, res) => {
             const response = match.map((data, key) => {
               if (data.username.includes(src)) {
                 console.log('5 found blocked');
-
               }
             });
           });
