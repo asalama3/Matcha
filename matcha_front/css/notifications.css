@@ -1,0 +1,53 @@
+.history{
+  width: 100%;
+  display: inline-block;
+}
+
+.notifs{
+  display: inline-block;
+  width: 30%;
+  margin-left: 20%;
+  list-style-type: circle;
+}
+.visits{
+  display: inline-block;
+  vertical-align: top;
+  list-style-type: circle;
+  width: 30%;
+  margin-right: 20%;
+}
+
+
+.visits h1, .notifs h1{
+  text-align: center;
+  border: 2px solid white;
+  background-color: #1E2D5B;
+  color: white;
+  font-size: 30px;
+  
+}
+
+.view, .like, .match{
+  padding: 2px;
+  color: #1E2D5B;
+}
+
+.nv{
+  margin-left: 5%;
+}
+
+.match h1, .newMessages h1{
+  text-align: center;
+  border: 2px solid white;
+  background-color: green;
+  color: white;
+  margin-left: 20%;
+  margin-right: 20%;
+  font-size: 30px;
+}
+
+.meet, .chatMess{
+  text-align: center;
+  list-style: none;
+  font-size: 18px;
+}
