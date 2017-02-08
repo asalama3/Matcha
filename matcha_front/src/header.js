@@ -43,6 +43,7 @@ class Header extends React.Component {
       pending: false,
     });
     global.socket.on('notification', this.handleNotif);
+    console.log(this.state.notifications);
     // handle refresh page without clicking on notif keep button red
     // viewed vs. ' ' in database axios request
   }
@@ -63,10 +64,12 @@ class Header extends React.Component {
     });
     if (response.data.status === true) {
       browserHistory.push(`/matcha/profile/${response.data.data.username}`);
+    } else if (response.data.status === false && response.data.details === 'user blocked') {
+      this.setState({ error: 'user blocked' });
     } else {
       this.setState({ error: 'no username found' });
-      // make it disappear
     }
+      // make it disappear
   }
 
   onChange = (e) => {

@@ -46,6 +46,16 @@ const search = async (req, res) => {
               },
             },
           ]).toArray();
+          if (req.user.blocked) {
+            const block = req.user.blocked.map((src, key) => {
+              const response = match.map((data, key) => {
+                if (data.username.includes(src)) {
+                  console.log('1 found blocked');
+                }
+              });
+            });
+          }
+          if (match.includes(req.user.blocked))
           match.forEach((user) => {
             if (!user.location) return user.distance = -1;
             // if (!req.user.location || isEmpty(req.user.location)) {
@@ -73,6 +83,15 @@ const search = async (req, res) => {
             },
           },
         ]).toArray();
+        if (req.user.blocked) {
+          const block = req.user.blocked.map((src, key) => {
+            const response = match.map((data, key) => {
+              if (data.username.includes(src)) {
+                console.log('2 found blocked');
+              }
+            });
+          });
+        }
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
           // if (!req.user.location || isEmpty(req.user.location)) {
@@ -98,6 +117,16 @@ const search = async (req, res) => {
           },
         ]).toArray();
         match.forEach((user) => {
+          if (req.user.blocked) {
+            const block = req.user.blocked.map((src, key) => {
+              if (user.username.includes(src)) {
+                const test = user.username.includes(src);
+                console.log('ok ca marche');
+                console.log(user);
+                // user.splice(test);
+              }
+            })
+          }
           if (!user.location) return user.distance = -1;
           // if (!req.user.location || isEmpty(req.user.location)) {
           //   req.user.location.lat = '14.32';
@@ -125,6 +154,16 @@ const search = async (req, res) => {
             },
           },
         ]).toArray();
+        if (req.user.blocked) {
+          const block = req.user.blocked.map((src, key) => {
+            const response = match.map((data, key) => {
+              if (data.username.includes(src)) {
+                console.log('4 found blocked');
+
+              }
+            });
+          });
+        }
         match.forEach((user) => {
           // console.log(typeof req.user.location);
           // if (!req.user.location || isEmpty(req.user.location)) {
@@ -152,6 +191,16 @@ const search = async (req, res) => {
             },
           },
         ]).toArray();
+        if (req.user.blocked) {
+          const block = req.user.blocked.map((src, key) => {
+            const response = match.map((data, key) => {
+              if (data.username.includes(src)) {
+                console.log('5 found blocked');
+
+              }
+            });
+          });
+        }
          match.forEach((user) => {
           if (!user.location) return user.distance = -1;
           // if (!req.user.location || isEmpty(req.user.location)) {
@@ -176,6 +225,15 @@ const search = async (req, res) => {
             },
           },
         ]).toArray();
+        if (req.user.blocked) {
+          const block = req.user.blocked.map((src, key) => {
+            const response = match.map((data, key) => {
+              if (data.username.includes(src)) {
+                console.log(' 6 found blocked');
+              }
+            });
+          });
+        }
         match.forEach((user) => {
           if (!user.location) return user.distance = -1;
           // if (!req.user.location || isEmpty(req.user.location)) {

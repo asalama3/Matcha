@@ -30,9 +30,9 @@
 
 .carouselAndControls button {
     width: 40px;
-    height: 40px;
-    color: white;
-    background-color: #1E2D5B;
+    /*height: 40px;*/
+    /*color: white;*/
+    background-color: white;
     border: none;
     margin: 0 10px;
 }

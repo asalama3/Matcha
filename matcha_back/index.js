@@ -86,7 +86,7 @@ io.on('connection', (socket) => { // se connecte a un socket
           user.socket.emit('receive new message', message);
         });
       } else {
-        const notifText = `${username} sent you a new mesage`;
+        const notifText = `${username} sent you a new message`;
         const notif = data.to.notifications ? [...data.to.notifications, notifText] : [notifText];
         db.collection('users').update({ username: data.to }, { $set: { notifications: notif } });
       }
@@ -155,6 +155,8 @@ app.get('/fill_data', User.fillData);
 app.get('/edit_pictures', User.editPictures);
 app.get('/check_auth', User.checkAuth);
 app.get('/get_matches', User.matches);
+
+app.put('/block', User.block);
 
 app.post('/create_account', Account.Username, Account.Firstname, Account.Lastname,
 	Account.Email, Account.Password, Account.Gender,

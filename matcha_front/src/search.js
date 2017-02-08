@@ -7,7 +7,6 @@ import '../node_modules/react-input-range/dist/react-input-range.css';
 import Sort from '../src/components/sort';
 import redHeart from '../pictures/red_heart.png';
 import whiteHeart from '../pictures/white_heart.png';
-import blank from '../pictures/blank.png';
 import photo from '../pictures/default.jpg';
 
 class Search extends Component {
@@ -34,8 +33,6 @@ class Search extends Component {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
       }).then(({ data }) => {
-        console.log('hello');
-        console.log(data.details);
         if (data.status === true) {
           this.setState({ users: data.details, newUsers: data.details });
         }
@@ -128,7 +125,6 @@ class Search extends Component {
         (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
         let after = '#';
         let interests = src.hobbies;
-        console.log(src.hobbies);
         if (interests) {
           interests = src.hobbies.join(' #');
           interests = `${after}${interests}`;
@@ -149,7 +145,7 @@ class Search extends Component {
               <div className="userAge">Age: {src.age} </div>
               <div className="userDis">Distance: {src.distance} km</div>
             </div>
-            {(src.hobbies && <div>{interests}</div>) || <div>No interests yet</div>} 
+            {(src.hobbies && <div>{interests}</div>) || <div>No interests yet</div>}
           </div>
         );
       });

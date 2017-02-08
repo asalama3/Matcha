@@ -4,8 +4,8 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import '../css/profile.css';
 import Carousel from './components/Carousel';
-import block from '../pictures/block.png';
-import fake from '../pictures/fake.jpg';
+import blockIcon from '../pictures/block.png';
+import flag from '../pictures/flag.png';
 
 class Profile extends Component {
 
@@ -33,7 +33,7 @@ class Profile extends Component {
     this.setState({ connectedUser: loggedUser.data });
     // search using username in params
     if (this.props.params.user) {
-      console.log(this.props.params.user);
+      // console.log(this.props.params.user);
       const getProfile = await axios({
         method: 'post',
         url: 'http://localhost:8080/searchLogin',
@@ -77,6 +77,11 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (response.data.status === false && response.data.details === 'user blocked') {
+      this.setState({ error: 'user blocked' });
+    } else if (response.data.status === false && response.data.details === 'user not found' ) {
+      this.setState({ error: 'no username found' });
+    }
     this.setState({ user: response.data.data });
     if (response.data.data.interestedBy.includes(response.data.loggedUser.username)) {
       this.setState({ className: 'animatedLike animationLike' });
@@ -127,6 +132,28 @@ class Profile extends Component {
     this.setState({ likePending: false });
   }
 
+
+  report = () => {
+    alert("This user has been reported");
+  }
+
+  block = async() => {
+    console.log(this.state.user.username);
+    const response = await axios({
+      method: 'put',
+      url: 'http://localhost:8080/block',
+      data: {
+        username: this.state.user.username,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+    if (response.status === true) {
+      console.log(response.data);
+    }
+  }
+
   render() {
     const {
       user,
@@ -157,12 +184,19 @@ class Profile extends Component {
           <hr className="separation" />
           <h4> <i className="fa fa-trophy " aria-hidden="true"></i> Popularity: {user.popularity} % </h4>
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="aligned">BLOCK THIS USER</div> }
+            <img role="presentation" src={blockIcon} className="aligned" onClick={() => {
+              if (confirm('Block this user?') === true) {
+                {this.block()};
+              } else {
+                alert('ok the user is not blocked');
+              }
+            }  } />}
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
-            <div className="aligned">REPORT AS FAKE</div>}
+            <img role="presentation" src={flag} className="aligned" onClick={this.report}/>}
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className="clear_float" ></div>}
-              <Carousel src={photo} username={user.username}/>
+              {this.state.photo && this.state.photo.length > 0  && <Carousel src={photo} username={user.username}/> ||
+              <div className="addPic"> Please add at least one picture to complete your profile </div>} 
               <ul className="list_profile">
                 <li><i className="glyphicon glyphicon-user " /> {user.username} </li>
                 <li><i className="fa fa-venus-mars " aria-hidden="true"></i> {user.gender} </li>

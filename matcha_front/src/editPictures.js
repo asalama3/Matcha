@@ -111,8 +111,9 @@ class editPictures extends React.Component {
     }
 
     const style = {
-      width: 100,
-      height: 100,
+      width: 200,
+      height: 200,
+      padding: 5,
     };
 
     let imgList = [];
@@ -124,7 +125,7 @@ class editPictures extends React.Component {
               <div className="hover_class">
                 <button className="trash_button" onClick={() => this.delImg(key, el.name)}><i className="fa fa-trash-o fa-2x" aria-hidden="true"></i></button>
                 <button className="profile_button" onClick={() => this.profilePic(key, el.name)}> <i className="fa fa-user fa-2x" aria-hidden="true"></i></button>
-                <Image role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} circle style={style}/>
+                <Image role="presentation" src={`http://localhost:8080/public/${this.state.username}/${el.name}`} style={style}/>
               </div>
             </Col>
           </Row>

@@ -108,6 +108,11 @@ const searchLogin = (socketList) => (req, res) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
+        // console.log(req.user.blocked.indexOf(user.username));
+        if (user.username.includes(req.user.blocked)) {
+          console.log(req.user.blocked);
+          return res.send({ status: false, details: 'user blocked' });
+        }
         if (user.views.name.indexOf(req.user.username) === -1) {
           user.views.number += 1;
           user.views.name.push(req.user.username);
@@ -115,10 +120,10 @@ const searchLogin = (socketList) => (req, res) => {
           users.update({ username: req.body.username }, { $set: { ...user } });
           const likerSocket = socketList.filter(el => el.username === user.username);
           if (likerSocket && likerSocket.length) { // keep message event if likerSocket is not online !!!
-            const message = `${req.user.username} just looked at your profile !`;
+            const message = `${req.user.username} visited your profile`;
             likerSocket.forEach(el => el.socket.emit('notification', { message }));
-            const notif = user.notifications ? [...user.notifications, message] : [message];
-            users.update({ username: user.username }, { $set: { notifications: notif } });
+            // const notif = user.notifications ? [...user.notifications, message] : [message];
+            // users.update({ username: user.username }, { $set: { notifications: notif } });
           }
         }
         res.send({ status: true, details: 'username found', data: user, loggedUser: req.user });
@@ -141,13 +146,13 @@ const viewUser = (socketList) => (req, res) => {
           users.update({ username: req.body.username }, { $set: { ...user } });
           const likerSocket = socketList.filter(el => el.username === user.username);
           // console.log('likerSocket', likerSocket);
-          const message = `${req.user.username} just looked at your profile !`;
-          const notif = user.notifications ? [...user.notifications, message] : [message];
+          const message = `${req.user.username} visited your profile`;
+          // const notif = user.notifications ? [...user.notifications, message] : [message];
           if (likerSocket && likerSocket.length) {
             likerSocket.forEach(el => el.socket.emit('notification', { message }));
             // console.log('notif', notif);
           }
-          users.update({ username: user.username }, { $set: { notifications: notif } });
+          // users.update({ username: user.username }, { $set: { notifications: notif } });
         }
         res.send({ status: true, details: 'user ok viewed' });
       } else {
@@ -212,4 +217,59 @@ const matches = (req, res) => {
   });
 };
 
-export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth, matches };
+const block = (req, res) => {
+  console.log(req.user.username);
+  console.log(req.body.username);
+  mongoConnect(res, async (db) => {
+    const users = await db.collection('users');
+    const chats = await db.collection('chats');
+    users.findOne({ username: req.body.username }, (err, user) => {
+      if (user) {
+        console.log('user found');
+        if (user.views.name.indexOf(req.user.username)) {
+          const del = user.views.name.indexOf(req.user.username);
+          user.views.number -= 1;
+          user.views.name.splice(del);
+          users.update({ username: req.body.username }, { $set: { ...user } } );
+        }
+      } else {
+        console.log('user not found');
+      }
+    });
+    users.findOne({ username: req.user.username }, (err, user) => {
+      if (user) {
+        console.log('user found');
+        if (user.views.name.indexOf(req.body.username)) {
+          const del = user.views.name.indexOf(req.body.username);
+          user.views.number -= 1;
+          user.views.name.splice(del);
+          users.update({ username: req.user.username }, { $set: { ...user } } );
+        }
+      } else {
+        console.log('user not found');
+      }
+    });
+    users.update({ username: req.user.username }, {
+      $pull: {
+        interestedIn: req.body.username,
+        interestedBy: req.body.username
+      },
+      $push: {
+        blocked: req.body.username,
+      },
+    });
+    users.update({ username: req.body.username}, { $pull:
+      { interestedIn: req.user.username,
+        interestedBy: req.user.username },
+    });
+    console.log(req.user.username);
+    console.log(req.body.username);
+    chats.remove({ $or: [
+       { 'userA.username': req.user.username, 'userB.username': req.body.username },
+       { 'userB.username': req.body.username, 'userA.username': req.user.username },
+     ]
+   });
+  });
+}
+
+export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth, matches, block };
