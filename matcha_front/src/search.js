@@ -24,7 +24,7 @@ class Search extends Component {
     if (checkAuth.data.status === false) {
       browserHistory.push('/');
     } else {
-      this.setState({ loggedUser: checkAuth.data.data.username });
+      this.setState({ loggedUser: checkAuth.data.data });
 
       axios({
         method: 'post',
@@ -67,16 +67,19 @@ class Search extends Component {
       const { min: aMin, max: aMax } = this.state.valuesAge;
       const { min: lMin, max: lMax } = this.state.valuesLocation;
       const { min: pMin, max: pMax } = this.state.valuesPop;
+      const { min: tMin, max: tMax } = this.state.valuesTags;
+      const commonTags = this.numberTags(element);
       const { distance, age, popularity } = element;
       return (
           +distance <= +lMax && +distance >= +lMin &&
           +age <= +aMax && +age >= +aMin &&
-          +popularity <= +pMax && +popularity >= +pMin
+          +popularity <= +pMax && +popularity >= +pMin &&
+          +commonTags <= +tMax && +commonTags >= +tMin // hobbies = array not int
       );
   }
 
   filterUser = () => {
-      const newUsers = this.state.users.filter(element => this.filters(element));
+      const newUsers = this.state.users.filter(user => this.filters(user));
       this.setState({ newUsers });
   }
 
@@ -88,16 +91,25 @@ class Search extends Component {
         this.setState({ valuesLocation: values }, this.filterUser);
   }
 
-    handleChangePop = (component, values) => {
-      this.setState({ valuesPop: values }, this.filterUser);
+  handleChangePop = (component, values) => {
+    this.setState({ valuesPop: values }, this.filterUser);
+  }
+
+  handleChangeTags = (component, values) => {
+    this.setState({ valuesTags: values }, this.filterUser);
   }
 
   updateSort = (sorted) => {
       this.setState({ users: sorted });
   }
 
+  numberTags = (user) => {
+    // console.log(this.state.loggedUser);
+    const test = user.hobbies ? user.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length : 0;
+    return test;
+  }
   viewUser = async (username) => {
-    const response = await axios ({
+    const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/view_user',
       data: {
@@ -111,7 +123,28 @@ class Search extends Component {
       // console.log('ok view user');
       // browserHistory.push(`/matcha/profile/${username}`);
       browserHistory.push(`/matcha/profile/${username}`);
+    }
+  }
 
+  handleTag = async (e) => {
+    e.preventDefault();
+    // console.log(e.target.tag.value);
+    const tags = await axios({
+      method: 'post',
+      url: 'http://localhost:8080/search_by_tag',
+      data: {
+        tag: e.target.tag.value,
+        newUsers: this.state.users,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+    if (tags.data.status === true) {
+      this.setState({ newUsers: tags.data.details });
+      // console.log('details', tags.data.details);
+    } else {
+      // error occured - no one was found
     }
   }
 
@@ -119,7 +152,6 @@ class Search extends Component {
     let ListUsers = [];
 
     if (this.state.users) {
-
       ListUsers = this.state.newUsers.map((src, key) => {
         let Like = '';
         (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
@@ -176,9 +208,22 @@ class Search extends Component {
                 value={this.state.valuesPop}
                 onChange={this.handleChangePop.bind(this)}
               />
+              <h5>Search By Tags</h5>
+              <InputRange
+                maxValue={10}
+                minValue={0}
+                value={this.state.valuesTags}
+                onChange={this.handleChangeTags.bind(this)}
+              />
             </div>
           </form>
           <div> <Sort onUpdate={this.updateSort} newUsers={this.state.newUsers} /> </div>
+          <div>
+            <form className="formTag" onSubmit={this.handleTag}>
+              <input className="searchTag" type="text" name="tag" placeholder="search profiles by tag" />
+              <button type="submit">Submit </button>
+            </form>
+          </div>
           <div>
             {ListUsers}
           </div>

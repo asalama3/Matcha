@@ -16,6 +16,7 @@ class Sort extends Component{
         sortAgeOnce: false,
         sortLocationOnce: false,
         sortPopularityOnce: false,
+        sortTagOnce: false,
     }
 
 
@@ -68,20 +69,29 @@ class Sort extends Component{
 
     sortPopularity = (e) => {
       console.log("sort pop");
-      if (this.state.sortPopularityOnce === false){
-        this.setState({sortPopularityOnce: true});
+      if (this.state.sortPopularityOnce === false) {
+        this.setState({ sortPopularityOnce: true });
         const sortUsers = this.state.users.sort((a, b) => {
           return (a.popularity - b.popularity);
         });
-        this.setState({users: sortUsers});
+        this.setState({ users: sortUsers });
         this.props.onUpdate(sortUsers);
       }else{
         this.setState({ sortPopularityOnce: false });
         const sortUsers = this.state.users.sort((a, b) => {
           return (b.popularity - a.popularity);
         });
-        this.setState({users: sortUsers});
+        this.setState({ users: sortUsers });
         this.props.onUpdate(sortUsers);
+      }
+    }
+
+    sortTags = (e) => {
+      console.log("sort tag");
+      if (this.state.sortTagOnce === false) {
+        this.setState({ sortTagOnce: true });
+        const sortUsers = this.state.users.sort((a, b) => {
+        });
       }
     }
 
@@ -93,6 +103,7 @@ class Sort extends Component{
                 <button type="button" onClick={this.sortAge} className="sort_button">Sort by Age </button>
                 <button type="button" onClick={this.sortLocation} className="sort_button">Sort by Location </button>
                 <button type="button" onClick={this.sortPopularity} className="sort_button">Sort by Popularity </button>
+                <button type="button" onClick={this.sortTags} className="sort_button">Sort by Tags </button>
             </div>
         )
     }

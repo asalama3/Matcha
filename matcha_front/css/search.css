@@ -109,3 +109,13 @@ text-align: left;
   padding-top: 2px;
 
 }
+
+.searchTag{
+  width: 200px;
+  margin-right: 2px;
+  padding-left: 2px;
+}
+
+.formTag{
+  margin-left: 25px;
+}

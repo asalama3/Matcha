@@ -46,34 +46,30 @@ const search = async (req, res) => {
             {
               $match:
               {
-                $or: [{ gender: 'male', orientation: 'straight' }, { gender: 'male', orientation: 'bisexual' }]
+                $or: [
+                  { gender: 'male', orientation: 'straight' },
+                  { gender: 'male', orientation: 'bisexual' }
+                ]
               },
             },
           ]).toArray();
-          if (req.user.blocked) {
-            const block = req.user.blocked.map((src, key) => {
-              const response = match.map((data, key) => {
-                if (data.username.includes(src)) {
-                  console.log('1 found blocked');
-                }
-              });
-            });
-          }
-          if (match.includes(req.user.blocked))
-          match.forEach((user) => {
-            if (!user.location) return user.distance = -1;
-            // if (!req.user.location || isEmpty(req.user.location)) {
-            //   req.user.location.lat = '14.32';
-            //   req.user.location.lng = '10.12';
-            //   console.log(req.user.location.lat);
-            // }
-            user.distance = geolib.getDistance(
-              { latitude: user.location.lat, longitude: user.location.lng },
-              { latitude: req.user.location.lat, longitude: req.user.location.lng });
-            user.distance = Math.round((user.distance / 1000));
-          });
-          const addedPop = popularity(match);
-          res.send({ status: true, details: addedPop });
+          const noBlock = match.filter((user) => !areBlocked(user, req.user));
+          const withDistAndPop = noBlock.map(el => {
+            // ADD DISTANCE
+            if (el.location) {
+              el.distance = geolib.getDistance(
+                { latitude: el.location.lat, longitude: el.location.lng },
+                { latitude: req.user.location.lat, longitude: req.user.location.lng }
+              );
+              el.distance = Math.round((el.distance / 1000));
+            } else el.distance = -1;
+
+            // ADD POP
+            el.popularity = addPop(el);
+            return el;
+        });
+        // console.log(withDistAndPop);
+        res.send({ status: true, details: withDistAndPop });
         } catch (err) {
           console.error(err);
         }
@@ -83,45 +79,15 @@ const search = async (req, res) => {
           {
             $match:
             {
-              $or: [{ gender: 'female', orientation: 'gay' }, { gender: 'female', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
-            },
-          },
-        ]).toArray();
-        if (req.user.blocked) {
-          const block = req.user.blocked.map((src, key) => {
-            const response = match.map((data, key) => {
-              if (data.username.includes(src)) {
-                console.log('2 found blocked');
-              }
-            });
-          });
-        }
-        match.forEach((user) => {
-          if (!user.location) return user.distance = -1;
-          // if (!req.user.location || isEmpty(req.user.location)) {
-          //   req.user.location.lat = '14.32';
-          //   req.user.location.lng = '10.12';
-          //   console.log(req.user.location.lat);
-          // }
-          user.distance = geolib.getDistance(
-            { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = Math.round((user.distance / 1000));
-        });
-        const addedPop = popularity(match);
-        res.send({ status: true, details: addedPop });
-      }
-      if (req.user.orientation === 'bisexual') {
-        const match = await db.collection('users').aggregate([
-          {
-            $match:
-            {
-              $nor: [{ gender: 'female', orientation: 'straight' }, { gender: 'male', orientation: 'gay' }, { username: req.user.username }]
+              $or: [
+                { gender: 'female', orientation: 'gay' },
+                { gender: 'female', orientation: 'bisexual' }
+              ],
+              username: { $nin: [req.user.username] }
             },
           },
         ]).toArray();
         const noBlock = match.filter((user) => !areBlocked(user, req.user));
-        console.log(noBlock);
         const withDistAndPop = noBlock.map(el => {
           // ADD DISTANCE
           if (el.location) {
@@ -129,13 +95,46 @@ const search = async (req, res) => {
               { latitude: el.location.lat, longitude: el.location.lng },
               { latitude: req.user.location.lat, longitude: req.user.location.lng }
             );
+            el.distance = Math.round((el.distance / 1000));
+          } else el.distance = -1;
+
+          // ADD POP
+          el.popularity = addPop(el);
+          return el;
+        });
+        // console.log(withDistAndPop);
+        res.send({ status: true, details: withDistAndPop });
+      }
+      if (req.user.orientation === 'bisexual') {
+        const match = await db.collection('users').aggregate([
+          {
+            $match:
+            {
+              $nor: [
+                { gender: 'female', orientation: 'straight' },
+                { gender: 'male', orientation: 'gay' },
+                { username: req.user.username }
+              ]
+            },
+          },
+        ]).toArray();
+        const noBlock = match.filter((user) => !areBlocked(user, req.user));
+        // console.log(noBlock);
+        const withDistAndPop = noBlock.map(el => {
+          // ADD DISTANCE
+          if (el.location) {
+            el.distance = geolib.getDistance(
+              { latitude: el.location.lat, longitude: el.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng }
+            );
+            el.distance = Math.round((el.distance / 1000));
           } else el.distance = -1;
 
           // ADD POP
           el.popularity = addPop(el);
           return el;
       });
-      console.log(withDistAndPop);
+      // console.log(withDistAndPop);
       res.send({ status: true, details: withDistAndPop });
       }
     }
@@ -147,106 +146,101 @@ const search = async (req, res) => {
           {
             $match:
             {
-              $or: [{ gender: 'female', orientation: 'straight' }, { gender: 'female', orientation: 'bisexual' }]
+              $or: [
+                { gender: 'female', orientation: 'straight' },
+                { gender: 'female', orientation: 'bisexual' }
+              ]
             },
           },
         ]).toArray();
-        if (req.user.blocked) {
-          const block = req.user.blocked.map((src, key) => {
-            const response = match.map((data, key) => {
-              if (data.username.includes(src)) {
-                console.log('4 found blocked');
+        const noBlock = match.filter((user) => !areBlocked(user, req.user));
+        const withDistAndPop = noBlock.map(el => {
+          // ADD DISTANCE
+          if (el.location) {
+            el.distance = geolib.getDistance(
+              { latitude: el.location.lat, longitude: el.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng }
+            );
+            el.distance = Math.round((el.distance / 1000));
+          } else el.distance = -1;
 
-              }
-            });
-          });
-        }
-        match.forEach((user) => {
-          // console.log(typeof req.user.location);
-          // if (!req.user.location || isEmpty(req.user.location)) {
-          //   req.user.location.lat = '14.32';
-          //   req.user.location.lng = '10.12';
-          //   console.log(req.user.location.lat);
-          // }
-          // if (!user.location) return user.distance = -1;
-          console.log(user.location);
-          console.log(user.location);
-          user.distance = geolib.getDistance(
-            { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = Math.round((user.distance / 1000));
+          // ADD POP
+          el.popularity = addPop(el);
+          return el;
         });
-        const addedPop = popularity(match);
-        res.send({ status: true, details: addedPop });
+        // console.log(withDistAndPop);
+        res.send({ status: true, details: withDistAndPop });
       }
       if (req.user.orientation === 'gay') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $or: [{ gender: 'male', orientation: 'gay' }, { gender: 'male', orientation: 'bisexual' }], username: { $nin: [req.user.username] }
+              $or: [
+                { gender: 'male', orientation: 'gay' },
+                { gender: 'male', orientation: 'bisexual' }
+              ],
+              username: { $nin: [req.user.username] }
             },
           },
         ]).toArray();
-        if (req.user.blocked) {
-          const block = req.user.blocked.map((src, key) => {
-            const response = match.map((data, key) => {
-              if (data.username.includes(src)) {
-                console.log('5 found blocked');
-              }
-            });
-          });
-        }
-         match.forEach((user) => {
-          if (!user.location) return user.distance = -1;
-          // if (!req.user.location || isEmpty(req.user.location)) {
-          //   req.user.location.lat = '14.32';
-          //   req.user.location.lng = '10.12';
-          //   console.log(req.user.location.lat);
-          // }
-          user.distance = geolib.getDistance(
-            { latitude: user.location.lat, longitude: user.location.lng },
-            { latitude: req.user.location.lat, longitude: req.user.location.lng });
-          user.distance = Math.round((user.distance / 1000));
+        const noBlock = match.filter((user) => !areBlocked(user, req.user));
+        const withDistAndPop = noBlock.map(el => {
+          // ADD DISTANCE
+          if (el.location) {
+            el.distance = geolib.getDistance(
+              { latitude: el.location.lat, longitude: el.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng }
+            );
+            el.distance = Math.round((el.distance / 1000));
+          } else el.distance = -1;
+
+          // ADD POP
+          el.popularity = addPop(el);
+          return el;
         });
-        const addedPop = popularity(match);
-        res.send({ status: true, details: addedPop });
-      }
+        // console.log(withDistAndPop);
+        res.send({ status: true, details: withDistAndPop });
+    }
       if (req.user.orientation === 'bisexual') {
         const match = await db.collection('users').aggregate([
           {
             $match:
             {
-              $nor: [{ gender: 'male', orientation: 'straight' }, { gender: 'female', orientation: 'gay' }, { username: req.user.username }]
+              $nor: [
+                { gender: 'male', orientation: 'straight' },
+                { gender: 'female', orientation: 'gay' },
+                { username: req.user.username }
+              ],
             },
           },
         ]).toArray();
-        if (req.user.blocked) {
-          const block = req.user.blocked.map((src, key) => {
-            const response = match.map((data, key) => {
-              if (data.username.includes(src)) {
-                console.log(' 6 found blocked');
-              }
-            });
-          });
-        }
-        match.forEach((user) => {
-          if (!user.location) return user.distance = -1;
-          // if (!req.user.location || isEmpty(req.user.location)) {
-          //   req.user.location.lat = '14.32';
-          //   req.user.location.lng = '10.12';
-          //   console.log(req.user.location.lat);
-          // }
-            user.distance = geolib.getDistance(
-              { latitude: user.location.lat, longitude: user.location.lng },
-              { latitude: req.user.location.lat, longitude: req.user.location.lng });
-            user.distance = Math.round((user.distance / 1000));
+        const noBlock = match.filter((user) => !areBlocked(user, req.user));
+        const withDistAndPop = noBlock.map(el => {
+          // ADD DISTANCE
+          if (el.location) {
+            el.distance = geolib.getDistance(
+              { latitude: el.location.lat, longitude: el.location.lng },
+              { latitude: req.user.location.lat, longitude: req.user.location.lng }
+            );
+            el.distance = Math.round((el.distance / 1000));
+          } else el.distance = -1;
+
+          // ADD POP
+          el.popularity = addPop(el);
+          return el;
         });
-          const addedPop = popularity(match);
-          res.send({ status: true, details: addedPop });
+        // console.log(withDistAndPop);
+        res.send({ status: true, details: withDistAndPop });
       }
     }
   });
 };
 
-export { search, popularity };
+const searchByTag = (req, res) => {
+  const searchTag = req.body.newUsers.filter((user) =>
+  user.hobbies && user.hobbies.length && user.hobbies.includes(req.body.tag));
+    res.send({ status: true, details: searchTag });
+};
+
+export { search, popularity, searchByTag };

@@ -172,6 +172,7 @@ app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
 app.post('/view_user', User.viewUser(users));
+app.post('/search_by_tag', Profile.searchByTag);
 // app.post('/logout', User.logout);
 server.listen(8080);
 // app.listen(8080);
