@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
 import React, { Component } from 'react';
 import '../css/welcome.css';
 
@@ -14,9 +13,17 @@ export default class CreateUser extends Component {
     position: {},
   }
 
+  _timeout = null;
+
+  componentWillUnmount() {
+    clearTimeout(this._timeout);
+  }
+
   createAccount = async (e) => {
     e.persist(); // long request - converve valeurs de l'evenement
     e.preventDefault(); // no reload
+
+    this.setState({ error: '', success: '' });
     const ip = await axios.get('http://ip-api.com/json');
     console.log(ip.data);
     // let location = null;
@@ -59,8 +66,10 @@ export default class CreateUser extends Component {
       this.setState({ error: response.data.details });
     }
     else if (response.data.status === true) {
-      browserHistory.push('/');
       this.setState({ success: 'success ! you can now login !' });
+      this._timeout = setTimeout(() => {
+        this.setState({ create: 'hidden_create_form', login: 'login_form_active' });
+      }, 2000);
     }
   }
 

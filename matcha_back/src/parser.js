@@ -70,7 +70,7 @@ const Orientation = (req, res, next) => {
 
 const Bio = (req, res, next) => {
   const bio = req.body.bio;
-  if (bio && bio.length <= 100) {
+  if (bio && bio.length <= 1500) {
     next();
   } else {
     res.send({ status: false, details: 'bio too long' });

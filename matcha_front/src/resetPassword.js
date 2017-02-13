@@ -36,7 +36,7 @@ class resetPassword extends React.Component {
 
   render(){
     return(
-      <div>
+      <div className="forgot">
       <div className="titleForgot">RESET YOUR PASSWORD </div>
         <form className="formPass" onSubmit={this.resetPassword}>
           <input className="forgotInput"

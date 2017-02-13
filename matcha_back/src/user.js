@@ -175,9 +175,9 @@ const deleteAccount = (req, res) => {
       } else {
         db.collection('users').remove({ _id: objectId(req.user._id) });
         fs.rmdir(`./uploads/${req.user.username}`, (error) => {
-          if (error) res.send({ status: false, details: 'error rmdir' });
+          if (error) return res.send({ status: false, details: 'error rmdir' });
+          return res.send({ status: true, details: 'user deleted from db' });
         });
-        res.send({ status: true, details: 'user deleted from db' });
       }
     });
   });

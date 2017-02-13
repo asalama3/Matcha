@@ -94,9 +94,10 @@ class editProfile extends Component {
 
   editProfile = async (e) => {
     e.preventDefault(); // no reload
-    if (e.target.firstname.value.length > 20 || e.target.lastname.value.length > 20 || e.target.email.value.length > 30
-      || e.target.bio.value.length > 200) {
-      this.setState({ error: 'bio cannot exceed 200 characters' });
+    const { firstname, lastname, email, bio } = e.target;
+    if (firstname.value.length > 20 || lastname.value.length > 20 || email.value.length > 30
+      || bio.value.length > 1500) {
+      this.setState({ error: 'bio cannot exceed 1500 characters' });
       return;
       // e.target.firstname.value = '';
       // e.target.lastname.value = '';

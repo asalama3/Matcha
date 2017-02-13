@@ -21,7 +21,7 @@ const like = (socketList) => (req, res) => {
     // check block, report...
 
     // already liked
-    const alreadyLiked = liker.interestedIn.indexOf(liked.username) !== -1;
+    const alreadyLiked = liker.interestedIn ? liker.interestedIn.indexOf(liked.username) !== -1 : false;
     if (alreadyLiked) {
       if (liked.match.includes(liker.username) && (liker.match.includes(liked.username))) {
         users.update({ username: liker.username }, { $pull: { match: liked.username } });
