@@ -1,27 +1,26 @@
 import React, {Component} from 'react';
-// import axios from 'axios';
 import '../../css/sort.css';
-
-
 
 class Sort extends Component{
 
-    componentWillMount(){
+    componentDidMount(){
         // this.props = this.state.users;
         this.setState({ users: this.props });
+        // this.setState({loggedUser: this.props.loggedUser });
     }
 
     state = {
         users: [],
+        loggedUser: '',
         sortAgeOnce: false,
         sortLocationOnce: false,
         sortPopularityOnce: false,
         sortTagOnce: false,
     }
 
-
     componentWillReceiveProps = (newProps) => {
         this.setState({ users: newProps.newUsers });
+        this.setState({ loggedUser: newProps.loggedUser });
     }
 
     sortAge = (e) => {
@@ -87,12 +86,18 @@ class Sort extends Component{
     }
 
     sortTags = (e) => {
-      console.log("sort tag");
       if (this.state.sortTagOnce === false) {
         this.setState({ sortTagOnce: true });
-        const sortUsers = this.state.users.sort((a, b) => {
+        this.state.users.map((src) => {
+          return src.commonTags = src.hobbies ? src.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length: 0;
         });
-      }
+        // console.log(this.state.users);
+        const sortUsers = this.state.users.sort((a, b) => {
+          return (b.commonTags - a.commonTags);
+        });
+        this.setState({ users: sortUsers });
+        this.props.onUpdate(sortUsers);
+       }
     }
 
 

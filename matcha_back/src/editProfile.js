@@ -1,6 +1,6 @@
 import mongodb from 'mongodb';
 import mongoConnect from '../mongo_connect';
-
+var _ = require('lodash');
 // const session = require('express-session');
 
 const objectId = mongodb.ObjectId;
@@ -15,7 +15,7 @@ const editProfile = (req, res) => {
   mongoConnect(res, (db) => {
     const birthday = [req.body.year, req.body.month, req.body.day];
     const age = ageCalculated(new Date(birthday));
-    const userInfo = {
+    let userInfo = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       email: req.body.email,
@@ -31,6 +31,11 @@ const editProfile = (req, res) => {
       interestedIn: [],
       interestedBy: [],
     };
+    if (_.isEmpty(req.body.location)) {
+      userInfo = _.omit(userInfo, ['location']);
+      console.log('no location info user', userInfo);
+    }
+    console.log(userInfo);
     db.collection('users').findOne({ _id: objectId(req.user._id) }, (err, user) => {
       if (err) res.send({ status: false, details: 'db error' });
       else if (!user) res.send({ status: false, details: 'no user found' });

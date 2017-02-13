@@ -55,5 +55,26 @@
   background: white;
   margin: 2px 2px;
   cursor: pointer;
-  text-align: center;  
+  text-align: center;
+}
+
+
+.profilePhoto{
+  margin-left: 14px;
+  color: green;
+  font-size: 20px;
+}
+
+.maxImg{
+  margin-left: 14px;
+  color: green;
+  font-size: 20px;
+}
+
+.hideProfilePhoto{
+  display: none;
+}
+
+.hideErr{
+  display: none;
 }

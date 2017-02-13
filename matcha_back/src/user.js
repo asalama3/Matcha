@@ -113,6 +113,9 @@ const searchLogin = (socketList) => (req, res) => {
           console.log(req.user.blocked);
           return res.send({ status: false, details: 'user blocked' });
         }
+        if (user.username === req.user.username) {
+          return res.send({ status: false, details: 'cannot search yourself' });
+        }
         if (user.views.name.indexOf(req.user.username) === -1) {
           user.views.number += 1;
           user.views.name.push(req.user.username);
@@ -266,7 +269,7 @@ const block = (req, res) => {
     console.log(req.body.username);
     chats.remove({ $or: [
        { 'userA.username': req.user.username, 'userB.username': req.body.username },
-       { 'userB.username': req.body.username, 'userA.username': req.user.username },
+       { 'userA.username': req.body.username, 'userB.username': req.user.username },
      ],
    }, (err, result) => console.log(err ? 'err' : 'result'));
   });

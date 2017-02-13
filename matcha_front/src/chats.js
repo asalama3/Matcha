@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import Chat from './components/chat';
 import '../css/chats.css';
+var _ = require('lodash');
+
 // import { browserHistory } from 'react-router';
 
 class Chats extends React.Component {
@@ -78,7 +80,7 @@ class Chats extends React.Component {
     let chat;
     let other;
     const { pending, chats, user, selectedChat } = this.state;
-    if (!pending && chats) {
+    if (!pending && !_.isEmpty(chats)) {
       chat = chats[selectedChat];
       other = chat.userA.username === user.username ? chat.userB.username : chat.userA.username;
       chatList = chats.map((src, index) =>
@@ -90,10 +92,12 @@ class Chats extends React.Component {
               {src.userA.username === user.username ? src.userB.username : src.userA.username}
             </div>
         </li>);
+    } else if (!pending) {
+      chatList= "You don't have any chats available yet";
     }
     return (
       <div className="contain">
-        <div className= "all">
+        <div className="all">
           <ul className="chatList">
             {chatList}
           </ul>

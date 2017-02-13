@@ -9,7 +9,9 @@ import * as Account from './src/parser';
 import * as Edit from './src/editProfile';
 import * as Pic from './src/editPictures';
 import * as Profile from './src/search';
+import * as Suggestions from './src/suggestions';
 import * as Like from './src/like';
+import * as Pass from './src/forgotPassword';
 
 const bodyParser = require('body-parser');
 // const session = require('express-session');
@@ -23,7 +25,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const users = [];
-const paths = ['/login', '/create_account', '/logout'];
+const paths = ['/login', '/create_account', '/logout', '/forgot_password', '/reset_password'];
 
 io.on('connection', (socket) => { // se connecte a un socket
   socket.on('auth', (token) => { // emet un evenement
@@ -162,17 +164,19 @@ app.post('/create_account', Account.Username, Account.Firstname, Account.Lastnam
 	Account.Email, Account.Password, Account.Gender,
 	Account.Orientation, User.createAccount);
 app.post('/login', Account.Username, Account.Password, User.LoginUser);
-app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Edit.editProfile);
+app.post('/editProfile', Account.Firstname, Account.Lastname, Account.Email, Account.Bio, Edit.editProfile);
 app.post('/autoFill', User.autoFill);
 app.post('/searchLogin', User.searchLogin(users));
 app.post('/deleteAccount', User.deleteAccount);
 app.post('/search', Profile.search);
+app.post('/suggestions', Suggestions.suggestions);
 app.post('/addPic', Pic.addPic);
 app.post('/delPic', Pic.deletePic);
 app.post('/profilePic', Pic.profilePic);
 app.post('/like', Like.like(users));
 app.post('/view_user', User.viewUser(users));
 app.post('/search_by_tag', Profile.searchByTag);
-// app.post('/logout', User.logout);
+app.post('/forgot_password', Pass.forgotPass);
+app.post('/reset_password', Account.Password, Pass.resetPass);
 server.listen(8080);
 // app.listen(8080);

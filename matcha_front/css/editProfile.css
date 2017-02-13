@@ -19,6 +19,8 @@
 .form{
   height: 100%;
   width: 100%;
+  margin: 0 auto;
+  width: 60%;
 }
 
 .form h2{
@@ -88,4 +90,10 @@ input {
   border: none;
   border-radius: 5px ;
   margin-top: 20px;
+}
+
+.erreur {
+  font-size: 20px;
+  color: red;
+  margin-left: 190px;
 }

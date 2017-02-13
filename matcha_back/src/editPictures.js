@@ -8,8 +8,8 @@ const objectId = mongodb.ObjectId;
 
 const addPic = (req, res) => {
   mongoConnect(res, (db) => {
-    if (!req.body.photo) {
-      res.send({ status: false, details: 'empty photo' });
+    if (!req.body.photo || !req.body.name || !req.body.type || !req.body.size) {
+      res.send({ status: false, details: 'you need to select a photo' });
     } else if (req.body.size < 1000000) {
         if (req.body.type === 'image/jpeg' || req.body.type === 'image/jpg' ||
             req.body.type === 'image/png' || req.body.type === 'image/gif') {
@@ -23,12 +23,12 @@ const addPic = (req, res) => {
                 }
                 const matches = req.body.photo.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
                 if (matches.length !== 3) {
-                  res.send({ status: false, details: 'invalid input string' });
+                  return res.send({ status: false, details: 'invalid input string' });
                 }
                 const imageBuffer = new Buffer(matches[2], 'base64');
                 fs.writeFile(`./uploads/${req.user.username}/${req.body.name}`, imageBuffer, (error) => {
                   if (error) {
-                    res.send({ status: false, details: 'invalid input string' });
+                    return res.send({ status: false, details: 'invalid input string' });
                   }
                   });
                   let photo = [];
@@ -40,18 +40,18 @@ const addPic = (req, res) => {
                   photo.push({ name: req.body.name, profil: false });
                   db.collection('users').update({ _id: objectId(req.user._id) }, { $set: { photo } }, (er) => {
                     if (er) {
-                      res.send({ status: false, details: 'db error' });
+                       return res.send({ status: false, details: 'db error' });
                     } else {
-                        res.send({ status: true, details: 'inserted photo ok', data: photo });
+                        return res.send({ status: true, details: 'inserted photo ok', data: photo });
                       }
                   });
                   return false;
               });
         } else {
-          res.send({ status: false, details: 'wrong format' });
+          return res.send({ status: false, details: 'wrong format' });
         }
       } else {
-      res.send({ status: false, details: 'wrong size' });
+      return res.send({ status: false, details: 'wrong size' });
       }
   });
 };
@@ -64,7 +64,7 @@ const deletePic = (req, res) => {
     });
     db.collection('users').update({ _id: objectId(req.user._id) }, { $pull: { photo: { name: req.body.name } } }, (err) => {
       if (err) {
-        res.send({ status: false, details: 'db error' });
+        return res.send({ status: false, details: 'db error' });
       } else {
         db.collection('users').findOne({ _id: objectId(req.user._id) }, (error, user) => {
           if (error) {
@@ -85,9 +85,9 @@ const profilePic = (req, res) => {
   mongoConnect(res, (db) => {
     db.collection('users').update({ _id: objectId(req.user._id) }, { $set: { ProfilePictureNumber: req.body.key } }, (err) => {
       if (err) {
-        res.send({ status: false, details: 'db error' });
+        return res.send({ status: false, details: 'db error' });
       } else {
-        res.send({ status: true, details: 'make profile pic' });
+        return res.send({ status: true, details: 'make profile pic' });
       }
     });
   });

@@ -12,6 +12,7 @@ const like = (socketList) => (req, res) => {
   const { username } = req.body;
   mongoConnect(res, async (db) => {
     const users = db.collection('users');
+    const chats = db.collection('chats');
     const liker = await users.findOne({ username: req.user.username });
     const liked = await users.findOne({ username });
     if (!liked) return res.send({ status: false, details: 'user not found' });
@@ -29,6 +30,24 @@ const like = (socketList) => (req, res) => {
       }
       users.update({ username: liker.username }, { $pull: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $pull: { interestedBy: liker.username } });
+      console.log(liked.username);
+      console.log(liker.username);
+      console.log(chats);
+      const getChat = chats.findOne({
+        $or: [
+            { 'userA.username' : liker.username, 'userB.username': liked.username },
+            { 'userA.username' : liked.username, 'userB.username': liker.username }
+          ]
+        });
+        if (getChat) {
+          chats.remove({ $or: [
+              { 'userA.username': liker.username, 'userB.username': liked.username },
+              { 'userA.username': liked.username, 'userB.username': liker.username },
+            ],
+            }, (err, result) => console.log(err ? 'err' : 'result'));
+         } else if (!getChat) {
+           console.log('errror');
+         }
       res.send({ status: true, details: 'user successfully disliked' });
     // not already liked
     } else {
@@ -48,7 +67,7 @@ const like = (socketList) => (req, res) => {
         const likerMatch = liker.match ? [...liker.match, liked.username] : [liked.username];
         users.update({ username: liked.username }, { $set: { notifications: notif, match: likedMatch } });
         users.update({ username: liker.username }, { $set: { match: likerMatch } });
-        const chats = db.collection('chats');
+        // const chats = db.collection('chats');
         chats.insert({
           userA: {
             username: liker.username, image: liker.photo[0],

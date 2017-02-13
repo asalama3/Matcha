@@ -10,6 +10,9 @@ class editPictures extends React.Component {
     username: '',
     showImage: true,
     photo: [],
+    profilePicture: '',
+    err: 'error',
+    profilePhoto: 'profilePhoto',
   }
 
   componentDidMount = async () => {
@@ -27,8 +30,12 @@ class editPictures extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    if (this.state.file.type !== 'image/jpeg' && this.state.file.type !== 'image/jpg' && this.state.file.type !== 'image/png') {
-      this.setState({ imagePreviewUrl: '', file: '', error: 'wrong file format' });
+    if (!this.state.file || !this.state.imagePreviewUrl) {
+      this.setState({error: "you need to select a file" });
+      setTimeout(this.hideDiv, 3000);
+    } else if (this.state.file.type !== 'image/jpeg' && this.state.file.type !== 'image/jpg' && this.state.file.type !== 'image/png') {
+      this.setState({ imagePreviewUrl: '', file: '', error: 'wrong file format', err: 'error' });
+      setTimeout(this.hideDiv, 3000);
     } else {
     const response = await axios({
       method: 'post',
@@ -46,8 +53,9 @@ class editPictures extends React.Component {
     if (response.data.status === true) {
       this.setState({ photo: response.data.data, imagePreviewUrl: '' });
     } else {
-      // do something here
+      this.setState({ error: response.data.details, err: 'error' });
       }
+      setTimeout(this.hideDiv, 3000);
     }
   }
 
@@ -80,7 +88,15 @@ class editPictures extends React.Component {
     });
     if (response.data.status === true) {
       this.setState({ photo: response.data.values });
+    } else {
+      this.setState({ error: "Could not delete picture", err: 'error' });
     }
+    setTimeout(this.hideDiv, 3000);
+  }
+
+  hideDiv = () => {
+    this.setState({ profilePhoto: 'hideProfilePhoto' });
+    this.setState({ err: 'hideErr' });
   }
 
   profilePic = async (key, name) => {
@@ -96,9 +112,12 @@ class editPictures extends React.Component {
       },
     });
     if (response.data.status === true) {
-      console.log('ok profile pic added key');
-      // add message de ok
+      this.setState({ profilePicture: "Profile picture saved", profilePhoto: "profilePhoto" });
     }
+    else {
+      this.setState({ error: "Could not make this picture your profile picture", err: 'error' });
+    }
+    setTimeout(this.hideDiv, 3000);
   }
 
   render() {
@@ -136,18 +155,19 @@ class editPictures extends React.Component {
     return (
       <div className="pictures">
         <div>{imgList}</div>
+        <div className={this.state.profilePhoto}> {this.state.profilePicture} </div>
         {((this.state.photo.length < 5 &&
           <div className="previewComponent">
             <form onSubmit={this.handleSubmit} encType="multipart/form-data">
               <input className="fileInput" type="file" onChange={this.handleImageChange} />
               <button className="submitButton" type="submit" onClick={this.handleSubmit}>Upload Image</button>
             </form>
+            <div className={this.state.err}> {this.state.error} </div>
             <div className="imgPreview">
               {$imagePreview}
             </div>
-            <div> {this.state.error} </div>
           </div>)
-          || (this.state.photo.length > 4 && <div>Pas plus de 5 images!</div>))}
+          || (this.state.photo.length > 4 && <div className="maxImg">You cannot upload more than 5 images!</div>))}
       </div>
     );
   }

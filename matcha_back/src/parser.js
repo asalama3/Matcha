@@ -38,6 +38,7 @@ const Email = (req, res, next) => {
 
 const Password = (req, res, next) => {
   console.log('password')
+  console.log(req.body.password);
   const pass = req.body.password;
   if (pass && pass.length > 5) {
     next();
@@ -67,4 +68,13 @@ const Orientation = (req, res, next) => {
   }
 };
 
-module.exports = { Username, Firstname, Lastname, Email, Password, Gender, Orientation };
+const Bio = (req, res, next) => {
+  const bio = req.body.bio;
+  if (bio && bio.length <= 100) {
+    next();
+  } else {
+    res.send({ status: false, details: 'bio too long' });
+  }
+}
+
+module.exports = { Username, Firstname, Lastname, Email, Password, Gender, Orientation, Bio };

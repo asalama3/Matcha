@@ -108,6 +108,7 @@ class Search extends Component {
     const test = user.hobbies ? user.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length : 0;
     return test;
   }
+
   viewUser = async (username) => {
     const response = await axios({
       method: 'post',
@@ -154,7 +155,7 @@ class Search extends Component {
     if (this.state.users) {
       ListUsers = this.state.newUsers.map((src, key) => {
         let Like = '';
-        (src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
+        (src.interestedBy && src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
         let after = '#';
         let interests = src.hobbies;
         if (interests) {
@@ -185,7 +186,7 @@ class Search extends Component {
     return (
       <div className="container">
         <h1>Search</h1>
-          <form className="form">
+          <form className="formulaire">
             <div className="formField">
               <h5>Search By Age</h5>
               <InputRange
@@ -217,7 +218,7 @@ class Search extends Component {
               />
             </div>
           </form>
-          <div> <Sort onUpdate={this.updateSort} newUsers={this.state.newUsers} /> </div>
+          <div> <Sort onUpdate={this.updateSort} newUsers={this.state.newUsers} loggedUser={this.state.loggedUser} /> </div>
           <div>
             <form className="formTag" onSubmit={this.handleTag}>
               <input className="searchTag" type="text" name="tag" placeholder="search profiles by tag" />

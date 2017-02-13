@@ -9,13 +9,18 @@ import Profile from './profile';
 import editProfile from './editProfile';
 import editPictures from './editPictures';
 import Search from './search';
+import Suggestions from './suggestions';
 import Chat from './chats';
 import Notifications from './notifications';
+import forgotPass from './forgotPassword';
+import resetPass from './resetPassword';
 // import deleteAccount from './delete_account';
 
 render((
   <Router history={browserHistory}>
     <Route path="/" component={App} >
+      <Route path="/forgotPassword" component={forgotPass} />
+      <Route path="/resetPassword" component={resetPass} />
       <IndexRoute component={Welcome} />
     </Route>
     <Route path="/matcha" component={AppHeader} >
@@ -24,6 +29,7 @@ render((
           <Route path="editProfile" component={editProfile} />
           <Route path="editPictures" component={editPictures} />
           <Route path="search" component={Search} />
+          <Route path="suggestions" component={Suggestions} />
           <Route path="chat" component={Chat} />
           <Route path="notifications" component={Notifications} />
     </Route>

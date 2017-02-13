@@ -57,6 +57,7 @@ const search = async (req, res) => {
           const withDistAndPop = noBlock.map(el => {
             // ADD DISTANCE
             if (el.location) {
+              console.log('location each user:', el.location);
               el.distance = geolib.getDistance(
                 { latitude: el.location.lat, longitude: el.location.lng },
                 { latitude: req.user.location.lat, longitude: req.user.location.lng }
@@ -243,4 +244,4 @@ const searchByTag = (req, res) => {
     res.send({ status: true, details: searchTag });
 };
 
-export { search, popularity, searchByTag };
+export { search, popularity, searchByTag, areBlocked, addPop };

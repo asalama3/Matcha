@@ -43,7 +43,7 @@ class Header extends React.Component {
       pending: false,
     });
     global.socket.on('notification', this.handleNotif);
-    console.log(this.state.notifications);
+    // console  .log(this.state.notifications);
     // handle refresh page without clicking on notif keep button red
     // viewed vs. ' ' in database axios request
   }
@@ -64,12 +64,13 @@ class Header extends React.Component {
     });
     if (response.data.status === true) {
       browserHistory.push(`/matcha/profile/${response.data.data.username}`);
-    } else if (response.data.status === false && response.data.details === 'user blocked') {
+    } else if (response.data.details === 'user blocked') {
       this.setState({ error: 'user blocked' });
+    } else if (response.data.details === 'cannot search yourself') {
+      this.setState({ error: 'cannot search yourself' });
     } else {
       this.setState({ error: 'no username found' });
     }
-      // make it disappear
   }
 
   onChange = (e) => {
@@ -139,7 +140,7 @@ class Header extends React.Component {
                 <MenuItem eventKey={3.2} href="/matcha/editPictures">Edit My Pictures</MenuItem>
                 <MenuItem eventKey={3.2} href="/matcha/profile"> My Profile</MenuItem>
                 <MenuItem eventKey={3.3} href="/matcha/search">Search Users</MenuItem>
-                <MenuItem eventKey={3.3}>Suggestions</MenuItem>
+                <MenuItem eventKey={3.3} href="/matcha/suggestions">Suggestions</MenuItem>
                 <MenuItem eventKey={3.3} href="/matcha/notifications">Notifications</MenuItem>
                 <MenuItem eventKey={3.3} href="/matcha/chat">Live Chat</MenuItem>
               </NavDropdown>

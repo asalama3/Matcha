@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import '../css/welcome.css';
 
 class Login extends Component {
@@ -54,6 +54,7 @@ class Login extends Component {
               value="LOGIN"
               />
           </form>
+          <Link to="/forgotPassword" className="forgotPass">Forgot Password ? </Link>
           <div className="error"> {this.state.error} </div>
       </div>
 

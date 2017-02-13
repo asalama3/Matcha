@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import Popup from 'react-popup';
 import { browserHistory } from 'react-router';
 import '../css/profile.css';
 import Carousel from './components/Carousel';
@@ -186,7 +185,7 @@ class Profile extends Component {
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <img role="presentation" src={blockIcon} className="aligned" onClick={() => {
               if (confirm('Block this user?') === true) {
-                {this.block()};
+                this.block();
               } else {
                 alert('ok the user is not blocked');
               }
@@ -195,7 +194,7 @@ class Profile extends Component {
             <img role="presentation" src={flag} className="aligned" onClick={this.report}/>}
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className="clear_float" ></div>}
-              {this.state.photo && this.state.photo.length > 0  && <Carousel src={photo} username={user.username}/> ||
+              {(this.state.photo && this.state.photo.length > 0  && <Carousel src={photo} username={user.username}/>) ||
               <div className="addPic"> Please add at least one picture to complete your profile </div>}
               <ul className="list_profile">
                 <li><i className="glyphicon glyphicon-user " /> {user.username} </li>

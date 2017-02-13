@@ -94,9 +94,9 @@ class editProfile extends Component {
 
   editProfile = async (e) => {
     e.preventDefault(); // no reload
-    if (e.target.firstname.value.length > 30 || e.target.lastname.value.length > 30 || e.target.email.value.length > 30
-      || e.target.bio.value.length > 300) {
-      this.setState({ error: 'cannot exceed 30 characters' });
+    if (e.target.firstname.value.length > 20 || e.target.lastname.value.length > 20 || e.target.email.value.length > 30
+      || e.target.bio.value.length > 200) {
+      this.setState({ error: 'bio cannot exceed 200 characters' });
       return;
       // e.target.firstname.value = '';
       // e.target.lastname.value = '';
@@ -124,9 +124,9 @@ class editProfile extends Component {
      },
     });
     if (response.data.status === true) {
-      // browserHistory.push('/matcha/profile');
+      browserHistory.push('/matcha/profile');
     } else {
-      // add error message from middleware ou editprofile function
+      this.setState({ error: response.data.details })
     }
   }
 
@@ -223,7 +223,7 @@ class editProfile extends Component {
               />}
             <input id="submit" type="submit" value="Submit" name="submit" className="displayInput"/>
         </form>
-        <div> {this.state.error} </div>
+        <div className="erreur"> {this.state.error} </div>
     </div>);
   }
 }

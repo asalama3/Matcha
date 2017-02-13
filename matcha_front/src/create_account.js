@@ -5,24 +5,10 @@ import '../css/welcome.css';
 
 export default class CreateUser extends Component {
 
-  // test = (e) => {
-  //   e.preventDefault();
-  //   this.setState({ test: 'alban' });
-  // }
-  //
-  // test1 = (e) => {
-  //   e.preventDefault();
-  //   this.setState({ test: 'youhoo' });
-  // }
-  //
-  // test2 = (e) => {
-  //   e.preventDefault();
-  //   this.setState({ test: '' });
-  // }
-
   state = {
     test: 'andrea',
     error: '',
+    success: '',
     login: 'hidden_login_form',
     create: 'hidden_create_form',
     position: {},
@@ -33,7 +19,7 @@ export default class CreateUser extends Component {
     e.preventDefault(); // no reload
     const ip = await axios.get('http://ip-api.com/json');
     console.log(ip.data);
-    let location = null;
+    // let location = null;
     // console.log(ip.data.status);
     if (ip.data.status === 'success') {
       this.setState({ position: {
@@ -50,7 +36,7 @@ export default class CreateUser extends Component {
       e.target.email.value = '';
       e.target.password.value = '';
     }
-    console.log(this.state.position);
+    // console.log(this.state.position);
 
     const response = await axios({
       method: 'post',
@@ -69,10 +55,12 @@ export default class CreateUser extends Component {
         position: this.state.position,
       },
     });
-    this.setState({ error: response.data.details });
-    if (response.data.status === true) {
+    if (response.data.status === false) {
+      this.setState({ error: response.data.details });
+    }
+    else if (response.data.status === true) {
       browserHistory.push('/');
-      this.setState({ error: 'sucess ! you can now login !' });
+      this.setState({ success: 'success ! you can now login !' });
     }
   }
 
@@ -189,8 +177,8 @@ export default class CreateUser extends Component {
             />
           </div>
         </form>
-        {/* <div onClick={this.test1} onDoubleClick={this.test2}> {this.state.test} </div> */}
-        <div className="error" > {this.state.error} </div>
+        {(this.state.error && <div className="error" > {this.state.error} </div>) ||
+        (this.state.success && <div className="success" > {this.state.success} </div>)}
     </div>
     );
   }

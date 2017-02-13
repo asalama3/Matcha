@@ -35,6 +35,7 @@ class Notifications extends React.Component {
           return (
           <li key={key} className="like"> {src} </li>)
         }
+        return false;
       });
     }
     let visits = [];
@@ -54,6 +55,7 @@ class Notifications extends React.Component {
           console.log(src);
           return (<li key={key}> {src} </li>);
         }
+        return false;
       });
     }
     return(
