@@ -105,9 +105,13 @@ const autoFill = (req, res) => {
 const searchLogin = (socketList) => (req, res) => {
   mongoConnect(res, (db) => {
     const users = db.collection('users');
+    // console.log(req.body.username);
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
-        if (user.username.includes(req.user.blocked)) {
+        console.log(user.username);
+        console.log(req.user.blocked);
+        if (req.user.blocked.includes(user.username)) {
+          console.log('je rentre dedans');
           return res.send({ status: false, details: 'user blocked' });
         }
         if (user.username === req.user.username) {
@@ -208,7 +212,7 @@ const block = (req, res) => {
           const del = user.views.name.indexOf(req.user.username);
           user.views.number -= 1;
           user.views.name.splice(del, 1);
-          users.update({ username: req.body.username }, { $set: { ...user } } );
+          users.update({ username: req.body.username }, { $set: { ...user } });
         }
       } else {
         res.send({ status: false, details: 'no user found' });
@@ -220,31 +224,39 @@ const block = (req, res) => {
           const del = user.views.name.indexOf(req.body.username);
           user.views.number -= 1;
           user.views.name.splice(del, 1);
-          users.update({ username: req.user.username }, { $set: { ...user } } );
+          users.update({ username: req.user.username }, { $set: { ...user } });
         }
       } else {
         res.send({ status: false, details: 'no user found' });
       }
     });
-    users.update({ username: req.user.username }, {
-      $pull: {
-        interestedIn: req.body.username,
-        interestedBy: req.body.username
-      },
-      $push: {
-        blocked: req.body.username,
-      },
+    users.findOne({ username: req.user.username }, (err, user) => {
+      if (user) {
+        users.update({ username: req.user.username }, {
+          $pull: {
+            interestedIn: req.body.username,
+            interestedBy: req.body.username,
+          },
+          $push: {
+            blocked: req.body.username,
+          },
+        });
+      } else {
+        console.log('no');
+      }
     });
-    users.update({ username: req.body.username}, { $pull:
-      { interestedIn: req.user.username,
+
+    users.update({ username: req.body.username }, {
+      $pull: {
+        interestedIn: req.user.username,
         interestedBy: req.user.username },
     });
     chats.remove({ $or: [
        { 'userA.username': req.user.username, 'userB.username': req.body.username },
        { 'userA.username': req.body.username, 'userB.username': req.user.username },
-     ]});
+     ] });
   });
-}
+};
 
 const sendMail = (to, subject, text, email) => {
   let transporter = nodemailer.createTransport({

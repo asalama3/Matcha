@@ -215,7 +215,7 @@ class Profile extends Component {
               } else {
                 alert('ok the user is not blocked');
               }
-            }  } />}
+            } } /> }
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <img role="presentation" src={flag} className="aligned" onClick={this.report}/>}
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
