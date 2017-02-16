@@ -78,7 +78,6 @@ io.on('connection', (socket) => { // se connecte a un socket
         return data.to === user.username
       }); // get all users connected and send them the mess
       if (toSendMessage && toSendMessage.length) {
-        console.log('hye nooo nooo');
         toSendMessage.forEach((user) => {
           user.socket.emit('receive new message', message);
         });
