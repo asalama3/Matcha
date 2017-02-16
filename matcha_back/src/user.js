@@ -38,6 +38,8 @@ const createAccount = (req, res) => {
       orientation: req.body.orientation,
       location: req.body.position,
       photo: [],
+      interestedIn: [],
+      interestedBy: [],
       views };
     const email = req.body.email;
     // const password = req.body.password;

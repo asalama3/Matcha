@@ -201,4 +201,3 @@ app.get('/updateLoca', (req, res) => {
     });
 });
 server.listen(8080);
-// app.listen(8080);

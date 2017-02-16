@@ -27,8 +27,6 @@ const editProfile = (req, res) => {
       bio: req.body.bio,
       hobbies: req.body.hobbies,
       location: req.body.location,
-      interestedIn: [],
-      interestedBy: [],
     };
     if (_.isEmpty(req.body.location)) {
       userInfo = _.omit(userInfo, ['location']);
