@@ -24,16 +24,13 @@ class Sort extends Component{
     }
 
     sortAge = (e) => {
-        console.log("sort age");
         if (this.state.sortAgeOnce === false){
             this.setState({ sortAgeOnce: true  });
-            console.log(this.state.users);
             const sortUsers = this.state.users.sort((a, b) => {
                 return (a.age - b.age);
             });
             this.setState({ users: sortUsers });
             this.props.onUpdate(sortUsers);
-            console.log(this.state.sortAgeOnce);
         }
         else{
             this.setState({ sortAgeOnce: false  });
@@ -42,12 +39,10 @@ class Sort extends Component{
             });
             this.setState({ users: sortUsers });
             this.props.onUpdate(sortUsers);
-            console.log(this.state.sortAgeOnce);
         }
     }
 
     sortLocation = (e) => {
-        console.log("sort location");
         if (this.state.sortLocationOnce === false){
             this.setState({sortLocationOnce: true});
             const sortUsers = this.state.users.sort((a, b) => {
@@ -67,7 +62,6 @@ class Sort extends Component{
     }
 
     sortPopularity = (e) => {
-      console.log("sort pop");
       if (this.state.sortPopularityOnce === false) {
         this.setState({ sortPopularityOnce: true });
         const sortUsers = this.state.users.sort((a, b) => {
@@ -115,7 +109,6 @@ class Sort extends Component{
 
 
     render() {
-        // console.log(this.props, "1111");
         return(
             <div className="sort">
                 <button type="button" onClick={this.sortAge} className="sort_button">Sort by Age </button>

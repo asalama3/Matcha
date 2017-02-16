@@ -67,7 +67,6 @@ class Search extends Component {
     users: [], // all users profiles
     newUsers: [], // all users at first and then filtered
     like: '',
-    loggedUser: '',
   };
 
   filters = (element) => {
