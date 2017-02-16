@@ -438,3 +438,8 @@ input.radio:focus ~ label:before {
   text-align: center;
   font-size: 25px;
 }
+
+
+.err{
+  display: none;
+}

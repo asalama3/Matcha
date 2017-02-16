@@ -10,6 +10,7 @@ class Header extends React.Component {
   state={
     username: '',
     error: '',
+    err: '',
     notif: 'notif',
     menu: 'dropdown-content',
     // message: '',
@@ -47,6 +48,10 @@ class Header extends React.Component {
     // viewed vs. ' ' in database axios request
   }
 
+  hideDiv = () => {
+    this.setState({ err: 'err' });
+  }
+
   handleSubmit = async (e) => {
     e.preventDefault();
     this.setState({ username: e.target.username.value });
@@ -69,6 +74,7 @@ class Header extends React.Component {
     } else {
       this.setState({ error: 'no username found' });
     }
+    setTimeout(this.hideDiv, 3000);
   }
 
   onChange = (e) => {
@@ -169,7 +175,7 @@ class Header extends React.Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <div> {this.state.error} </div>
+        <div className={this.state.err}> {this.state.error} </div>
       </div>
     );
   }

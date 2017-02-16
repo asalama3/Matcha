@@ -96,16 +96,12 @@ text-align: left;
   width: 20px;
   float: right;
   padding-top: 2px;
-
-  /*textalign: right;*/
-
 }
 
 .notLiked{
   display: inline-block;
   width: 20px;
   float: right;
-  /*text-align: right;*/
   padding-top: 2px;
 
 }
@@ -124,4 +120,8 @@ text-align: left;
   /*font-style: italic;*/
   color: #1E2D5B;
   text-align: center;
+}
+
+.titleSearch{
+  color: #1E2D5B;
 }

@@ -160,8 +160,7 @@ class Search extends Component {
 
     if (this.state.users) {
       ListUsers = this.state.newUsers.map((src, key) => {
-        let Like = '';
-        (src.interestedBy && src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';
+        const Like = (src.interestedBy && src.interestedBy.includes(this.state.loggedUser.username)) ? 'liked' : '';
         let after = '#';
         let interests = src.hobbies;
         if (interests) {
@@ -191,7 +190,7 @@ class Search extends Component {
     }
     return (
       <div className="container">
-        <h1>Search</h1>
+        <h1 className="titleSearch">Search</h1>
           <form className="formulaire">
             <div className="formField">
               <h5>Search By Age</h5>

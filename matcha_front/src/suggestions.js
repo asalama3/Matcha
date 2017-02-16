@@ -65,7 +65,7 @@ class Suggestions extends React.Component {
     if (this.state.users) {
       ListUsers = this.state.users.map((src, key) => {
         let Like = '';
-        if (src.interestedBy){(src.interestedBy.includes(this.state.loggedUser)) ? Like = 'liked' : Like = '';}
+        if (src.interestedBy){(src.interestedBy.includes(this.state.loggedUser.username)) ? Like = 'liked' : Like = '';}
         let after = '#';
         let interests = src.hobbies;
         if (interests) {
