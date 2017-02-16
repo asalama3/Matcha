@@ -10,15 +10,20 @@ import '../css/search.css';
 class Suggestions extends React.Component {
   state={
     users: '',
-    loggedUser: ''
+    loggedUser: '',
   }
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; };
 
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === false) {
       browserHistory.push('/');
     } else {
@@ -27,7 +32,7 @@ class Suggestions extends React.Component {
         method: 'post',
         url: 'http://localhost:8080/suggestions',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }).then(({ data }) => {
         if (data.status === true) {
@@ -90,7 +95,7 @@ class Suggestions extends React.Component {
     } else {
       ListUsers = "No suggestions yet";
     }
-    
+
     return (
       <div>
       <h1 className="suggestion"> Suggestions of the day! </h1>

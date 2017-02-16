@@ -24,21 +24,17 @@ class Login extends Component {
         password: e.target.password.value,
       },
     });
-    if (response.data.status === false){
+    if (response.data.status === false) {
       this.setState({ error: response.data.details });
     } else if (response.data.status === true) {
       localStorage.setItem('token', response.headers['x-access-token']);
-      console.log(response.data.details.photo);
-      if (!_.isEmpty(response.data.details.photo)){
+      if (!_.isEmpty(response.data.details.photo)) {
         browserHistory.push('/matcha/profile');
       } else {
         browserHistory.push('/matcha/editPictures');
       }
     }
   }
-  // click = (e) => {
-  //   this.setState({test: '2'})
-  // };
   render() {
     return (
       <div>
@@ -62,14 +58,6 @@ class Login extends Component {
           <Link to="/forgotPassword" className="forgotPass">Forgot Password ? </Link>
           <div className="error"> {this.state.error} </div>
       </div>
-
-          // <Input.InputTest
-          //   type="text"
-          //   name="test"
-          //   value="test"
-          //   andrea={this.state.test}
-          // />
-          // <button onClick={this.click} />
     );
   }
 }

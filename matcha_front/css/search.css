@@ -121,7 +121,7 @@ text-align: left;
 }
 
 .suggestion{
-  font-style: italic;
+  /*font-style: italic;*/
   color: #1E2D5B;
   text-align: center;
 }

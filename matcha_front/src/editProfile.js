@@ -94,7 +94,7 @@ class editProfile extends Component {
     const { firstname, lastname, email, bio } = e.target;
     if (firstname.value.length > 20) return this.setState({ error: 'firstname too long' });
     if (lastname.value.length > 20) return this.setState({ error: 'lastname too long' });
-    if (email.value.length > 30)return this.setState({ error: 'email too long' });
+    if (email.value.length > 30) return this.setState({ error: 'email too long' });
     if (bio.value.length > 1500) return this.setState({ error: 'bio cannot exceed 1500 characters' });
     const response = await axios({
       method: 'post',
@@ -119,6 +119,7 @@ class editProfile extends Component {
     if (response.data.status === true) {
       browserHistory.push('/matcha/profile');
     } else {
+      console.log(response);
       this.setState({ error: response.data.details })
     }
   }
@@ -145,7 +146,7 @@ class editProfile extends Component {
     return (
       <div className="editProfile">
         <form className="form" onSubmit={this.editProfile} >
-          <h2> Edit Your Profile </h2>
+          <h2 className="titleProfile"> Edit/Complete Your Profile </h2>
             <label className="inputForm" > Firstname </label>
             <input required onChange={this.onChange}
               name="firstname"
@@ -167,7 +168,7 @@ class editProfile extends Component {
               value={this.state.email}
               className="displayInput"
             />
-            <div>
+            <div className="anniv">
               <div><label className="inputForm"> Birthday </label></div>
               <select className="birthdates" name="day" value={this.state.day} onChange={this.onChange}> options={options} </select>
               <select className="birthdates" name="month" value={this.state.month} onChange={this.onChange} >

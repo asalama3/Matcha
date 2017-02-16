@@ -67,11 +67,10 @@ const Orientation = (req, res, next) => {
 
 const Bio = (req, res, next) => {
   const bio = req.body.bio;
-  if (bio && bio.length <= 1500) {
-    next();
-  } else {
-    res.send({ status: false, details: 'bio too long' });
+  if ((bio && bio.length <= 1500) || !bio) {
+    return next();
   }
-}
+  return res.send({ status: false, details: 'bio cannot exceed 1500 characters' });
+};
 
 module.exports = { Username, Firstname, Lastname, Email, Password, Gender, Orientation, Bio };

@@ -141,7 +141,6 @@ class Profile extends Component {
 
 
   report = async () => {
-    console.log(this.state.user.email);
     const response = await axios ({
       method: 'post',
       url: 'http://localhost:8080/report',

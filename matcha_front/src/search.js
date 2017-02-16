@@ -15,12 +15,19 @@ class Search extends Component {
     loggedUser: '',
     newUsers: '',
   }
+
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === false) {
       browserHistory.push('/');
     } else {
@@ -47,7 +54,7 @@ class Search extends Component {
     },
     valuesLocation: {
         min: 0,
-        max: 100000,
+        max: 50,
     },
     valuesTags: {
         min: 0,
@@ -196,7 +203,7 @@ class Search extends Component {
               />
               <h5>Search By Location</h5>
               <InputRange
-                maxValue={100000}
+                maxValue={50}
                 minValue={0}
                 value={this.state.valuesLocation}
                 onChange={this.handleChangeLocation.bind(this)}

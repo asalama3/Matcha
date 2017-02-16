@@ -18,26 +18,12 @@ class Chat extends React.Component {
   }
 
   drawMessages = () => {
-    const { user } = this.props;
-    const userWithPic = this.props.messages.map((el, key) => {
-      console.log(user.photo[user.ProfilePictureNumber]);
-      console.log(user);
-      if (!_.isEmpty(user.photo) && user.ProfilePictureNumber) {
-        return (
-          <div className="scrollChat" key={key}>
-          <img className="photo" role="presentation" src={`http://localhost:8080/public/${el.from}/${user.photo[user.ProfilePictureNumber].name}`} />;
-          <span className="sender">{el.from}: </span>
-          <span className="mess">{el.message}</span>
-          </div>)
-      } else {
-        return (
-          <div className="scrollChat" key={key}>
-          <span className="sender">{el.from}: </span>
-          <span className="mess">{el.message}</span>
-          </div>
-        )
-      }
-    });
+    const userWithPic = this.props.messages.map((el, key) =>
+        <div className="scrollChat" key={key}>
+        <span className="sender">{el.from}: </span>
+        <span className="mess">{el.message}</span>
+        </div>
+      );
     return userWithPic;
   }
 

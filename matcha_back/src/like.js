@@ -1,12 +1,6 @@
 import mongodb from 'mongodb';
 import mongoConnect from '../mongo_connect';
 
-// const session = require('express-session');
-
-// const sendError = (res) => res.send({
-//   status: false,
-//   details: 'an error occurred',
-// });
 
 const like = (socketList) => (req, res) => {
   const { username } = req.body;
@@ -64,10 +58,10 @@ const like = (socketList) => (req, res) => {
         // const chats = db.collection('chats');
         chats.insert({
           userA: {
-            username: liker.username, image: liker.photo[0],
+            username: liker.username,
           },
           userB: {
-            username: liked.username, image: liked.photo[0],
+            username: liked.username,
           },
           messages: [],
         });

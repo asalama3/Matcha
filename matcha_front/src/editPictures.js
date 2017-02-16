@@ -154,6 +154,7 @@ class editPictures extends React.Component {
 
     return (
       <div className="pictures">
+        <h2 className="titlePic">Let's complete your profile! </h2>
         <div>{imgList}</div>
         <div className={this.state.profilePhoto}> {this.state.profilePicture} </div>
         {((this.state.photo.length < 5 &&

@@ -10,17 +10,17 @@
 }
 
 .editProfile{
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  /*margin: auto;*/
+  /*width: 100%;*/
+  /*height: 100%;*/
+  /*min-height: 100%;*/
+  /*margin-left: 190px;*/
 }
 
 .form{
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  width: 60%;
+  /*height: 100%;*/
+  /*width: 100%;*/
+  margin-left: 150px;
+  /*width: 60%;*/
 }
 
 .form h2{
@@ -39,10 +39,20 @@
   font-weight: normal;
 }
 
+
+.anniv{
+  margin: 0;
+  width: 422px;
+  background-color: white;
+}
+
 .birthdates{
   font-size: 15px;
-  /*height: 40px;*/
+  height: 40px;
   margin: 2px;
+  width: 70%;
+  background-color: white;
+
 }
 
 .bio{
@@ -95,5 +105,9 @@ input {
 .erreur {
   font-size: 20px;
   color: red;
-  margin-left: 190px;
+  margin-left: 150px;
+}
+
+.titleProfile{
+  color: #1E2D5B;
 }

@@ -177,5 +177,29 @@ app.post('/search_by_tag', Profile.searchByTag);
 app.post('/forgot_password', Pass.forgotPass);
 app.post('/reset_password', Account.Password, Pass.resetPass);
 app.post('/report', User.report);
+
+const locas = [
+  { lat: 48.854306, lng: 2.274548, address: '51 rue du Ranelagh, Paris, France' },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+]
+
+app.get('/updateLoca', (req, res) => {
+    mongoConnect(res, (db) => {
+      const users = db.collection('users');
+      const all = users.find().toArray();
+      all.forEach((user, id) => {
+        users.update({ username: user.username }, { $set: locas[id] })
+      });
+    });
+});
 server.listen(8080);
 // app.listen(8080);

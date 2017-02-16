@@ -2,10 +2,6 @@ import geolib from 'geolib';
 import mongoConnect from '../mongo_connect';
 var _ = require('lodash');
 
-// const session = require('express-session');
-
-// const isEmpty = (obj) => Object.keys(obj).length === 0 && obj.constructor === Object;
-
 const areBlocked = (userA, userB) =>
   (userA.blocked && userA.blocked && userA.blocked.length && !!userA.blocked.find(el => el === userB.username))
   ||
