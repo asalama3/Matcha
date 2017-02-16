@@ -1,5 +1,6 @@
 import geolib from 'geolib';
 import mongoConnect from '../mongo_connect';
+var _ = require('lodash');
 
 // const session = require('express-session');
 
@@ -41,7 +42,6 @@ const search = async (req, res) => {
   mongoConnect(res, async (db) => {
     if (req.user.gender === 'female') {
       if (req.user.orientation === 'straight') {
-        try {
           const match = await db.collection('users').aggregate([
             {
               $match:
@@ -57,7 +57,6 @@ const search = async (req, res) => {
           const withDistAndPop = noBlock.map(el => {
             // ADD DISTANCE
             if (el.location) {
-              console.log('location each user:', el.location);
               el.distance = geolib.getDistance(
                 { latitude: el.location.lat, longitude: el.location.lng },
                 { latitude: req.user.location.lat, longitude: req.user.location.lng }
@@ -69,11 +68,7 @@ const search = async (req, res) => {
             el.popularity = addPop(el);
             return el;
         });
-        // console.log(withDistAndPop);
         res.send({ status: true, details: withDistAndPop });
-        } catch (err) {
-          console.error(err);
-        }
       }
       if (req.user.orientation === 'gay') {
         const match = await db.collection('users').aggregate([
@@ -103,7 +98,6 @@ const search = async (req, res) => {
           el.popularity = addPop(el);
           return el;
         });
-        // console.log(withDistAndPop);
         res.send({ status: true, details: withDistAndPop });
       }
       if (req.user.orientation === 'bisexual') {
@@ -120,7 +114,6 @@ const search = async (req, res) => {
           },
         ]).toArray();
         const noBlock = match.filter((user) => !areBlocked(user, req.user));
-        // console.log(noBlock);
         const withDistAndPop = noBlock.map(el => {
           // ADD DISTANCE
           if (el.location) {
@@ -135,14 +128,11 @@ const search = async (req, res) => {
           el.popularity = addPop(el);
           return el;
       });
-      // console.log(withDistAndPop);
       res.send({ status: true, details: withDistAndPop });
       }
     }
     if (req.user.gender === 'male') {
-      console.log('male');
       if (req.user.orientation === 'straight') {
-        console.log('malzcdse');
         const match = await db.collection('users').aggregate([
           {
             $match:
@@ -169,7 +159,6 @@ const search = async (req, res) => {
           el.popularity = addPop(el);
           return el;
         });
-        // console.log(withDistAndPop);
         res.send({ status: true, details: withDistAndPop });
       }
       if (req.user.orientation === 'gay') {
@@ -200,7 +189,6 @@ const search = async (req, res) => {
           el.popularity = addPop(el);
           return el;
         });
-        // console.log(withDistAndPop);
         res.send({ status: true, details: withDistAndPop });
     }
       if (req.user.orientation === 'bisexual') {
@@ -231,7 +219,6 @@ const search = async (req, res) => {
           el.popularity = addPop(el);
           return el;
         });
-        // console.log(withDistAndPop);
         res.send({ status: true, details: withDistAndPop });
       }
     }
@@ -239,6 +226,7 @@ const search = async (req, res) => {
 };
 
 const searchByTag = (req, res) => {
+  if (_.isEmpty(req.body.tag)) return res.send({ status: true, details: req.body.newUsers });
   const searchTag = req.body.newUsers.filter((user) =>
   user.hobbies && user.hobbies.length && user.hobbies.includes(req.body.tag));
     res.send({ status: true, details: searchTag });

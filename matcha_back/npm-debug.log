@@ -1,6 +1,6 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/Users/asalama/.brew/Cellar/node/7.4.0/bin/node',
-1 verbose cli   '/users/asalama/.brew/bin/npm',
+1 verbose cli [ '/usr/local/Cellar/node/7.4.0/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'run',
 1 verbose cli   'babel-node',
 1 verbose cli   'index.js' ]
@@ -11,25 +11,25 @@
 6 silly lifecycle match_back@1.0.0~prebabel-node: no script for prebabel-node, continuing
 7 info lifecycle match_back@1.0.0~babel-node: match_back@1.0.0
 8 verbose lifecycle match_back@1.0.0~babel-node: unsafe-perm in lifecycle true
-9 verbose lifecycle match_back@1.0.0~babel-node: PATH: /Users/asalama/.brew/lib/node_modules/npm/bin/node-gyp-bin:/Users/asalama/projects/matcha/matcha_back/node_modules/.bin:/Users/asalama/projects/matcha/matcha_back/node_modules/.bin:/Users/asalama/.config/yarn/link/node_modules/.bin:/Users/asalama/projects/matcha/matcha_back/node_modules/.bin:/Users/asalama/.config/yarn/link/node_modules/.bin:/Users/asalama/node_modules/yarn/bin/node-gyp-bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/munki:/users/asalama/.brew/bin:/Users/asalama/node_modules/.bin
-10 verbose lifecycle match_back@1.0.0~babel-node: CWD: /Users/asalama/projects/matcha/matcha_back
+9 verbose lifecycle match_back@1.0.0~babel-node: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/andrea/projects/matcha/matcha_back/node_modules/.bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/andrea/projects/matcha/matcha_back/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+10 verbose lifecycle match_back@1.0.0~babel-node: CWD: /Users/andrea/projects/matcha/matcha_back
 11 silly lifecycle match_back@1.0.0~babel-node: Args: [ '-c', 'babel-node --presets=es2015 "index.js"' ]
 12 silly lifecycle match_back@1.0.0~babel-node: Returned: code: 1  signal: null
 13 info lifecycle match_back@1.0.0~babel-node: Failed to exec babel-node script
 14 verbose stack Error: match_back@1.0.0 babel-node: `babel-node --presets=es2015 "index.js"`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (/Users/asalama/.brew/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
+14 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (/Users/asalama/.brew/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at ChildProcess.emit (events.js:191:7)
 14 verbose stack     at maybeClose (internal/child_process.js:885:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid match_back@1.0.0
-16 verbose cwd /Users/asalama/projects/matcha/matcha_back
-17 error Darwin 15.6.0
-18 error argv "/Users/asalama/.brew/Cellar/node/7.4.0/bin/node" "/users/asalama/.brew/bin/npm" "run" "babel-node" "index.js"
+16 verbose cwd /Users/andrea/projects/matcha/matcha_back
+17 error Darwin 14.5.0
+18 error argv "/usr/local/Cellar/node/7.4.0/bin/node" "/usr/local/bin/npm" "run" "babel-node" "index.js"
 19 error node v7.4.0
 20 error npm  v4.0.5
 21 error code ELIFECYCLE

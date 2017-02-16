@@ -2,7 +2,6 @@ import mongodb from 'mongodb';
 import mongoConnect from '../mongo_connect';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import passwordChecker from './parser';
 
 const sendMail = (to, subject, text) => {
   let transporter = nodemailer.createTransport({
@@ -19,18 +18,13 @@ const sendMail = (to, subject, text) => {
     text,
   };
   transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-        // res.send({ status: false, details:'error' });
-    }else{
-        console.log('Message sent: ' + info.response);
-        // res.send({ status: true, details: info.response });
-    };
-});
+    if (error){
+      res.send({ status: false, details:'send email failure' });
+    }
+  });
 }
 
 const forgotPass = (req, res) => {
-  console.log(req.body.email);
   // send email to user to reset password
   mongoConnect(res, async (db) => {
     const users = db.collection('users');
@@ -46,7 +40,6 @@ const forgotPass = (req, res) => {
 
 const resetPass = (req, res) => {
   mongoConnect(res, async(db) => {
-    console.log(req.body.key);
     const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
     const users = db.collection('users');
     const askedUser = await users.findOne({ username: req.body.username });

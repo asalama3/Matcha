@@ -25,9 +25,6 @@ export default class CreateUser extends Component {
 
     this.setState({ error: '', success: '' });
     const ip = await axios.get('http://ip-api.com/json');
-    console.log(ip.data);
-    // let location = null;
-    // console.log(ip.data.status);
     if (ip.data.status === 'success') {
       this.setState({ position: {
         lat: ip.data.lat,
@@ -43,7 +40,6 @@ export default class CreateUser extends Component {
       e.target.email.value = '';
       e.target.password.value = '';
     }
-    // console.log(this.state.position);
 
     const response = await axios({
       method: 'post',
@@ -154,7 +150,7 @@ export default class CreateUser extends Component {
             <div><label className="create"> Gender </label></div>
             <div className="style_radio">
               <div className="style_radio">
-                <input className="radio" id="r1" type="radio" value="male" name="gender" required />
+                <input className="radio" id="r1" type="radio" value="male" name="gender" />
                 <label id="male_sex" htmlFor="r1">Male</label>
               </div>
               <div className="style_radio">

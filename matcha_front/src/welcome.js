@@ -15,11 +15,9 @@ class Welcome extends React.Component {
       this.setState({ create: 'hidden_create_form' });
     }
     if (this.state.login === 'hidden_login_form') {
-      console.log(this.state.login);
       this.setState({ login: 'login_form_active' });
     } else {
     this.setState({ login: 'hidden_login_form' });
-    console.log(this.state.login);
     }
   }
 

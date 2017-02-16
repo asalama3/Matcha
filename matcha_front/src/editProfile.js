@@ -42,13 +42,10 @@ class editProfile extends Component {
   };
 
   setAddress = async (e) => {
-    console.log('hey');
     const google = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${e.label}`);
     if (google.data.status === 'OK') {
       const lat = google.data.results[0].geometry.location.lat;
       const lng = google.data.results[0].geometry.location.lng;
-      console.log(lat);
-      console.log(lng);
     this.setState({ position: { lat, lng, address: e.label } });
     }
   };
@@ -93,17 +90,12 @@ class editProfile extends Component {
 
 
   editProfile = async (e) => {
-    e.preventDefault(); // no reload
+    e.preventDefault();
     const { firstname, lastname, email, bio } = e.target;
-    if (firstname.value.length > 20 || lastname.value.length > 20 || email.value.length > 30
-      || bio.value.length > 1500) {
-      this.setState({ error: 'bio cannot exceed 1500 characters' });
-      return;
-      // e.target.firstname.value = '';
-      // e.target.lastname.value = '';
-      // e.target.email.value= '';
-      // e.target.bio.value = '';
-    }
+    if (firstname.value.length > 20) return this.setState({ error: 'firstname too long' });
+    if (lastname.value.length > 20) return this.setState({ error: 'lastname too long' });
+    if (email.value.length > 30)return this.setState({ error: 'email too long' });
+    if (bio.value.length > 1500) return this.setState({ error: 'bio cannot exceed 1500 characters' });
     const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/editProfile',

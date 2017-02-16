@@ -35,7 +35,6 @@ class Chats extends React.Component {
     if (response.data.status === true) {
       this.setState({ chats: response.data.data, pending: false });
     }
-    console.log(response);
     global.socket.on('receive new message', this.handleNewMessage);
   };
 
@@ -102,7 +101,7 @@ class Chats extends React.Component {
             {chatList}
           </ul>
         </div>
-        {chats.length > 0 && <Chat messages={chat.messages} other={other} onSend={this.sendMessage} />}
+        {chats.length > 0 && <Chat messages={chat.messages} other={other} user={this.state.user} onSend={this.sendMessage} />}
       </div>
     );
   }

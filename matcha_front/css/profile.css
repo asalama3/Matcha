@@ -91,3 +91,12 @@ h2{
 .addPic{
   float: left;
 }
+
+.errMessage{
+  display: inline-block;
+  color: red;
+}
+
+.hideErrMessage{
+  display: none;
+}

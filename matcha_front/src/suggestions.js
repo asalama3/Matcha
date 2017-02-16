@@ -4,6 +4,8 @@ import { browserHistory } from 'react-router';
 import whiteHeart from '../pictures/white_heart.png';
 import photo from '../pictures/default.jpg';
 import redHeart from '../pictures/red_heart.png';
+import '../css/search.css';
+// import * as view from './search';
 
 class Suggestions extends React.Component {
   state={
@@ -29,13 +31,28 @@ class Suggestions extends React.Component {
         },
       }).then(({ data }) => {
         if (data.status === true) {
-          console.log('heyy', data.details);
           this.setState({ users: data.details });
         }
       });
     }
   }
 
+  viewUser = async (username) => {
+    const response = await axios({
+      method: 'post',
+      url: 'http://localhost:8080/view_user',
+      data: {
+        username,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+    if (response.data.status === true) {
+      // browserHistory.push(`/matcha/profile/${username}`);
+      browserHistory.push(`/matcha/profile/${username}`);
+    }
+  }
 
   render() {
     let ListUsers = [];
@@ -70,9 +87,15 @@ class Suggestions extends React.Component {
           </div>
         );
       });
+    } else {
+      ListUsers = "No suggestions yet";
     }
+    
     return (
+      <div>
+      <h1 className="suggestion"> Suggestions of the day! </h1>
       <div> {ListUsers} </div>
+      </div>
     )
   }
 }

@@ -10,8 +10,6 @@ class resetPassword extends React.Component {
 
   resetPassword = async (e) => {
     e.preventDefault();
-    console.log(e.target.key.value);
-    console.log(e.target.password.value);
     const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/reset_password',
@@ -27,10 +25,8 @@ class resetPassword extends React.Component {
       setTimeout(() => {
 					browserHistory.push('/');
 				}, 2000);
-      console.log(response.data.details);
     } else {
       this.setState({ error: response.data.details });
-      console.log(response.data.details);
     }
   }
 

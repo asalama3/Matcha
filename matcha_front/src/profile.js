@@ -16,6 +16,7 @@ class Profile extends Component {
     className: 'animatedLike',
     likePending: false,
     error: '',
+    errMessage: 'errMessage',
     connectedUser: '',
   }
 
@@ -32,7 +33,6 @@ class Profile extends Component {
     this.setState({ connectedUser: loggedUser.data });
     // search using username in params
     if (this.props.params.user) {
-      // console.log(this.props.params.user);
       const getProfile = await axios({
         method: 'post',
         url: 'http://localhost:8080/searchLogin',
@@ -78,8 +78,10 @@ class Profile extends Component {
     });
     if (response.data.status === false && response.data.details === 'user blocked') {
       this.setState({ error: 'user blocked' });
+      setTimeout(this.hideDiv, 3000);
     } else if (response.data.status === false && response.data.details === 'user not found' ) {
       this.setState({ error: 'no username found' });
+      setTimeout(this.hideDiv, 3000);
     }
     this.setState({ user: response.data.data });
     if (response.data.data.interestedBy.includes(response.data.loggedUser.username)) {
@@ -97,9 +99,14 @@ class Profile extends Component {
     }
   }
 
+  hideDiv = () => {
+    this.setState({ errMessage: 'hideErrMessage' });
+  }
+
   like = async () => {
     if (this.state.connectedUser.photo.length === 0) {
-      return this.setState({ error: 'add a picture to like' });
+      this.setState({ error: 'you need to add a picture to like or dislike' });
+      setTimeout(this.hideDiv, 3000);
     }
     if (this.state.likePending) return false;
     this.setState({ likePending: true });
@@ -119,7 +126,8 @@ class Profile extends Component {
       },
     });
     if (data.status === false && data.details.includes('picture')) {
-      this.setState({ error: 'you need a picture to like' });
+      this.setState({ error: 'you need to add a picture to like or dislike' });
+      setTimeout(this.hideDiv, 3000);
     }
     if (data.status === true && data.details.includes('disliked')) {
       // dislike
@@ -132,12 +140,27 @@ class Profile extends Component {
   }
 
 
-  report = () => {
-    alert("This user has been reported");
+  report = async () => {
+    console.log(this.state.user.email);
+    const response = await axios ({
+      method: 'post',
+      url: 'http://localhost:8080/report',
+      data: {
+        username: this.state.user.username,
+        email: this.state.user.email,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (response.data.status === true) {
+      alert("This user has been reported");
+    } else {
+      alert("Could not report user");
+    }
   }
 
   block = async () => {
-    console.log(this.state.user.username);
     const response = await axios({
       method: 'put',
       url: 'http://localhost:8080/block',
@@ -148,9 +171,12 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
-    if (response.status === true) {
-      console.log(response.data);
+    if (response.data.status === false) {
+      this.setState({ error: response.data.details });
     }
+    // if (response.status === true) {
+      // console.log(response.data);
+    // }
   }
 
   render() {
@@ -178,6 +204,7 @@ class Profile extends Component {
           <h2>{user.firstname} {user.lastname}</h2>
           { this.props.params.user && this.state.user.username !== this.state.connectedUser.username &&
             <div className={this.state.className} onClick={this.like} ></div> } </div>
+            <div className={this.state.errMessage}> {this.state.error} </div>
             <div style={style} ></div>
           <div> Status : {user.lastConnection} </div>
           <hr className="separation" />
@@ -205,7 +232,6 @@ class Profile extends Component {
                 <li><i className="fa fa-futbol-o " aria-hidden="true"></i> {interests} </li>
                 <li><i className="fa fa-comment-o biography" aria-hidden="true"></i> <p> {user.bio} </p></li>
               </ul>
-              <div> {this.state.error} </div>
               <div className="clear_float" ></div>
         </div>
       </div>

@@ -77,7 +77,7 @@
   border: none !important;
   border-radius: 0 !important;
   top: 0;
-  background: linear-gradient(to top,#1E2D5B 0,#337ab7);
+  background: #1E2D5B;
   /*color: white; */
 }
 
@@ -160,6 +160,10 @@
   display: inline-block;
 }
 
+.displayNotifs{
+  padding: 3px;
+  margin: 0;
+}
 /* TYPING ANIMATION */
 /*.button p{
   color: #1E2D5B;

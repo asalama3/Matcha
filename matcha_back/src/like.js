@@ -30,9 +30,6 @@ const like = (socketList) => (req, res) => {
       }
       users.update({ username: liker.username }, { $pull: { interestedIn: liked.username } });
       users.update({ username: liked.username }, { $pull: { interestedBy: liker.username } });
-      console.log(liked.username);
-      console.log(liker.username);
-      console.log(chats);
       const getChat = chats.findOne({
         $or: [
             { 'userA.username' : liker.username, 'userB.username': liked.username },
@@ -41,13 +38,10 @@ const like = (socketList) => (req, res) => {
         });
         if (getChat) {
           chats.remove({ $or: [
-              { 'userA.username': liker.username, 'userB.username': liked.username },
-              { 'userA.username': liked.username, 'userB.username': liker.username },
-            ],
-            }, (err, result) => console.log(err ? 'err' : 'result'));
-         } else if (!getChat) {
-           console.log('errror');
-         }
+            { 'userA.username': liker.username, 'userB.username': liked.username },
+            { 'userA.username': liked.username, 'userB.username': liker.username },
+          ]});
+        }
       res.send({ status: true, details: 'user successfully disliked' });
     // not already liked
     } else {

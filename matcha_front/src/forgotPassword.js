@@ -16,8 +16,6 @@ class forgotPassword extends React.Component {
 
   forgotPassword = async (e) => {
     e.preventDefault();
-    console.log('entered forgot pass');
-    console.log(e.target.email.value);
     const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/forgot_password',
@@ -26,7 +24,6 @@ class forgotPassword extends React.Component {
       },
     });
     if (response.data.status === true) {
-      console.log(response.data.details);
       this.setState({ error: response.data.details });
       this.setState({ err: 'status' });
 
@@ -36,7 +33,6 @@ class forgotPassword extends React.Component {
 				}, 2000);
     } else {
       this.setState({ error: response.data.details });
-      console.log(response.data.details);
       // setTimeout(this.hideError(response.data.details), 2000);
     }
   }

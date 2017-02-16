@@ -119,3 +119,9 @@ text-align: left;
 .formTag{
   margin-left: 25px;
 }
+
+.suggestion{
+  font-style: italic;
+  color: #1E2D5B;
+  text-align: center;
+}

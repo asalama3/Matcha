@@ -1,6 +1,7 @@
 import fs from 'fs';
 import crypto from 'crypto';
 import mongodb from 'mongodb';
+import nodemailer from 'nodemailer';
 import moment from 'moment';
 import mongoConnect from '../mongo_connect';
 import * as pop from './search';
@@ -50,7 +51,6 @@ const createAccount = (req, res) => {
         });
         db.collection('users').insert(user, (e) => {
           if (e) return res.send({ status: false, details: 'db error' });
-          console.log('new user registered' , user);
           return res.send({ status: true, details: 'registered' });
         });
       });
@@ -62,9 +62,7 @@ const objectId = mongodb.ObjectId;
 
 const LoginUser = (req, res) => {
   const currentDate = new Date();
-  console.log('date', currentDate);
   mongoConnect(res, (db) => {
-    // console.log('body' , req.body);
     const hashPass = crypto.createHash('whirlpool').update(req.body.password).digest('base64');
     db.collection('users').findOne({ username: req.body.username }, (err, user) => {
       if (user) {
@@ -72,10 +70,9 @@ const LoginUser = (req, res) => {
           // session.user = user;
           const token = jwt.sign({ username: user.username, id: user._id }, 'yay');
           req.user = user;
-          console.log(token);
           res.header('Access-Control-Expose-Headers', 'x-access-token');
           res.set('x-access-token', token);
-          res.send({ status: true, details: 'success' });
+          res.send({ status: true, details: user });
         } else {
           res.send({ status: false, details: 'username or password invalid' });
         }
@@ -108,9 +105,7 @@ const searchLogin = (socketList) => (req, res) => {
     const users = db.collection('users');
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
-        // console.log(req.user.blocked.indexOf(user.username));
         if (user.username.includes(req.user.blocked)) {
-          console.log(req.user.blocked);
           return res.send({ status: false, details: 'user blocked' });
         }
         if (user.username === req.user.username) {
@@ -140,7 +135,6 @@ const searchLogin = (socketList) => (req, res) => {
 const viewUser = (socketList) => (req, res) => {
   mongoConnect(res, (db) => {
     const users = db.collection('users');
-    // console.log(req.body.username);
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
         if (user.views.name.indexOf(req.user.username) === -1) {
@@ -148,14 +142,10 @@ const viewUser = (socketList) => (req, res) => {
           user.views.name.push(req.user.username);
           users.update({ username: req.body.username }, { $set: { ...user } });
           const likerSocket = socketList.filter(el => el.username === user.username);
-          // console.log('likerSocket', likerSocket);
           const message = `${req.user.username} visited your profile`;
-          // const notif = user.notifications ? [...user.notifications, message] : [message];
           if (likerSocket && likerSocket.length) {
             likerSocket.forEach(el => el.socket.emit('notification', { message }));
-            // console.log('notif', notif);
           }
-          // users.update({ username: user.username }, { $set: { notifications: notif } });
         }
         res.send({ status: true, details: 'user ok viewed' });
       } else {
@@ -174,32 +164,18 @@ const deleteAccount = (req, res) => {
         res.send({ status: false, details: 'no user found' });
       } else {
         db.collection('users').remove({ _id: objectId(req.user._id) });
-        fs.rmdir(`./uploads/${req.user.username}`, (error) => {
-          if (error) return res.send({ status: false, details: 'error rmdir' });
-          return res.send({ status: true, details: 'user deleted from db' });
+        fs.readFile(`./uploads/${req.user.username}`, (err) => {
+		      if (!err) {
+            fs.rmdir(`./uploads/${req.user.username}`, (error) => {
+              if (error) return res.send({ status: false, details: 'error rmdir' });
+            });
+          }
         });
+        return res.send({ status: true, details: 'user deleted from db' });
       }
     });
   });
-};
-
-// const logout = (req, res) => {
-//   mongoConnect(res, (db) => {
-//     const users = db.collection('users');
-//     users.findOne({ username: req.body.username }, (err, user) => {
-//       if (err) {
-//         res.send({ status: false, details: 'no connection' });
-//       } else if (!user) {
-//         res.send({ status: false, details: 'no user found' });
-//       } else {
-//         // user.lastConnection = moment().format('MMMM Do YYYY, h:mm:ss a');
-//         // console.log(user.lastConnection);
-//         users.update({ username: req.body.username }, { $set: { ...user } });
-//         res.send({ status: true, details: 'last connection added' });
-//       }
-//     });
-//   });
-// };
+}
 
 const myProfile = (req, res) => res.send({ status: true, data: req.user });
 
@@ -221,14 +197,11 @@ const matches = (req, res) => {
 };
 
 const block = (req, res) => {
-  console.log(req.user.username);
-  console.log(req.body.username);
   mongoConnect(res, async (db) => {
     const users = await db.collection('users');
     const chats = await db.collection('chats');
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
-        console.log('user found');
         if (user.views.name.indexOf(req.user.username)) {
           const del = user.views.name.indexOf(req.user.username);
           user.views.number -= 1;
@@ -236,12 +209,11 @@ const block = (req, res) => {
           users.update({ username: req.body.username }, { $set: { ...user } } );
         }
       } else {
-        console.log('user not found');
+        res.send({ status: false, details: 'no user found' });
       }
     });
     users.findOne({ username: req.user.username }, (err, user) => {
       if (user) {
-        console.log('user found');
         if (user.views.name.indexOf(req.body.username)) {
           const del = user.views.name.indexOf(req.body.username);
           user.views.number -= 1;
@@ -249,7 +221,7 @@ const block = (req, res) => {
           users.update({ username: req.user.username }, { $set: { ...user } } );
         }
       } else {
-        console.log('user not found');
+        res.send({ status: false, details: 'no user found' });
       }
     });
     users.update({ username: req.user.username }, {
@@ -265,14 +237,37 @@ const block = (req, res) => {
       { interestedIn: req.user.username,
         interestedBy: req.user.username },
     });
-    console.log(req.user.username);
-    console.log(req.body.username);
     chats.remove({ $or: [
        { 'userA.username': req.user.username, 'userB.username': req.body.username },
        { 'userA.username': req.body.username, 'userB.username': req.user.username },
-     ],
-   }, (err, result) => console.log(err ? 'err' : 'result'));
+     ]});
   });
 }
 
-export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth, matches, block };
+const sendMail = (to, subject, text, email) => {
+  let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: 'andreasalama2@gmail.com',
+          pass: 'newyork2289'
+      }
+  });
+  let mailOptions = {
+    from: email,
+    to,
+    subject,
+    text,
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error){
+      res.send({ status: false, details:'send email failure' });
+    }
+  });
+}
+
+const report = (req, res) => {
+  sendMail("andreasalama2@gmail.com", `Report User`, `I would like to report this user ${req.body.username}`, req.body.email );
+  res.send({ status: true, details: 'user reported'});
+}
+
+export { createAccount, LoginUser, autoFill, searchLogin, viewUser, deleteAccount, myProfile, fillData, editPictures, checkAuth, matches, block, report };

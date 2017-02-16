@@ -88,16 +88,29 @@ class Sort extends Component{
     sortTags = (e) => {
       if (this.state.sortTagOnce === false) {
         this.setState({ sortTagOnce: true });
-        this.state.users.map((src) => {
-          return src.commonTags = src.hobbies ? src.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length: 0;
-        });
-        // console.log(this.state.users);
+        if (this.state.loggedUser.hobbies) {
+          this.state.users.map((src) => {
+            return src.commonTags = src.hobbies ? src.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length: 0;
+          });
+        }
         const sortUsers = this.state.users.sort((a, b) => {
           return (b.commonTags - a.commonTags);
         });
         this.setState({ users: sortUsers });
         this.props.onUpdate(sortUsers);
-       }
+      } else {
+        this.setState({ sortTagOnce: false });
+        if (this.state.loggedUser.hobbies) {
+          this.state.users.map((src) => {
+            return src.commonTags = src.hobbies ? src.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length: 0;
+          });
+        }
+        const sortUsers = this.state.users.sort((a, b) => {
+          return (a.commonTags - b.commonTags);
+        });
+        this.setState({ users: sortUsers });
+        this.props.onUpdate(sortUsers);
+      }
     }
 
 

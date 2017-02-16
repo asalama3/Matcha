@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { browserHistory, Link } from 'react-router';
 import '../css/welcome.css';
+var _ = require('lodash');
 
 class Login extends Component {
 
@@ -23,12 +24,16 @@ class Login extends Component {
         password: e.target.password.value,
       },
     });
-    console.log('dscdscd');
-    this.setState({ error: response.data.details });
-    if (response.data.status === true) {
-      console.log(response.data.details);
+    if (response.data.status === false){
+      this.setState({ error: response.data.details });
+    } else if (response.data.status === true) {
       localStorage.setItem('token', response.headers['x-access-token']);
-      browserHistory.push('/matcha/profile');
+      console.log(response.data.details.photo);
+      if (!_.isEmpty(response.data.details.photo)){
+        browserHistory.push('/matcha/profile');
+      } else {
+        browserHistory.push('/matcha/editPictures');
+      }
     }
   }
   // click = (e) => {

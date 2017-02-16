@@ -19,7 +19,6 @@ class Header extends React.Component {
   }
 
   handleNotif = ({ message }) => {
-    console.log(message, this.state.notifications);
       this.setState({
         notif: 'active_notif',
         notifications: [message, ...this.state.notifications],
@@ -44,13 +43,11 @@ class Header extends React.Component {
       pending: false,
     });
     global.socket.on('notification', this.handleNotif);
-    // console  .log(this.state.notifications);
     // handle refresh page without clicking on notif keep button red
     // viewed vs. ' ' in database axios request
   }
 
   handleSubmit = async (e) => {
-    console.log(e.target.username.value);
     e.preventDefault();
     this.setState({ username: e.target.username.value });
     const response = await axios({
@@ -123,7 +120,7 @@ class Header extends React.Component {
   render() {
     let notifs = [];
     if (!this.state.pending && this.state.notifications) {
-      notifs = this.state.notifications.map((src, key) => <p key={key}> {src} </p>);
+      notifs = this.state.notifications.map((src, key) => <p className="displayNotifs" key={key}> {src} </p>);
     }
     return (
       <div>

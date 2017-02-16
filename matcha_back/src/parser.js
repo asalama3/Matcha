@@ -1,5 +1,4 @@
 const Username = (req, res, next) => {
-  console.log('username ')
   const username = req.body.username;
   if (username && username.length > 3 && username.match(/^[a-zA-Z0-9]\w+$/)) {
     next();
@@ -10,7 +9,7 @@ const Username = (req, res, next) => {
 
 const Firstname = (req, res, next) => {
   const fname = req.body.firstname;
-  if (fname && fname.length > 3 && fname.match(/^[a-zA-Z0-9]\w+$/)) {
+  if (fname && fname.length >= 3 && fname.match(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/)) {
     next();
   } else {
     res.send({ status: false, details: 'firstname not valid' });
@@ -19,7 +18,7 @@ const Firstname = (req, res, next) => {
 
 const Lastname = (req, res, next) => {
   const lname = req.body.lastname;
-  if (lname && lname.length > 3 && lname.match(/^[a-zA-Z0-9]\w+$/)) {
+  if (lname && lname.length >= 3 && lname.match(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/)) {
     next();
   } else {
     res.send({ status: false, details: 'lastname not valid' });
@@ -37,8 +36,6 @@ const Email = (req, res, next) => {
 };
 
 const Password = (req, res, next) => {
-  console.log('password')
-  console.log(req.body.password);
   const pass = req.body.password;
   if (pass && pass.length > 5) {
     next();
@@ -53,7 +50,7 @@ const Gender = (req, res, next) => {
   if (gender) {
     next();
   } else {
-    res.send({ status: false, details: 'gender empty' });
+    res.send({ status: false, details: 'You must select a gender' });
   }
   return false;
 };

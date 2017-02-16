@@ -30,19 +30,23 @@
   border: 1px solid black;
   width: 100%;
   text-align: left;
+  overflow-y: auto;
+  height: 200px;
 }
 
 .sender {
-font-weight: bold;
-margin-left: 1%;
-
-}
-
-.mess{
+ font-weight: bold;
+ margin-left: 1%;
 }
 
 .main{
   width: 80%;
   max-width: 800px;
   display: inline-block;
+}
+
+.photo{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }

@@ -104,9 +104,11 @@ class Search extends Component {
   }
 
   numberTags = (user) => {
-    // console.log(this.state.loggedUser);
-    const test = user.hobbies ? user.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length : 0;
-    return test;
+    if (user.hobbies && this.state.loggedUser.hobbies) {
+      const test = user.hobbies.filter(tag => this.state.loggedUser.hobbies.includes(tag)).length;
+      return test;
+    }
+    return 0;
   }
 
   viewUser = async (username) => {
@@ -121,7 +123,6 @@ class Search extends Component {
       },
     });
     if (response.data.status === true) {
-      // console.log('ok view user');
       // browserHistory.push(`/matcha/profile/${username}`);
       browserHistory.push(`/matcha/profile/${username}`);
     }
@@ -129,7 +130,6 @@ class Search extends Component {
 
   handleTag = async (e) => {
     e.preventDefault();
-    // console.log(e.target.tag.value);
     const tags = await axios({
       method: 'post',
       url: 'http://localhost:8080/search_by_tag',
@@ -143,7 +143,6 @@ class Search extends Component {
     });
     if (tags.data.status === true) {
       this.setState({ newUsers: tags.data.details });
-      // console.log('details', tags.data.details);
     } else {
       // error occured - no one was found
     }

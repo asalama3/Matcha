@@ -29,9 +29,7 @@ const paths = ['/login', '/create_account', '/logout', '/forgot_password', '/res
 
 io.on('connection', (socket) => { // se connecte a un socket
   socket.on('auth', (token) => { // emet un evenement
-    // console.log('token: ' , token);
     jwt.verify(token, 'yay', async(err, decoded) => {
-      // console.log('decoded: ', decoded.username);
       if (err) {
         // handle errors
         // return res.send({ status: false, details: 'cannot get authentification' });
@@ -44,7 +42,6 @@ io.on('connection', (socket) => { // se connecte a un socket
         socket.username = decoded.username;
         // connect to bd add status online
       }
-      // console.log(users);
     });
   });
   socket.on('disconnect', () => {
@@ -60,7 +57,6 @@ io.on('connection', (socket) => { // se connecte a un socket
   socket.on('new message', (data) => {
     mongoConnect(null, async (db) => {
       const { username } = socket;
-      // console.log('online user', username);
       const chats = db.collection('chats');
       const chat = await chats.findOne({ $and: [
         { $or: [
@@ -78,26 +74,29 @@ io.on('connection', (socket) => { // se connecte a un socket
         from: username,
         message: data.message,
       };
-      // console.log('online users', users);
       const toSendMessage = users.filter(user => {
         return data.to === user.username
       }); // get all users connected and send them the mess
-      // console.log('to', toSendMessage);
       if (toSendMessage && toSendMessage.length) {
+        console.log('hye nooo nooo');
         toSendMessage.forEach((user) => {
           user.socket.emit('receive new message', message);
         });
-      } else {
-        const notifText = `${username} sent you a new message`;
-        const notif = data.to.notifications ? [...data.to.notifications, notifText] : [notifText];
-        db.collection('users').update({ username: data.to }, { $set: { notifications: notif } });
       }
-       await chats.update({ $or: [
-          { 'userA.username': username, 'userB.username': data.to },
-          { 'userB.username': username, 'userA.username': data.to },
-        ] },
-        { $push: { messages: message } }
-      );
+      const user = db.collection('users');
+      const notLoggedUser = await user.findOne({ username: data.to });
+      const notifText = `${username} sent you a new message`;
+      if (notLoggedUser) {
+        const notif = notLoggedUser.notifications ? [...notLoggedUser.notifications, notifText] : [notifText];
+        db.collection('users').update({ username: data.to }, { $set: { notifications: notif } });
+        toSendMessage.forEach(el => el.socket.emit('notification', { notifText }));
+        }
+      await chats.update({ $or: [
+        { 'userA.username': username, 'userB.username': data.to },
+        { 'userB.username': username, 'userA.username': data.to },
+      ] },
+      { $push: { messages: message } }
+    );
     });
   });
 });
@@ -107,7 +106,6 @@ app.use(bodyParser.json({ limit: '2mb' }));
 app.use(bodyParser.urlencoded({ limit: '2mb', extended: true }));
 app.use('/public', express.static(`${__dirname}/uploads/`));
 
-// app.use(expressJwt({ secret: 'yay' }).unless({ path: paths }));
 
 /* replace function requireLogin to check le login */
 /* req a remplace session */
@@ -178,5 +176,6 @@ app.post('/view_user', User.viewUser(users));
 app.post('/search_by_tag', Profile.searchByTag);
 app.post('/forgot_password', Pass.forgotPass);
 app.post('/reset_password', Account.Password, Pass.resetPass);
+app.post('/report', User.report);
 server.listen(8080);
 // app.listen(8080);

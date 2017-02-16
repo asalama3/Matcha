@@ -23,7 +23,6 @@ const suggestions = (req, res) => {
           const withDistAndPop = noBlock.map(el => {
             // ADD DISTANCE
             if (el.location) {
-              console.log('location each user:', el.location);
               el.distance = geolib.getDistance(
                 { latitude: el.location.lat, longitude: el.location.lng },
                 { latitude: req.user.location.lat, longitude: req.user.location.lng }
@@ -34,8 +33,7 @@ const suggestions = (req, res) => {
             el.popularity = search.addPop(el);
             return el;
           });
-          const sortDist = withDistAndPop.filter((user) =>
-          user.distance < 1400);
+          const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
           const filterPop = filterDist.filter((user) => user.popularity >= 50);
           const AgeMaxRange = req.user.age + 10;
           const AgeMinRange = req.user.age - 10;
@@ -43,10 +41,9 @@ const suggestions = (req, res) => {
           user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
           const filterTags = filterAge.filter((user) => {
-            console.log(user.hobbies);
             if (user.hobbies){
               const test = user.hobbies.filter(tag =>
-              req.user.hobbies.includes(tag));
+              req.user.hobbies ? req.user.hobbies.includes(tag): []);
               if (!_.isEmpty(test)) return user;
             } else {
               return [] ;
@@ -83,7 +80,7 @@ const suggestions = (req, res) => {
           el.popularity = search.addPop(el);
           return el;
         });
-        const sortDist = withDistAndPop.filter((user) => user.distance < 1400);
+        const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
         const filterPop = filterDist.filter((user) => user.popularity >= 50);
         const AgeMaxRange = req.user.age + 10;
         const AgeMinRange = req.user.age - 10;
@@ -91,10 +88,9 @@ const suggestions = (req, res) => {
         user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
         const filterTags = filterAge.filter((user) => {
-          console.log(user.hobbies);
           if (user.hobbies){
             const test = user.hobbies.filter(tag =>
-            req.user.hobbies.includes(tag));
+            req.user.hobbies ? req.user.hobbies.includes(tag) : []);
             if (!_.isEmpty(test)) return user;
           } else {
             return [] ;
@@ -139,10 +135,9 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        console.log(user.hobbies);
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-          req.user.hobbies.includes(tag));
+          req.user.hobbies ? req.user.hobbies.includes(tag) : []);
           if (!_.isEmpty(test)) return user;
         } else {
           return [] ;
@@ -153,9 +148,7 @@ const suggestions = (req, res) => {
     }
   }
   if (req.user.gender === 'male') {
-    console.log('male');
     if (req.user.orientation === 'straight') {
-      console.log('malzcdse');
       const match = await db.collection('users').aggregate([
         {
           $match:
@@ -190,7 +183,6 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        console.log(user.hobbies);
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
           req.user.hobbies.includes(tag));
@@ -238,7 +230,6 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        console.log(user.hobbies);
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
           req.user.hobbies.includes(tag));
@@ -286,7 +277,6 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        console.log(user.hobbies);
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
           req.user.hobbies.includes(tag));

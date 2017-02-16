@@ -2,7 +2,6 @@ import mongodb from 'mongodb';
 import fs from 'fs';
 import mongoConnect from '../mongo_connect';
 
-// const session = require('express-session');
 
 const objectId = mongodb.ObjectId;
 

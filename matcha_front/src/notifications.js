@@ -39,7 +39,6 @@ class Notifications extends React.Component {
       });
     }
     let visits = [];
-    // console.log(this.state.views.number);
     if (!this.state.pending && this.state.views) {
       visits = this.state.views.name.map((src, key) => <li key={key} className="view"> {src} visited your profile! </li>);
     }
@@ -50,9 +49,7 @@ class Notifications extends React.Component {
     let chatNotif = [];
     if (!this.state.pending && this.state.notifications) {
       chatNotif = this.state.notifications.map((src, key) => {
-        console.log(src);
         if (src.includes("sent")){
-          console.log(src);
           return (<li key={key}> {src} </li>);
         }
         return false;
