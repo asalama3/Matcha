@@ -19,6 +19,8 @@ class Header extends React.Component {
     notifications: [],
   }
 
+  _mounted = false;
+
   handleNotif = ({ notifText }) => {
       this.setState({
         notif: 'active_notif',
@@ -29,6 +31,7 @@ class Header extends React.Component {
   componentWillUnmount() {
     global.socket.removeEventListener('notification');
     global.socket.disconnect();
+    this._mounted = false;
   }
 
   componentDidMount = async () => {
@@ -37,6 +40,7 @@ class Header extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     const loggedUser = checkAuth.data;
     this.setState({
       loggedUser,
@@ -65,6 +69,7 @@ class Header extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       browserHistory.push(`/matcha/profile/${response.data.data.username}`);
     } else if (response.data.details === 'user blocked') {
@@ -104,6 +109,7 @@ class Header extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(({ data }) => {
+      if (!this._mounted) return false;
       if (data.status === true) {
         localStorage.removeItem('token');
         browserHistory.push('/');

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle  */
 import React from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
@@ -11,10 +12,27 @@ import '../css/search.css';
 
 class Suggestions extends React.Component {
   state={
-    users: '',
     loggedUser: '',
-    newUsers: '',
     pending: false,
+    valuesAge: {
+        min: 18,
+        max: 95,
+    },
+    valuesLocation: {
+        min: 0,
+        max: 50,
+    },
+    valuesTags: {
+        min: 0,
+        max: 10,
+    },
+    valuesPop: {
+        min: 0,
+        max: 100,
+    },
+    users: [], // all users profiles
+    newUsers: [], // all users at first and then filtered
+    like: '',
   }
   _mounted = false;
 
@@ -39,34 +57,13 @@ class Suggestions extends React.Component {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }).then(({ data }) => {
+        if (!this._mounted) return false;
         if (data.status === true) {
           this.setState({ users: data.details, newUsers: data.details, pending: true });
         }
       });
     }
   }
-
-  state = {
-    valuesAge: {
-        min: 18,
-        max: 95,
-    },
-    valuesLocation: {
-        min: 0,
-        max: 50,
-    },
-    valuesTags: {
-        min: 0,
-        max: 10,
-    },
-    valuesPop: {
-        min: 0,
-        max: 100,
-    },
-    users: [], // all users profiles
-    newUsers: [], // all users at first and then filtered
-    like: '',
-  };
 
   filters = (element) => {
       const { min: aMin, max: aMax } = this.state.valuesAge;
@@ -127,6 +124,7 @@ class Suggestions extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       // browserHistory.push(`/matcha/profile/${username}`);
       browserHistory.push(`/matcha/profile/${username}`);
@@ -146,6 +144,7 @@ class Suggestions extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (tags.data.status === true) {
       this.setState({ newUsers: tags.data.details });
     } else {
