@@ -11,29 +11,12 @@ import redHeart from '../pictures/red_heart.png';
 import '../css/search.css';
 
 class Suggestions extends React.Component {
-  state={
-    loggedUser: '',
-    pending: false,
-    valuesAge: {
-        min: 18,
-        max: 95,
-    },
-    valuesLocation: {
-        min: 0,
-        max: 50,
-    },
-    valuesTags: {
-        min: 0,
-        max: 10,
-    },
-    valuesPop: {
-        min: 0,
-        max: 100,
-    },
-    users: [], // all users profiles
-    newUsers: [], // all users at first and then filtered
-    like: '',
-  }
+    state={
+      users: '',
+      loggedUser: '',
+      newUsers: '',
+    }
+
   _mounted = false;
 
   componentWillUnMount() { this._mounted = false; }
@@ -59,11 +42,33 @@ class Suggestions extends React.Component {
       }).then(({ data }) => {
         if (!this._mounted) return false;
         if (data.status === true) {
-          this.setState({ users: data.details, newUsers: data.details, pending: true });
+          this.setState({ users: data.details, newUsers: data.details });
         }
       });
     }
   }
+
+  state = {
+    valuesAge: {
+        min: 18,
+        max: 95,
+    },
+    valuesLocation: {
+        min: 0,
+        max: 50,
+    },
+    valuesTags: {
+        min: 0,
+        max: 10,
+    },
+    valuesPop: {
+        min: 0,
+        max: 100,
+    },
+    users: [], // all users profiles
+    newUsers: [], // all users at first and then filtered
+    like: '',
+  };
 
   filters = (element) => {
       const { min: aMin, max: aMax } = this.state.valuesAge;
@@ -155,7 +160,7 @@ class Suggestions extends React.Component {
   render() {
     let ListUsers = [];
 
-    if (this.state.pending && this.state.users) {
+    if (this.state.users) {
       ListUsers = this.state.newUsers.map((src, key) => {
         const Like = (src.interestedBy && src.interestedBy.includes(this.state.loggedUser.username)) ? 'liked' : '';
         let after = '#';

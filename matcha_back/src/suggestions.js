@@ -33,20 +33,19 @@ const suggestions = (req, res) => {
             el.popularity = search.addPop(el);
             return el;
           });
-          const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+          const filterDist = withDistAndPop.filter((user) => user.distance < 15);
           const filterPop = filterDist.filter((user) => user.popularity >= 50);
           const AgeMaxRange = req.user.age + 10;
           const AgeMinRange = req.user.age - 10;
           const filterAge = filterPop.filter((user) =>
           user.age >= AgeMinRange && user.age <= AgeMaxRange);
-
           const filterTags = filterAge.filter((user) => {
-            if (user.hobbies){
+            if (user.hobbies) {
               const test = user.hobbies.filter(tag =>
-              req.user.hobbies ? req.user.hobbies.includes(tag): []);
-              if (!_.isEmpty(test)) return user;
+              req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+              return test;
             } else {
-              return [] ;
+              return filterAge;
             }
           });
           const getTenUsers = filterTags.slice(0, 10);
@@ -80,7 +79,7 @@ const suggestions = (req, res) => {
           el.popularity = search.addPop(el);
           return el;
         });
-        const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+        const filterDist = withDistAndPop.filter((user) => user.distance < 15);
         const filterPop = filterDist.filter((user) => user.popularity >= 50);
         const AgeMaxRange = req.user.age + 10;
         const AgeMinRange = req.user.age - 10;
@@ -90,11 +89,11 @@ const suggestions = (req, res) => {
         const filterTags = filterAge.filter((user) => {
           if (user.hobbies){
             const test = user.hobbies.filter(tag =>
-            req.user.hobbies ? req.user.hobbies.includes(tag) : []);
-            if (!_.isEmpty(test)) return user;
-          } else {
-            return [] ;
-          }
+              req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+              return test;
+            } else {
+              return filterAge;
+            }
         });
         const getTenUsers = filterTags.slice(0, 10);
         return res.send({ status: true, details: getTenUsers });
@@ -127,7 +126,7 @@ const suggestions = (req, res) => {
           el.popularity = search.addPop(el);
           return el;
       });
-      const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+      const filterDist = withDistAndPop.filter((user) => user.distance < 15);
       const filterPop = filterDist.filter((user) => user.popularity >= 50);
       const AgeMaxRange = req.user.age + 10;
       const AgeMinRange = req.user.age - 10;
@@ -137,11 +136,11 @@ const suggestions = (req, res) => {
       const filterTags = filterAge.filter((user) => {
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-          req.user.hobbies ? req.user.hobbies.includes(tag) : []);
-          if (!_.isEmpty(test)) return user;
-        } else {
-          return [] ;
-        }
+            req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+            return test;
+          } else {
+            return filterAge;
+          }
       });
       const getTenUsers = filterTags.slice(0, 10);
       return res.send({ status: true, details: getTenUsers });
@@ -175,7 +174,7 @@ const suggestions = (req, res) => {
         el.popularity = search.addPop(el);
         return el;
       });
-      const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+      const filterDist = withDistAndPop.filter((user) => user.distance < 15);
       const filterPop = filterDist.filter((user) => user.popularity >= 50);
       const AgeMaxRange = req.user.age + 10;
       const AgeMinRange = req.user.age - 10;
@@ -183,13 +182,13 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        if (user.hobbies){
+        if (user.hobbies) {
           const test = user.hobbies.filter(tag =>
-            req.user.hobbies ? req.user.hobbies.includes(tag): []);
-          if (!_.isEmpty(test)) return user;
-        } else {
-          return [] ;
-        }
+            req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+            return test;
+          } else {
+            return filterAge;
+          }
       });
       const getTenUsers = filterTags.slice(0, 10);
       return res.send({ status: true, details: getTenUsers });
@@ -222,7 +221,7 @@ const suggestions = (req, res) => {
         el.popularity = search.addPop(el);
         return el;
       });
-      const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+      const filterDist = withDistAndPop.filter((user) => user.distance < 15);
       const filterPop = filterDist.filter((user) => user.popularity >= 50);
       const AgeMaxRange = req.user.age + 10;
       const AgeMinRange = req.user.age - 10;
@@ -232,11 +231,11 @@ const suggestions = (req, res) => {
       const filterTags = filterAge.filter((user) => {
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-            req.user.hobbies ? req.user.hobbies.includes(tag): []);
-          if (!_.isEmpty(test)) return user;
-        } else {
-          return [] ;
-        }
+            req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+            return test;
+          } else {
+            return filterAge;
+          }
       });
       const getTenUsers = filterTags.slice(0, 10);
       return res.send({ status: true, details: getTenUsers });
@@ -269,7 +268,7 @@ const suggestions = (req, res) => {
         el.popularity = search.addPop(el);
         return el;
       });
-      const filterDist = withDistAndPop.filter((user) => user.distance < 1400);
+      const filterDist = withDistAndPop.filter((user) => user.distance < 15);
       const filterPop = filterDist.filter((user) => user.popularity >= 50);
       const AgeMaxRange = req.user.age + 10;
       const AgeMinRange = req.user.age - 10;
@@ -277,13 +276,13 @@ const suggestions = (req, res) => {
       user.age >= AgeMinRange && user.age <= AgeMaxRange);
 
       const filterTags = filterAge.filter((user) => {
-        if (user.hobbies){
+        if (user.hobbies) {
           const test = user.hobbies.filter(tag =>
-            req.user.hobbies ? req.user.hobbies.includes(tag): []);
-          if (!_.isEmpty(test)) return user;
-        } else {
-          return [] ;
-        }
+            req.user.hobbies ? req.user.hobbies.includes(tag) : filterAge);
+            return test;
+          } else {
+            return filterAge;
+          }
       });
       const getTenUsers = filterTags.slice(0, 10);
       return res.send({ status: true, details: getTenUsers });
