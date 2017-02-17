@@ -94,7 +94,7 @@ io.on('connection', (socket) => { // se connecte a un socket
         { 'userA.username': username, 'userB.username': data.to },
         { 'userB.username': username, 'userA.username': data.to },
       ] },
-      { $push: { messages: message } }
+      { $push: { messages: notifText } }
     );
     });
   });

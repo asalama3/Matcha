@@ -105,13 +105,9 @@ const autoFill = (req, res) => {
 const searchLogin = (socketList) => (req, res) => {
   mongoConnect(res, (db) => {
     const users = db.collection('users');
-    // console.log(req.body.username);
     users.findOne({ username: req.body.username }, (err, user) => {
       if (user) {
-        console.log(user.username);
-        console.log(req.user.blocked);
-        if (req.user.blocked.includes(user.username)) {
-          console.log('je rentre dedans');
+        if (req.user.blocked && req.user.blocked.includes(user.username)) {
           return res.send({ status: false, details: 'user blocked' });
         }
         if (user.username === req.user.username) {
@@ -124,8 +120,8 @@ const searchLogin = (socketList) => (req, res) => {
           users.update({ username: req.body.username }, { $set: { ...user } });
           const likerSocket = socketList.filter(el => el.username === user.username);
           if (likerSocket && likerSocket.length) { // keep message event if likerSocket is not online !!!
-            const message = `${req.user.username} visited your profile`;
-            likerSocket.forEach(el => el.socket.emit('notification', { message }));
+            const notifText = `${req.user.username} visited your profile`;
+            likerSocket.forEach(el => el.socket.emit('notification', { notifText }));
             // const notif = user.notifications ? [...user.notifications, message] : [message];
             // users.update({ username: user.username }, { $set: { notifications: notif } });
           }
@@ -148,9 +144,9 @@ const viewUser = (socketList) => (req, res) => {
           user.views.name.push(req.user.username);
           users.update({ username: req.body.username }, { $set: { ...user } });
           const likerSocket = socketList.filter(el => el.username === user.username);
-          const message = `${req.user.username} visited your profile`;
+          const notifText = `${req.user.username} visited your profile`;
           if (likerSocket && likerSocket.length) {
-            likerSocket.forEach(el => el.socket.emit('notification', { message }));
+            likerSocket.forEach(el => el.socket.emit('notification', { notifText }));
           }
         }
         res.send({ status: true, details: 'user ok viewed' });
@@ -241,15 +237,16 @@ const block = (req, res) => {
             blocked: req.body.username,
           },
         });
-      } else {
-        console.log('no');
       }
     });
-
-    users.update({ username: req.body.username }, {
-      $pull: {
-        interestedIn: req.user.username,
-        interestedBy: req.user.username },
+    users.findOne({ username: req.body.username }, (err, user) => {
+      if (user) {
+        users.update({ username: req.body.username }, {
+          $pull: {
+            interestedIn: req.user.username,
+            interestedBy: req.user.username },
+        });
+      }
     });
     chats.remove({ $or: [
        { 'userA.username': req.user.username, 'userB.username': req.body.username },

@@ -41,14 +41,14 @@ const like = (socketList) => (req, res) => {
     } else {
       const likerSocket = socketList.filter(el => el.username === liked.username);
       if (likerSocket && likerSocket.length && !liked.interestedIn.includes(liker.username)) {
-        const message = `${liker.username} liked your profile`;
-        likerSocket.forEach(el => el.socket.emit('notification', { message }));
-        const notif = liked.notifications ? [...liked.notifications, message] : [message];
+        const notifText = `${liker.username} liked your profile`;
+        likerSocket.forEach(el => el.socket.emit('notification', { notifText }));
+        const notif = liked.notifications ? [...liked.notifications, notifText] : [notifText];
         users.update({ username: liked.username }, { $set: { notifications: notif } });
       } else {
-        const message = `${liker.username} liked your profile`;
-        likerSocket.forEach(el => el.socket.emit('notification', { message }));
-        const notif = liked.notifications ? [...liked.notifications, message] : [message];
+        const notifText = `${liker.username} liked your profile`;
+        likerSocket.forEach(el => el.socket.emit('notification', { notifText }));
+        const notif = liked.notifications ? [...liked.notifications, notifText] : [notifText];
         const mutualLike = `${liker.username} is a match! `;
         likerSocket.forEach(el => el.socket.emit('notification', { mutualLike }));
         const likedMatch = liked.match ? [...liked.match, liker.username] : [liker.username];

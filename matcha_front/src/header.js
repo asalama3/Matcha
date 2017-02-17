@@ -19,10 +19,10 @@ class Header extends React.Component {
     notifications: [],
   }
 
-  handleNotif = ({ message }) => {
+  handleNotif = ({ notifText }) => {
       this.setState({
         notif: 'active_notif',
-        notifications: [message, ...this.state.notifications],
+        notifications: [notifText, ...this.state.notifications],
       });
   }
 
