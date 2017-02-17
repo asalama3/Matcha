@@ -7,6 +7,8 @@ import mongoConnect from '../mongo_connect';
 import * as pop from './search';
 // import mkdirp from 'mkdirp';
 const session = require('express-session');
+var rimraf = require('rimraf');
+
 const jwt = require('jsonwebtoken');
 
 const ageCalculated = (birthday) => {
@@ -168,12 +170,13 @@ const deleteAccount = (req, res) => {
         db.collection('users').remove({ _id: objectId(req.user._id) });
         fs.readdir(`./uploads/${req.user.username}`, (err) => {
 		      if (!err) {
-            fs.rmdir(`./uploads/${req.user.username}`, (error) => {
-              if (error) return res.send({ status: false, details: 'error rmdir' });
-            });
+            rimraf(`./uploads/${req.user.username}`, () => { console.log('done'); });
+            // fs.unlink(`./uploads/${req.user.username}`, (err) => {
+              // if (err) return console.log(err);
+            // });
+            return res.send({ status: true, details: 'user deleted from db' });
           }
         });
-        return res.send({ status: true, details: 'user deleted from db' });
       }
     });
   });
