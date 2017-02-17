@@ -29,9 +29,9 @@ class Header extends React.Component {
   }
 
   componentWillUnmount() {
+    this._mounted = false;
     global.socket.removeEventListener('notification');
     global.socket.disconnect();
-    this._mounted = false;
   }
 
   componentDidMount = async () => {
