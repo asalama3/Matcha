@@ -14,6 +14,7 @@ class Suggestions extends React.Component {
     users: '',
     loggedUser: '',
     newUsers: '',
+    pending: false,
   }
   _mounted = false;
 
@@ -39,7 +40,7 @@ class Suggestions extends React.Component {
         },
       }).then(({ data }) => {
         if (data.status === true) {
-          this.setState({ users: data.details, newUsers: data.details });
+          this.setState({ users: data.details, newUsers: data.details, pending: true });
         }
       });
     }
@@ -155,7 +156,7 @@ class Suggestions extends React.Component {
   render() {
     let ListUsers = [];
 
-    if (this.state.users) {
+    if (this.state.pending && this.state.users) {
       ListUsers = this.state.newUsers.map((src, key) => {
         const Like = (src.interestedBy && src.interestedBy.includes(this.state.loggedUser.username)) ? 'liked' : '';
         let after = '#';
@@ -185,7 +186,7 @@ class Suggestions extends React.Component {
         );
       });
     } else {
-      ListUsers = "No suggestions yet";
+      ListUsers = 'No suggestions yet';
     }
 
     return (
