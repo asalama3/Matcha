@@ -7,7 +7,6 @@ const objectId = mongodb.ObjectId;
 
 const addPic = (req, res) => {
   mongoConnect(res, (db) => {
-    console.log('hey youuuuuuuuuuuuuuuuuuuuuuuu');
     if (!req.body.photo || !req.body.name || !req.body.type || !req.body.size) {
       res.send({ status: false, details: 'you need to select a photo' });
     } else if (req.body.size < 1000000) {
@@ -28,7 +27,8 @@ const addPic = (req, res) => {
                 const imageBuffer = new Buffer(matches[2], 'base64');
                 fs.writeFile(`./uploads/${req.user.username}/${req.body.name}`, imageBuffer, (error) => {
                   if (error) {
-                    return res.send({ status: false, details: 'could not upload picture' });
+                    res.send({ status: false, details: 'could not upload picture' });
+                    throw error;
                   }
                   let photo = [];
                   if (user.photo) {
