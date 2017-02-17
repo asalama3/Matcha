@@ -74,7 +74,6 @@ io.on('connection', (socket) => { // se connecte a un socket
         from: username,
         message: data.message,
       };
-      console.log('message' , message);
       const toSendMessage = users.filter(user => {
         return data.to === user.username
       }); // get all users connected and send them the mess
