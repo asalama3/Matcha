@@ -74,6 +74,7 @@ io.on('connection', (socket) => { // se connecte a un socket
         from: username,
         message: data.message,
       };
+      console.log('message' , message);
       const toSendMessage = users.filter(user => {
         return data.to === user.username
       }); // get all users connected and send them the mess
@@ -94,7 +95,7 @@ io.on('connection', (socket) => { // se connecte a un socket
         { 'userA.username': username, 'userB.username': data.to },
         { 'userB.username': username, 'userA.username': data.to },
       ] },
-      { $push: { messages: notifText } }
+      { $push: { messages: message } }
     );
     });
   });

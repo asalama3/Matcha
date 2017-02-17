@@ -92,7 +92,7 @@ class Chats extends React.Component {
             </div>
         </li>);
     } else if (!pending) {
-      chatList= "You don't have any chats available yet";
+      chatList = "You don't have any chats available yet";
     }
     return (
       <div className="contain">
