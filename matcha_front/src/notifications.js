@@ -23,7 +23,6 @@ class Notifications extends React.Component {
     if (!this._mounted) return false;
     if (checkAuth.data.status === true) {
       const loggedUser = checkAuth.data.data;
-      console.log('NOOOOOOOPE');
       this.setState({
         user: loggedUser,
         notifications: loggedUser.notifications,
