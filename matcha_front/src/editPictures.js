@@ -15,12 +15,18 @@ class editPictures extends React.Component {
     profilePhoto: 'profilePhoto',
   }
 
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/edit_pictures', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === true) {
       this.setState({ data: checkAuth.data.data, username: checkAuth.data.data.username, photo: checkAuth.data.data.photo });
     } else {
@@ -31,7 +37,7 @@ class editPictures extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     if (!this.state.file || !this.state.imagePreviewUrl) {
-      this.setState({error: "you need to select a file" });
+      this.setState({ error: "you need to select a file" });
       setTimeout(this.hideDiv, 3000);
     } else if (this.state.file.type !== 'image/jpeg' && this.state.file.type !== 'image/jpg' && this.state.file.type !== 'image/png') {
       this.setState({ imagePreviewUrl: '', file: '', error: 'wrong file format', err: 'error' });
@@ -50,6 +56,7 @@ class editPictures extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       this.setState({ photo: response.data.data, imagePreviewUrl: '' });
     } else {
@@ -86,6 +93,7 @@ class editPictures extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       this.setState({ photo: response.data.values });
     } else {
@@ -111,11 +119,12 @@ class editPictures extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
-      this.setState({ profilePicture: "Profile picture saved", profilePhoto: "profilePhoto" });
+      this.setState({ profilePicture: 'Profile picture saved', profilePhoto: 'profilePhoto' });
     }
     else {
-      this.setState({ error: "Could not make this picture your profile picture", err: 'error' });
+      this.setState({ error: 'Could not make this picture your profile picture', err: 'error' });
     }
     setTimeout(this.hideDiv, 3000);
   }

@@ -20,12 +20,18 @@ class Profile extends Component {
     connectedUser: '',
   }
 
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/my_profile', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === false) {
       return browserHistory.push('/');
     }
@@ -43,6 +49,7 @@ class Profile extends Component {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
       });
+      if (!this._mounted) return false;
       const askedUser = getProfile.data.data;
       if (getProfile.data.status === true) {
         // Deal if the user doesn't exist
@@ -76,6 +83,7 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === false && response.data.details === 'user blocked') {
       this.setState({ error: 'user blocked' });
       setTimeout(this.hideDiv, 3000);
@@ -125,6 +133,7 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (data.status === false && data.details.includes('picture')) {
       this.setState({ error: 'you need to add a picture to like or dislike' });
       setTimeout(this.hideDiv, 3000);
@@ -152,6 +161,7 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       alert("This user has been reported");
     } else {
@@ -170,6 +180,7 @@ class Profile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === false) {
       this.setState({ error: response.data.details });
     }

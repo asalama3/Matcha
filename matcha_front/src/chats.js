@@ -15,12 +15,18 @@ class Chats extends React.Component {
     selectedChat: 0,
   }
 
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === true) {
       const loggedUser = checkAuth.data.data;
       this.setState({
@@ -32,6 +38,7 @@ class Chats extends React.Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       this.setState({ chats: response.data.data, pending: false });
     }

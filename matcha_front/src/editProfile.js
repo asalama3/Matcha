@@ -28,12 +28,18 @@ class editProfile extends Component {
     tags: [],
   }
 
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async() => {
+    this._mounted = true;
     const fillData = await axios.get('http://localhost:8080/fill_data', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (fillData.data.status === true) {
       this.autofill();
     } else {
@@ -67,6 +73,7 @@ class editProfile extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
+    if (!this._mounted) return false;
     if (response.data.user) {
       this.setState({
         firstname: response.data.user.firstname,
@@ -116,6 +123,7 @@ class editProfile extends Component {
        Authorization: `Bearer ${localStorage.getItem('token')}`
      },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       browserHistory.push('/matcha/profile');
     } else {

@@ -9,12 +9,18 @@ class Notifications extends React.Component {
     pending: true,
   }
 
+  _mounted = false;
+
+  componentWillUnMount() { this._mounted = false; }
+
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (checkAuth.data.status === true) {
       const loggedUser = checkAuth.data.data;
       this.setState({
