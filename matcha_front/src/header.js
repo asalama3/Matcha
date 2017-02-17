@@ -54,6 +54,7 @@ class Header extends React.Component {
   }
 
   hideDiv = () => {
+    if (!this._mounted) return false;
     this.setState({ err: 'err' });
   }
 
