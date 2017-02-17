@@ -11,7 +11,7 @@ class Notifications extends React.Component {
 
   _mounted = false;
 
-  componentWillUnMount() { this._mounted = false; }
+  componentWillUnmount() { this._mounted = false; }
 
   componentDidMount = async () => {
     this._mounted = true;
@@ -23,6 +23,7 @@ class Notifications extends React.Component {
     if (!this._mounted) return false;
     if (checkAuth.data.status === true) {
       const loggedUser = checkAuth.data.data;
+      console.log('NOOOOOOOPE');
       this.setState({
         user: loggedUser,
         notifications: loggedUser.notifications,

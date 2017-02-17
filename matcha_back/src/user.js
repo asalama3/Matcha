@@ -166,7 +166,7 @@ const deleteAccount = (req, res) => {
         res.send({ status: false, details: 'no user found' });
       } else {
         db.collection('users').remove({ _id: objectId(req.user._id) });
-        fs.readFile(`./uploads/${req.user.username}`, (err) => {
+        fs.readdir(`./uploads/${req.user.username}`, (err) => {
 		      if (!err) {
             fs.rmdir(`./uploads/${req.user.username}`, (error) => {
               if (error) return res.send({ status: false, details: 'error rmdir' });

@@ -18,7 +18,7 @@ class Search extends Component {
 
   _mounted = false;
 
-  componentWillUnMount() { this._mounted = false; }
+  componentWillUnmount() { this._mounted = false; }
 
   componentDidMount = async () => {
     this._mounted = true;
