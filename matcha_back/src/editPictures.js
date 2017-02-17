@@ -21,13 +21,14 @@ const addPic = (req, res) => {
                   return res.send({ status: false, details: 'too many images' });
                 }
                 const matches = req.body.photo.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                console.log(matches);
                 if (matches.length !== 3) {
                   return res.send({ status: false, details: 'invalid input string' });
                 }
                 const imageBuffer = new Buffer(matches[2], 'base64');
                 fs.writeFile(`./uploads/${req.user.username}/${req.body.name}`, imageBuffer, (error) => {
                   if (error) {
-                    return res.send({ status: false, details: 'invalid input string' });
+                    return res.send({ status: false, details: 'could not upload picture' });
                   }
                   });
                   let photo = [];
