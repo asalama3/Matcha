@@ -185,7 +185,7 @@ const suggestions = (req, res) => {
       const filterTags = filterAge.filter((user) => {
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-          req.user.hobbies.includes(tag));
+            req.user.hobbies ? req.user.hobbies.includes(tag): []);
           if (!_.isEmpty(test)) return user;
         } else {
           return [] ;
@@ -232,7 +232,7 @@ const suggestions = (req, res) => {
       const filterTags = filterAge.filter((user) => {
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-          req.user.hobbies.includes(tag));
+            req.user.hobbies ? req.user.hobbies.includes(tag): []);
           if (!_.isEmpty(test)) return user;
         } else {
           return [] ;
@@ -279,7 +279,7 @@ const suggestions = (req, res) => {
       const filterTags = filterAge.filter((user) => {
         if (user.hobbies){
           const test = user.hobbies.filter(tag =>
-          req.user.hobbies.includes(tag));
+            req.user.hobbies ? req.user.hobbies.includes(tag): []);
           if (!_.isEmpty(test)) return user;
         } else {
           return [] ;
