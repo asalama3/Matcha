@@ -30,22 +30,20 @@ const addPic = (req, res) => {
                   if (error) {
                     return res.send({ status: false, details: 'could not upload picture' });
                   }
-                  });
                   let photo = [];
                   if (user.photo) {
                    photo = user.photo;
-                 } else {
+                  } else {
                    photo = [];
                   }
                   photo.push({ name: req.body.name, profil: false });
                   db.collection('users').update({ _id: objectId(req.user._id) }, { $set: { photo } }, (er) => {
                     if (er) {
                        return res.send({ status: false, details: 'db error' });
-                    } else {
-                        return res.send({ status: true, details: 'inserted photo ok', data: photo });
-                      }
+                    }
+                    return res.send({ status: true, details: 'inserted photo ok', data: photo });
                   });
-                  return false;
+                  });
               });
         } else {
           return res.send({ status: false, details: 'wrong format' });
