@@ -7,6 +7,7 @@ const objectId = mongodb.ObjectId;
 
 const addPic = (req, res) => {
   mongoConnect(res, (db) => {
+    console.log('hey youuuuuuuuuuuuuuuuuuuuuuuu');
     if (!req.body.photo || !req.body.name || !req.body.type || !req.body.size) {
       res.send({ status: false, details: 'you need to select a photo' });
     } else if (req.body.size < 1000000) {
@@ -21,7 +22,6 @@ const addPic = (req, res) => {
                   return res.send({ status: false, details: 'too many images' });
                 }
                 const matches = req.body.photo.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-                console.log(matches);
                 if (matches.length !== 3) {
                   return res.send({ status: false, details: 'invalid input string' });
                 }
