@@ -40,6 +40,7 @@ class Search extends Component {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
       }).then(({ data }) => {
+        if (!this._mounted) return false;
         if (data.status === true) {
           this.setState({ users: data.details, newUsers: data.details });
         }
@@ -128,6 +129,7 @@ class Search extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (response.data.status === true) {
       // browserHistory.push(`/matcha/profile/${username}`);
       browserHistory.push(`/matcha/profile/${username}`);
@@ -147,6 +149,7 @@ class Search extends Component {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     });
+    if (!this._mounted) return false;
     if (tags.data.status === true) {
       this.setState({ newUsers: tags.data.details });
     } else {

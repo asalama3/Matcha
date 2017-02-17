@@ -35,6 +35,7 @@ class Header extends React.Component {
   }
 
   componentDidMount = async () => {
+    this._mounted = true;
     const checkAuth = await axios.get('http://localhost:8080/check_auth', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
